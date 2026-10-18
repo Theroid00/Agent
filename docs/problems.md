@@ -12,17 +12,25 @@
 |---|------|-------|-------|----------|--------|
 | P20 | 2026-10-19 | Fresh V2 evaluation | Second unseen seed misses per-seed mapping target | 🟠 Major | Mapping accuracy 0.7; preserve result without tuning |
 | P19 | 2026-10-19 | Fresh V2 evaluation | Grounded but incorrect port-scan mapping | 🟡 Minor | Recorded frozen-system limitation; no tuning after exposure |
-| P15 | 2026-10-19 | Live evaluation | Original D33 detection recall misses target | 🟠 Major | Original preserved; V2 development repair succeeds |
-| P8 | 2026-10-18 | Integration | CrewAI credential directory restriction on original Mac | 🟡 Minor | Historical; Windows framework/live runs pass |
-| P9 | 2026-10-18 | Live validation | Fresh-Colab execution unverified | 🔴 Blocker | Windows live execution complete; Colab pending |
 | P2 | 2026-10-18 | Setup | Documentation conflicts and missing specifications | 🟠 Major | Open |
 
 Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround exists)
+
+## Deferred and historical problems
+
+These retain their original evidence below. They do not block publication of the completed Windows evaluation; full-submission requirements remain explicit.
+
+| # | Context | Current status |
+|---|---------|----------------|
+| P15 | Original D33 detection failure | Preserved archived results; later V2 detects all attacks on both fresh seeds, with separate mapping failures P19/P20 |
+| P8 | Original Mac credential-directory restriction | Historical environment issue; actual CrewAI and live Gemini stages pass on Windows |
+| P9 | Fresh-Colab verification | Deferred outside current Windows scope; remains unverified and required for full original submission |
 
 ## Closed problems
 
 | # | Date opened | Date closed | Title | Fix summary |
 |---|-------------|-------------|-------|-------------|
+| P22 | 2026-10-19 | 2026-10-19 | Windows documentation search glob | Use rg's -g filter with the docs directory instead of a literal docs/*.md path |
 | P21 | 2026-10-19 | 2026-10-19 | Documentation editing and formatting checks | Corrected duplicate patch target and report trailing blank line; no model/result change |
 | P18 | 2026-10-19 | 2026-10-19 | Direct Python used the Windows legacy text encoding | UTF-8 invocation passes the freeze gate and records D38 before held-out generation |
 | P3 | 2026-10-18 | 2026-10-19 | Original Git metadata restriction | Windows checkout permits explicitly authorized Git writes; owner resumes commits in D36 |
@@ -53,6 +61,11 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 ---
 
 ## Entries (newest first)
+
+### P22 — PowerShell did not expand the documentation search glob
+- **Date:** 2026-10-19
+- **Error:** `rg: docs/*.md: The filename, directory name, or volume label syntax is incorrect. (os error 123)`.
+- **Fix/status:** Use `rg -g '*.md' ... docs` so ripgrep performs filtering. Read-only search failure; no source, test or result changed.
 
 ### P21 — Documentation patch format rejected
 - **Date:** 2026-10-19

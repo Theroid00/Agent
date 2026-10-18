@@ -2,7 +2,7 @@
 
 > **Read this first at the start of every session.** Then read open items in `problems.md`.
 > **Update it at the end of every session.** A session is not finished until this file is updated (goal.md §7.4).
-> Numbers here are copied from real command or notebook output. Never estimated; the owner-approved module workflow is recorded in D12/D14.
+> Numbers here are copied from real command or notebook output. Never estimated; module layout is recorded in D12, and the current review workflow in D36. D14 is historical.
 
 ---
 
@@ -13,7 +13,7 @@
 - **Comparison:** Held-out S0 averages 18.0 false positives. S1 averages recall 0.41666666666666663 and mapping_accuracy 0.6666666666666666; S3 averages recall 1.0 and mapping_accuracy 0.8. S1 has one nonexistent ID on each fresh seed; S3 has zero. Results concern this synthetic generator only.
 - **Artifacts / verification:** All 8 evaluation notebook code cells completed; notebook gate reports `82 passed, 1 deselected, 26 warnings in 51.35s`. All 9 real S0/S1/S3 run files have matching frozen fingerprints and identical per-seed input bytes. Preservation checks pass for 108 original artifacts, approved tests and evaluator files. New results/report/notebook are under outputs/evaluation_v2 and notebooks/Cyber_Threat_MultiAgent.v2.evaluation.executed.ipynb. Original D33 and V2 development artifacts remain intact.
 - **System / environment:** Only seed metadata changed from the completed coverage repair. Prompts, models, thresholds, retrieval, generator distributions, validators, approved tests and evaluate.py are unchanged. Windows .venv and launchers are configured; run-notebook.cmd prefers the new executed evaluation notebook. API keys are private in ignored .env. P18 direct-invocation encoding issue is fixed using UTF-8 mode.
-- **Git / scope:** Local milestone commits are authorized (D36). The owner now explicitly authorizes pushing completed main commits and the three evaluation tags to origin (D40). Frozen evaluation completed under D37/D38; D39 records honest reporting of the target failure. Colab work and real-world validation remain outside current scope. Both fresh seeds are now exposed and cannot be reused as unseen evidence for future tuning.
+- **Git / scope:** Completed Windows work and the three evaluation tags are published to origin/main under D40. The first remote verification matched local commit 57b29bc and confirmed all tag refs. D41 records the owner's additional documentation synchronization/push request. Frozen evaluation completed under D37/D38; D39 records the target failure. Colab work and real-world validation remain outside current scope. Both fresh seeds are now exposed and cannot be reused as unseen evidence for future tuning.
 
 ## What's next
 
@@ -85,6 +85,14 @@ Original measurements remain in outputs/ and the D33 snapshot; the earlier cover
 ---
 
 ## Session log (newest first)
+
+### Session 11 — 2026-10-19 — Synchronize documentation and publish corrections
+- **Request:** Also synchronize the docs, commit and push.
+- **Verified publication:** Completed work reached origin/main at 57b29bc. Remote refs include benchmark-v2, system-freeze-v2 and phase6-done. This follow-up synchronizes documentation with that delivery.
+- **Done:** Corrected stale README execution/Git/history guidance, decision index and completed verification status, plan runtime/retrieval/CONFIG guidance, and active versus historical/deferred problem status. Goal requirements and historical session/decision entries remain intact. D41 logs the plan corrections; P22 records a fixed Windows search-glob error.
+- **Checks:** All 5 changed files are documentation; 20 local Markdown links resolve. Diff/secret/archive checks pass, and the frozen source/tests/requirements and D38 guard remain unchanged. Notebooks, datasets and measured results remain intact. Verify the remote hash after pushing this follow-up; no new model or test run is needed.
+- **Numbers / limitations:** V2 metrics remain authoritative in the current Numbers board: mapping 0.7 on 876694 still fails its target. P19/P20 remain open. Colab remains unverified/excluded.
+- **Git / next:** Commit and push this documentation follow-up to main; keep all existing tags unchanged. Next implementation requires a separately approved development cycle.
 
 ### Session 10 — 2026-10-19 — Owner-authorized remote sync
 - **Request:** Commit and push the completed work to the remote.

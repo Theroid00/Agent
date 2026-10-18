@@ -4,6 +4,8 @@
 > Work phase by phase (§10). Don't start a phase until the previous phase's **exit checks** pass.
 > Any deviation → add an entry to the Decision Log (§14).
 
+**Current delivery (D37–D41):** The frozen V2 evaluation ran on Windows CPU, using development seed 42 and fresh held-out 812399/876694. All runs and the Windows notebook/report completed; mapping accuracy 0.7 on 876694 misses the unchanged per-seed target. Results and tags are published. See progress.md and outputs/evaluation_v2/report.md for current status. Historical Colab planning remains a full-submission requirement; fresh-Colab execution is unverified and outside current focus. Future implementation follows the restored AGENTS.md review workflow (D36).
+
 ---
 
 ## 0. Guiding design principles
@@ -61,13 +63,13 @@ Pin exact versions at the start of Phase 1 by running `pip show` and recording t
 
 | Component | Choice | Notes |
 |-----------|--------|-------|
-| Runtime | Google Colab, CPU | Mount Drive optional, for persisting `outputs/` |
+| Runtime | Windows CPU verified; Google Colab CPU planned | Local outputs persist on disk; fresh-Colab execution is unverified |
 | Agents | CrewAI | Sequential process; `output_pydantic` on tasks; custom tools |
 | LLM | Gemini (free tier) primary, Groq fallback | Model name lives in `CONFIG`; check currently available free models on build day. Temperature 0. |
-| API keys | Colab Secrets (`google.colab.userdata`) | Never hard-coded or printed |
-| Embeddings | `sentence-transformers/all-MiniLM-L6-v2` (CPU) | Upgrade to `BAAI/bge-small-en-v1.5` only if retrieval tests fail |
+| API keys | Environment variables; ignored .env locally, Colab Secrets in Colab | Never hard-coded or printed |
+| Embeddings | `BAAI/bge-small-en-v1.5` (CPU), pinned revision in CONFIG | Planned fallback adopted after measured MiniLM misses (D23) |
 | Vector store | FAISS (`faiss-cpu`) | Cosine similarity via normalized vectors + inner product |
-| Keyword search (fallback) | `rank_bm25` | Hybrid only if dense retrieval tests fail |
+| Keyword search | `rank_bm25` plus dense retrieval | Hybrid fallback adopted after measured dense misses (D25/D26) |
 | Schemas | Pydantic v2 | |
 | Data | pandas, numpy, `re` | |
 | Charts | matplotlib | |
@@ -338,25 +340,17 @@ On failure: re-run that task once with the validator errors appended. If still f
 
 ---
 
-## 11. CONFIG (initial values; tune only with a Decision Log entry)
+## 11. CONFIG (authoritative runtime settings)
+
+The one CONFIG dictionary lives in src/cyberagents/config.py. Model names, exact embedding/ATT&CK revisions, thresholds, correlation policy and seed metadata are recorded there and covered by the source/configuration freeze. Inspect the actual settings instead of maintaining a second copy here:
 
 ```python
-CONFIG = {
-  "seeds": [42, 7, 2026],
-  "llm": {"provider": "gemini", "model": "<set on build day>", "temperature": 0, "fallback": "groq"},
-  "embed_model": "sentence-transformers/all-MiniLM-L6-v2",
-  "attack": {"source": "mitre/cti enterprise-attack.json", "version": "<pin on build day>"},
-  "rag": {"k_tool": 5, "k_pre": 8},
-  "rules": {"auth_fail_n": 3, "auth_fail_window_min": 10,
-            "spray_users_n": 5, "spray_window_min": 30,
-            "scan_ports_n": 15, "scan_window_min": 5,
-            "egress_bytes": 100_000_000, "egress_window_min": 60,
-            "success_after_fail_window_min": 60},
-  "cluster_sample_lines": 10,
-  "max_validation_retries": 1,
-  "paths": {"out": "outputs/"},
-}
+import json
+from cyberagents.config import CONFIG
+print(json.dumps(CONFIG, indent=2))
 ```
+
+The active V2 comparison uses CONFIG['evaluation_seeds']: development 42, held-out 812399/876694. Legacy held-out IDs remain recognized only for compatibility with original runs and approved tests; do not add them to the V2 comparison. Both fresh seeds are now exposed. The default output path retains original D33 files; the current notebook passes outputs/evaluation_v2 explicitly and reuses matching saved runs. Any future tuning requires a separate approved development/freeze/unseen-data cycle; never alter the current frozen source or force held-out reruns.
 
 ---
 
@@ -364,7 +358,7 @@ CONFIG = {
 
 | Risk | Mitigation |
 |------|------------|
-| Free-tier rate limits / daily quota | Batched tasks, throttling, save every output, skip completed runs, Groq fallback |
+| Free-tier rate limits / daily quota | Batched tasks, throttling, bounded retries and cached outputs; provider changes require an explicit documented decision |
 | CrewAI API differs from expectations | Read installed version's docs on Day 1; keep CrewAI-specific code in one section |
 | LLM output fails schema | `output_pydantic` + one retry with error text; mark `unvalidated` |
 | Retrieval misses correct technique | Pre-retrieval tests (§5.3); bge-small / hybrid BM25 fallback; agent can search further |
@@ -412,3 +406,4 @@ CONFIG = {
 | D37 | 2026-10-19 | Owner approves V2 evaluation on development 42 and fresh held-out 812399, 876694; freeze before generation | Original held-out outcomes are already exposed; preserve V1, use the same evaluator/targets and do not tune after exposure |
 | D38 | 2026-10-19 | Freeze V2 source/configuration after cached current development execution and existing full gates | Complete coverage, measured development output, calibrated retrieval and unchanged offline tests pass before either fresh dataset exists |
 | D39 | 2026-10-19 | Report all fresh outcomes without tuning, including mapping 0.7 on one seed | A passing held-out mean does not satisfy every seed; preserve semantic errors and distinguish evidence-stage coverage from correct technique mapping |
+| D41 | 2026-10-19 | Synchronize verified Windows runtime/retrieval status and replace stale CONFIG example with the authoritative source | Current docs must match the completed frozen evaluation; preserve historical decisions and unchanged goals/benchmark |

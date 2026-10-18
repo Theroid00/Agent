@@ -44,25 +44,30 @@
 | D31 | 2026-10-19 | Preserve CSV writer newlines on Windows | Active |
 | D32 | 2026-10-19 | Run synchronous pipeline calls outside Jupyter's event loop | Active |
 
-| D33 | 2026-10-19 | System freeze | Active |
+| D33 | 2026-10-19 | Original System freeze | Archived baseline; preserved |
 | D34 | 2026-10-19 | Development coverage repair; preserve D33 baseline | Active |
 | D35 | 2026-10-19 | Evidence-focused login retrieval and per-record retry salvage | Active |
 | D36 | 2026-10-19 | Owner authorizes committing completed work and future milestones | Active |
 | D37 | 2026-10-19 | Fresh V2 evaluation protocol approved before data generation | Active |
+| D38 | 2026-10-19 | V2 System freeze | Active; immutable evaluated source |
 | D39 | 2026-10-19 | Preserve unseen results, including the per-seed mapping failure | Active |
-
-| D38 | 2026-10-19 | System freeze | Active |
 | D40 | 2026-10-19 | Owner authorizes pushing completed commits and evaluation tags | Active |
+| D41 | 2026-10-19 | Synchronize current documentation after verified remote delivery | Active |
 
 ---
 
-## Pending decisions (to make on build day; Phase 1)
+## Current implementation and verification
 
-- [x] CrewAI 1.15.28 installed with a metadata-consistent dependency closure; actual framework execution blocked by per-user credential storage (P8)
-- [x] Gemini 3.5 Flash-Lite selected from current provider docs; account verification pending
+- [x] CrewAI 1.15.28 installed with a metadata-consistent dependency closure; actual framework and live stages run on Windows. P8 concerns the original Mac.
+- [x] Gemini 3.5 Flash-Lite availability verified by the saved Windows live runs. Groq backup account remains unverified; no provider switch occurred.
 - [x] ATT&CK commit and SHA256 pinned (D16)
 - [x] pytest (D12), with tests written before implementation
 - [x] Pinned BGE-small plus hybrid retrieval and explicit normalization passes the fixed development check (D23–D26)
+- [x] V2 froze before fresh generation (D38), completed evaluation (D39), and was published with its tags under owner authorization (D40).
+- [ ] Resolve the semantic mapping limitations P19/P20 through a separately approved development cycle; the measured failure remains preserved.
+- [ ] Full submission/fresh-Colab checks remain unverified and outside current Windows scope.
+
+Entries below retain their original session context. Later decisions explicitly supersede earlier workflow, seed and Git restrictions.
 
 ---
 
@@ -354,6 +359,13 @@
 - **Authorization:** Owner explicitly requested "commit and and push to remote". This supersedes the local-only delivery restriction in D36/D39 for the completed work.
 - **Scope:** Push current main commits plus the existing benchmark-v2, system-freeze-v2 and phase6-done tags to origin (https://github.com/Theroid00/Agent.git), using a normal fast-forward without overwriting remote history.
 - **Checks:** Working tree is clean before this documentation update; fetched origin successfully. Secret scan passes across tracked files and nested notebook/ZIP archives; .env, virtual environment and caches remain ignored. Existing model/test results are unchanged. Verify remote branch and tag hashes after the push.
+
+### D41 — Synchronize documentation after verified publication
+- **Date:** 2026-10-19
+- **Authorization:** Owner additionally requested "also synchronise the docs aommit and push".
+- **Verified delivery:** origin/main matched local commit 57b29bc after the first push, and all three evaluation tag refs were present remotely. Preserve these refs and publish the documentation follow-up normally.
+- **Corrections:** Align README usage/current-vs-historical results, progress and problem status, the decision index/verification checklist, and plan runtime/configuration guidance with the completed Windows V2 evaluation. Keep src/cyberagents/config.py authoritative instead of duplicating stale configuration defaults. Log this plan correction under D41.
+- **Preservation:** Keep historical entries, goal requirements, approved tests, frozen source, notebooks, data and measured results unchanged. P19/P20 remain open; the 0.7 per-seed mapping failure and deferred fresh-Colab check remain explicit. No tests or live calls need rerunning for documentation-only corrections.
 
 ## Entry template
 

@@ -1,0 +1,10 @@
+crewai
+google-genai
+groq
+sentence-transformers
+faiss-cpu
+pydantic
+pandas
+numpy
+matplotlib
+pytest

@@ -1,0 +1,27 @@
+# Local secrets and environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Python and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# Downloaded models, raw ATT&CK data, FAISS indexes and LLM caches
+.cache/
+**/enterprise-attack.json
+*.faiss
+*.index
+**/llm_cache/
+**/response_cache/
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store

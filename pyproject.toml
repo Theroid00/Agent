@@ -1,0 +1,7 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "live: calls a real LLM API (requires a key and uses quota)",
+    "slow: builds embeddings/index or takes more than about 30 seconds",
+]

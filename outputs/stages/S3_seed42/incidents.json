@@ -1,0 +1,55 @@
+{
+  "incidents": [
+    {
+      "incident_id": "inc-001",
+      "finding_ids": [
+        "f003",
+        "f004",
+        "f005",
+        "f007"
+      ],
+      "title": "Compromise of SSH Server via Brute Force, Privilege Escalation, and Data Exfiltration",
+      "severity": "critical",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.75"
+      ],
+      "affected_assets": [
+        "ssh-srv",
+        "10.0.0.10"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T20:37:10Z",
+          "finding_id": "f003",
+          "technique_id": "T1595.001",
+          "description": "External port scanning activity targeting the SSH server from source IP 203.0.113.75."
+        },
+        {
+          "order": 2,
+          "ts_utc": "2026-10-16T20:47:10Z",
+          "finding_id": "f004",
+          "technique_id": "T1110",
+          "description": "Brute-force password guessing leading to successful SSH authentication for the deploy user from 203.0.113.75."
+        },
+        {
+          "order": 3,
+          "ts_utc": "2026-10-16T20:54:10Z",
+          "finding_id": "f005",
+          "technique_id": "T1548.003",
+          "description": "Post-exploitation root shell escalation via sudo by the deploy user."
+        },
+        {
+          "order": 4,
+          "ts_utc": "2026-10-16T21:07:10Z",
+          "finding_id": "f007",
+          "technique_id": "T1041",
+          "description": "Outbound data transfer exfiltrating 150MB of data to external IP 198.51.100.200 on port 4444."
+        }
+      ],
+      "rationale": "Correlated findings from shared source IP 203.0.113.75, target host ssh-srv, and chronological plausibility. The sequence includes reconnaissance/scan, brute-force authentication compromise, successful login, sudo root shell escalation, and subsequent data exfiltration over non-standard ports, forming a complete kill-chain.",
+      "status": "validated"
+    }
+  ]
+}

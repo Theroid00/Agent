@@ -1,0 +1,348 @@
+{
+  "findings": [
+    {
+      "finding_id": "f001",
+      "cluster_ids": [
+        "c001"
+      ],
+      "verdict": "benign",
+      "summary": "Monitoring health checks from known monitoring host",
+      "evidence_line_ids": [
+        "fw:000001",
+        "fw:000986",
+        "fw:001943",
+        "fw:002913",
+        "fw:005089",
+        "fw:007862",
+        "fw:010718",
+        "fw:013562",
+        "fw:014809",
+        "fw:015803"
+      ],
+      "src_ips": [
+        "10.0.0.5"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Known monitoring scans from internal monitoring host (10.0.0.5) against the web server.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f002",
+      "cluster_ids": [
+        "c002",
+        "c010",
+        "c011",
+        "c014",
+        "c015",
+        "c017",
+        "c018",
+        "c020",
+        "c021"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistypes followed by successful logins",
+      "evidence_line_ids": [
+        "auth:000014",
+        "auth:000016",
+        "auth:000026",
+        "auth:000615",
+        "auth:000622",
+        "auth:000639",
+        "auth:000721",
+        "auth:000942",
+        "auth:000946",
+        "auth:001112"
+      ],
+      "src_ips": [
+        "10.0.0.110",
+        "10.0.0.42",
+        "10.0.0.127",
+        "10.0.0.118",
+        "10.0.0.105",
+        "10.0.0.147",
+        "10.0.0.101",
+        "10.0.0.128"
+      ],
+      "users": [
+        "deploy",
+        "pgupta",
+        "asharma",
+        "iyer",
+        "singh",
+        "srao",
+        "kdas",
+        "rjain",
+        "pmehta",
+        "rkumar",
+        "vnair",
+        "akhan",
+        "mshah",
+        "npatel"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes followed by success from internal network addresses.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f003",
+      "cluster_ids": [
+        "c003"
+      ],
+      "verdict": "malicious",
+      "summary": "External brute-force attack against root user",
+      "evidence_line_ids": [
+        "auth:000038",
+        "auth:000039",
+        "auth:000040",
+        "auth:000042",
+        "auth:000043",
+        "auth:000044",
+        "auth:000046",
+        "auth:000048",
+        "auth:000049",
+        "auth:000051"
+      ],
+      "src_ips": [
+        "203.0.113.220"
+      ],
+      "users": [
+        "root"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "External brute-force authentication failures targeting the root user from external IP 203.0.113.220.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f004",
+      "cluster_ids": [
+        "c004",
+        "c009"
+      ],
+      "verdict": "malicious",
+      "summary": "External port scanning activity",
+      "evidence_line_ids": [
+        "fw:000752",
+        "fw:000754",
+        "fw:000757",
+        "fw:000759",
+        "fw:000761",
+        "fw:000764",
+        "fw:000766",
+        "fw:000768",
+        "fw:000772",
+        "fw:000774"
+      ],
+      "src_ips": [
+        "203.0.113.213",
+        "203.0.113.163"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "External port scanning against ssh-srv from external IP addresses.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f005",
+      "cluster_ids": [
+        "c005"
+      ],
+      "verdict": "malicious",
+      "summary": "External brute force leading to unauthorized access",
+      "evidence_line_ids": [
+        "auth:000093",
+        "auth:000094",
+        "auth:000096",
+        "auth:000097",
+        "auth:000098",
+        "auth:000100",
+        "auth:000101",
+        "auth:000102",
+        "auth:000104",
+        "auth:000107"
+      ],
+      "src_ips": [
+        "203.0.113.213"
+      ],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Brute-force attack from external IP 203.0.113.213 resulting in successful unauthorized login for deploy user.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f006",
+      "cluster_ids": [
+        "c006"
+      ],
+      "verdict": "malicious",
+      "summary": "Unauthorized privilege escalation via sudo",
+      "evidence_line_ids": [
+        "auth:000109"
+      ],
+      "src_ips": [],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "User deploy (compromised via external brute force) executed sudo to root outside of admin working hours.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f007",
+      "cluster_ids": [
+        "c007"
+      ],
+      "verdict": "malicious",
+      "summary": "Suspicious outbound data transfer to external IP",
+      "evidence_line_ids": [
+        "fw:000948"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Large outbound data transfer from ssh-srv to an external non-backup destination (198.51.100.200).",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f008",
+      "cluster_ids": [
+        "c008"
+      ],
+      "verdict": "malicious",
+      "summary": "External password spraying attack",
+      "evidence_line_ids": [
+        "auth:000225",
+        "auth:000226",
+        "auth:000227",
+        "auth:000228",
+        "auth:000229",
+        "auth:000230",
+        "auth:000232",
+        "auth:000233"
+      ],
+      "src_ips": [
+        "203.0.113.236"
+      ],
+      "users": [
+        "akhan",
+        "asharma",
+        "deploy",
+        "mshah",
+        "npatel",
+        "pmehta",
+        "rkumar",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Password spraying attack across multiple distinct user accounts from external IP 203.0.113.236.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f009",
+      "cluster_ids": [
+        "c012"
+      ],
+      "verdict": "benign",
+      "summary": "Legitimate search query containing apostrophe",
+      "evidence_line_ids": [
+        "web:002224"
+      ],
+      "src_ips": [
+        "10.0.0.43"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Apostrophes in legitimate searches (O'Brien query).",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f010",
+      "cluster_ids": [
+        "c013",
+        "c019"
+      ],
+      "verdict": "malicious",
+      "summary": "Web application attack (SQL injection and path traversal)",
+      "evidence_line_ids": [
+        "web:002248",
+        "web:002249",
+        "web:002251",
+        "web:004226",
+        "web:004227",
+        "web:004228"
+      ],
+      "src_ips": [
+        "203.0.113.174",
+        "203.0.113.181"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "SQL injection and directory traversal attempts via web application parameters using sqlmap/1.7 and browser user agents.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f011",
+      "cluster_ids": [
+        "c016"
+      ],
+      "verdict": "benign",
+      "summary": "Expected admin sudo during working hours",
+      "evidence_line_ids": [
+        "auth:001138"
+      ],
+      "src_ips": [],
+      "users": [
+        "sysadmin"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Expected admin (sysadmin) sudo execution during working hours (12:00 local time / 06:30 UTC).",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f012",
+      "cluster_ids": [
+        "c022"
+      ],
+      "verdict": "benign",
+      "summary": "Known nightly backup transfer",
+      "evidence_line_ids": [
+        "fw:015442"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Known nightly backup transfer to the designated backup server (192.0.2.10).",
+      "status": "validated"
+    }
+  ]
+}

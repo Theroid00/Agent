@@ -1,7 +1,73 @@
 """Deterministic grounding checks; no IDs are guessed or silently corrected."""
 
 import re
-from datetime import datetime
+from collections import Counter
+from datetime import datetime, timedelta
+from ipaddress import ip_address, ip_network
+from .config import CONFIG
+
+
+def validate_stage_coverage(stage, items, *, clusters=(), findings=(), mappings=(), incidents=(), inventory=None):
+    """Validate complete stage hand-offs independently of grounding checks."""
+    errors = []
+    catalog = {c['cluster_id']: c for c in clusters}
+    eligible = {f['finding_id']: f for f in findings
+                if f.get('status', 'validated') == 'validated' and f.get('verdict') != 'benign'}
+    if stage == 'findings':
+        represented = set()
+        for finding in items:
+            ids = finding['cluster_ids']
+            represented.update(ids)
+            if len(ids) != 1:
+                errors.append(f"{finding['finding_id']}: use exactly one cluster per finding; correlate later")
+            for cid in ids:
+                if cid in catalog and not set(finding['evidence_line_ids']) & set(catalog[cid]['all_line_ids']):
+                    errors.append(f"{finding['finding_id']}: missing cited evidence from cluster {cid}")
+        missing = set(catalog) - represented
+    elif stage == 'mappings':
+        missing = set(eligible) - {item['finding_id'] for item in items}
+    elif stage == 'incidents':
+        mapped = {m['finding_id'] for m in mappings if m.get('status', 'validated') == 'validated'}
+        counts = Counter(fid for item in items for fid in item['finding_ids'])
+        missing = (eligible.keys() & mapped) - counts.keys()
+        for fid, count in counts.items():
+            if count > 1:
+                errors.append(f'{fid}: assigned to multiple incidents')
+        network = (inventory or {}).get('internal_network')
+        internal = ip_network(network) if network else None
+        for incident in items:
+            iid = incident['incident_id']
+            steps = {step['finding_id'] for step in incident['kill_chain']}
+            for fid in set(incident['finding_ids']) - steps:
+                errors.append(f'{iid}: missing kill-chain step for {fid}')
+            actor_ips, intervals = set(), []
+            for fid in incident['finding_ids']:
+                for cid in eligible.get(fid, {}).get('cluster_ids', []):
+                    cluster = catalog.get(cid, {})
+                    for address in cluster.get('src_ips', []):
+                        if internal is None or ip_address(address) not in internal:
+                            actor_ips.add(address)
+                    if cluster.get('t_start') and cluster.get('t_end'):
+                        intervals.append((datetime.fromisoformat(cluster['t_start']),
+                                          datetime.fromisoformat(cluster['t_end'])))
+            if len(actor_ips) > 1:
+                errors.append(f'{iid}: unrelated external actors {sorted(actor_ips)} must remain separate')
+            if intervals:
+                intervals.sort()
+                end = intervals[0][1]
+                for start, finish in intervals[1:]:
+                    if start - end > timedelta(minutes=CONFIG['correlation']['max_gap_min']):
+                        errors.append(f'{iid}: disconnected time windows; use separate incidents')
+                    end = max(end, finish)
+    elif stage == 'plans':
+        counts = Counter(item['incident_id'] for item in items)
+        missing = {item['incident_id'] for item in incidents} - counts.keys()
+        errors.extend(f'{iid}: multiple response plans' for iid, count in counts.items() if count > 1)
+    else:
+        raise ValueError(f'Unknown stage: {stage}')
+    if missing:
+        errors.append(f'{stage}: missing required inputs {sorted(missing)}')
+    return errors
 
 
 def validate_findings(findings, clusters):

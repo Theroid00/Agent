@@ -10,9 +10,9 @@
 
 | # | Date | Phase | Title | Severity | Status |
 |---|------|-------|-------|----------|--------|
-| P8 | 2026-10-18 | Integration | CrewAI import creates credentials outside managed workspace | 🔴 Blocker | Open |
-| P9 | 2026-10-18 | Live validation | API key and fresh-Colab execution unavailable | 🔴 Blocker | Deferred by owner |
-| P3 | 2026-10-18 | Setup | Managed permissions prevent Git initialization and commits | 🔴 Blocker | Open |
+| P15 | 2026-10-19 | Live evaluation | Original D33 detection recall misses target | 🟠 Major | Original preserved; V2 development repair succeeds |
+| P8 | 2026-10-18 | Integration | CrewAI credential directory restriction on original Mac | 🟡 Minor | Historical; Windows framework/live runs pass |
+| P9 | 2026-10-18 | Live validation | Fresh-Colab execution unverified | 🔴 Blocker | Windows live execution complete; Colab pending |
 | P2 | 2026-10-18 | Setup | Documentation conflicts and missing specifications | 🟠 Major | Open |
 
 Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround exists)
@@ -21,6 +21,12 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 
 | # | Date opened | Date closed | Title | Fix summary |
 |---|-------------|-------------|-------|-------------|
+| P3 | 2026-10-18 | 2026-10-19 | Original Git metadata restriction | Windows checkout permits explicitly authorized Git writes; owner resumes commits in D36 |
+| P17 | 2026-10-19 | 2026-10-19 | Successful-login retrieval and batch salvage | Evidence-focused query and per-record validation; revised live run completes with recall 1.0 |
+| P16 | 2026-10-19 | 2026-10-19 | Missing stage-coverage checks | New regression suite and complete hand-off validation; full suite 82 passed |
+| P14 | 2026-10-19 | 2026-10-19 | Synchronous CrewAI inside Jupyter event loop | Notebook invokes pipeline through asyncio.to_thread; real Gemini findings saved |
+| P13 | 2026-10-19 | 2026-10-19 | Windows generated CSV doubled newlines | Preserve CSV writer line endings; unchanged parser tests report 3 passed |
+| P12 | 2026-10-19 | 2026-10-19 | Windows notebook MemoryError during duplicate execution | Single kernel and native thread limits; actual retrieval passed 6/6 |
 | P1 | 2026-10-18 | 2026-10-18 | Root AGENTS.md missing | Copied supplied instructions unchanged to the expected root path; retained original |
 | P10 | 2026-10-18 | 2026-10-18 | Artifact QA and local invocation | Local caches, chart layout correction and documented src path |
 | P4 | 2026-10-18 | 2026-10-18 | Package networking and native runtime | Verified official wheel downloads; isolate embedding subprocess (D21) |
@@ -43,6 +49,55 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 ---
 
 ## Entries (newest first)
+
+### P17 — Development repair exposes an unretrieved successful-login mapping
+- **Resolution:** All 7 revised notebook code cells completed after D35. Coverage is complete, the final stage validation log is empty, detection recall is 1.0 and mapping accuracy is 0.9. No grounding rule or evaluator was weakened. The original incomplete attempt is retained for inspection.
+- **Date:** 2026-10-19
+- **Symptom:** Revised notebook correctly stopped with coverage.complete=false. After its bounded mapping retry, the unresolved error was `F-c004-success: T1078.001 unknown or not retrieved for this finding`; real run reported 3 LLM calls and runtime_s 109.56200000003446. No improved metric is claimed from this incomplete attempt.
+- **Action:** Inspect actual development candidates and refine per-finding closed-set guidance without weakening R1/R2. Also test that one invalid mapping does not downgrade otherwise valid mappings during salvage.
+- **Status:** Investigating development-only; original D33 results unchanged.
+- **Repair under validation:** D35 focuses accepted-session retrieval on cited parsed evidence, supplies per-finding allowed IDs and saves query provenance. It also preserves independently valid records during salvage and passes the inventory into coherence checks. The focused expanded suite reports `21 passed in 0.43s`; full notebook retry is running. The unsuccessful attempt is preserved in diagnostics/attempt1.zip.
+
+### P16 — Revision coverage regression checks
+- **Resolution:** Revised full suite reports `82 passed, 1 deselected, 26 warnings in 52.49s`; all 7 development notebook code cells completed. Approved tests and evaluator remain unchanged.
+- **Date:** 2026-10-19
+- **Symptom:** New tests initially reported `12 failed in 0.09s` with `AttributeError: module cyberagents.validators has no attribute validate_stage_coverage` because the test-first API placeholder was missing.
+- **Action:** Add the placeholder, establish behavior failures, then implement stage-coverage contracts and test real retry hand-offs. D34 records the authorized revision; original approved tests/evaluator remain unchanged.
+- **Status:** In progress.
+- **Regression evidence:** With the placeholder present, `10 failed, 2 passed in 0.07s` established the missing behavior. After implementation, the targeted agent/validator/pipeline run reported `31 passed, 1 deselected, 26 warnings in 3.84s`; the expanded coverage suite, including multi-attack retries and freeze protection, reported `18 passed in 0.45s`. Full offline and real development evaluation are running in the revised notebook.
+
+### P15 — Real development S3 run misses detection target
+- **Development diagnosis (2026-10-19):** Read-only trace of seed 42 confirms four validated malicious findings with valid mappings are omitted from every final incident: f002 (brute force), f008 (password spraying), f010 (SQL injection), f012 (path traversal). f003 combines c003 and c009 from distinct source IPs; it cites 10 evidence lines from c003 and 0 from c009. The existing finding, mapping and incident validators each accept an empty output list. These are completeness/coherence gaps, not failed API execution. No source, approved test, evaluator or frozen result was modified during this diagnosis.
+- **Date:** 2026-10-19
+- **Evidence:** metrics_S3_seed42.json reports detected_scenarios [A6], detection_recall 0.16666666666666666, incident_precision 1.0, false_positives 0, mapping_accuracy 0.8, a6_stages 5 and a6_correlated true. Nonexistent/unretrieved IDs and invalid evidence references are 0. Misses A1–A5 are recorded as analyst dismissal/correlation.
+- **Impact:** Successful execution and grounding do not establish that the detection targets were met. Preserve these measured misses in results/error analysis.
+- **Action:** D33 has frozen the source/configuration; continue held-out evaluation without tuning or changing tests. The owner requested setup and notebook execution, not a new benchmark revision.
+- **Status:** Full notebook completed. All S3 runs have detection_recall 0.16666666666666666. Mapping accuracy is 0.8 on development, 0.75 on seed 7 and 0.8 on seed 2026. Comparison/error analysis and the real A6 report are saved; targets remain missed and no post-freeze tuning was performed.
+
+### P14 — Live notebook cell calls synchronous CrewAI inside Jupyter's event loop
+- **Date:** 2026-10-19
+- **Symptom:** After the full offline suite passed, code cell 9 failed with `RuntimeError: Agent execution was invoked synchronously from within a running event loop. Use agent.kickoff_async() / crew.kickoff_async() (or await agent.aexecute_task(...)) when calling from async code.` The ordinary-terminal framework contract test had passed.
+- **Action:** Keep the existing synchronous pipeline/CLI and run it from notebook cells using await asyncio.to_thread, so CrewAI executes outside Jupyter's event loop. Apply to development and held-out S3 invocation; compile notebook cells with top-level-await support.
+- **Status:** Fixed: all 14 notebook code cells completed, including real Gemini execution, System freeze and held-out evaluation.
+
+### P13 — Generated-line parser contract fails on Windows
+- **Date:** 2026-10-19
+- **Symptom:** Notebook offline suite reported `1 failed, 60 passed, 1 deselected, 26 warnings in 58.70s`. Existing test_generated_lines_all_parse_without_touching_ground_truth expected equal parsed-event/physical-line counts but got `assert 5972 == 11829`.
+- **Cause/fix:** csv.writer emits CRLF in StringIO, then Windows text output translates LF again. Preserve the buffer's line endings with Path.write_text(..., newline=''). No approved test or scenario was changed; D31 records the implementation fix.
+- **Status:** Focused unchanged parser suite passed: `3 passed in 0.51s`. Full notebook suite and live cells are being retried.
+
+### P12 — Windows notebook reloads ATT&CK and raises MemoryError
+- **Date:** 2026-10-19
+- **Symptom:** Local notebook completed its setup and knowledge-base cells, then cell 3 failed with `MemoryError` at `raw = path.read_bytes()` in attack_kb.py, called by check_retrieval → prepare_rag → build_kb. No live API request had been made. Partial outputs are saved in Cyber_Threat_MultiAgent.executed.ipynb.
+- **Evidence:** Raw file size is 49253343 bytes. Windows reported FreePhysicalMemory 7888484 KiB and FreeVirtualMemory 4741920 KiB after the failure. An existing Jupyter server for this checkout had a busy kernel and embedding worker; the headless attempt duplicated that workload.
+- **Action:** Observed the existing session until its server/workers stopped without producing an index. Retry with one kernel and OMP/OpenBLAS/MKL/NumExpr threads set to one before native imports; propagate those limits to launchers/notebook setup. No benchmark, threshold or approved test is changed.
+- **Status:** Fixed for the Windows retry: retrieval completed and passed 6/6. The retry's notebook parent used 158871552 private bytes and embedding worker 914169856 private bytes in the inspected process output, below the earlier overlapping processes' memory use. Remaining notebook cells are still running.
+
+### P11 — Windows checkout networking, Git ownership and Store Python
+- **Date:** 2026-10-19
+- **Symptoms:** Sandboxed clone failed with `Failed to connect to github.com port 443`. After the authorized external clone, sandboxed Git reported `fatal: detected dubious ownership in repository at 'D:/agent'`. The Windows Store interpreter could not start through the sandbox (`Unable to create process using` its WindowsApps path); its virtual environment likewise reported `No Python at` the WindowsApps alias.
+- **Action:** Retry network and interpreter operations through explicit tool escalation. Scope Git's ownership exception to each read-only command with `git -c safe.directory=D:/agent`; do not alter global trust settings. Create and install into the project's .venv using the installed user interpreter.
+- **Status:** Setup completed using explicit escalation where required: dependencies installed, pip check passed, local notebook kernel registered and CLI startup passed. Sandbox-specific restrictions remain understood; no global Git trust change was made.
 
 ### P10 — Artifact QA warnings and local import invocation
 - **Date:** 2026-10-18
@@ -126,7 +181,7 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
   ```text
   fatal: Unable to create '/Users/theroid0/PycharmProjects/Security-agent/.git/index.lock': Operation not permitted
   ```
-- **Fix/status:** Open. User-controlled permissions must allow .git writes, subject to managed policy; alternatively commit from the ordinary macOS terminal. The agent did not bypass the sandbox and created no commits/tags.
+- **Fix/status:** Resolved for the current Windows checkout. On 2026-10-19 the owner authorized previous and future commits (D36); explicitly approved Git staging succeeds in D:\agent and staged whitespace checks pass. The original Mac restriction remains historical. The local checkpoint records the completed work; no remote push or new freeze tag is intended.
 - **Prevention:** Stop dependent Git commands when initialization fails; use a workspace with writable Git metadata to complete the two commits.
 - **Time lost:** Not measured.
 

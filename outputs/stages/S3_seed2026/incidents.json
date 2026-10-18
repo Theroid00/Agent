@@ -1,0 +1,54 @@
+{
+  "incidents": [
+    {
+      "incident_id": "inc-001",
+      "finding_ids": [
+        "f004",
+        "f005",
+        "f006",
+        "f007"
+      ],
+      "title": "Compromise of ssh-srv via Brute Force, Privilege Escalation, and Data Exfiltration",
+      "severity": "critical",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.213"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T20:32:13Z",
+          "finding_id": "f004",
+          "technique_id": "T1595.001",
+          "description": "External port scanning against ssh-srv from 203.0.113.213."
+        },
+        {
+          "order": 2,
+          "ts_utc": "2026-10-16T20:47:13Z",
+          "finding_id": "f005",
+          "technique_id": "T1110",
+          "description": "Brute-force attack from external IP 203.0.113.213 resulting in successful unauthorized login for deploy user."
+        },
+        {
+          "order": 3,
+          "ts_utc": "2026-10-16T20:49:13Z",
+          "finding_id": "f006",
+          "technique_id": "T1548.003",
+          "description": "Compromised deploy user executed sudo to root to escalate privileges."
+        },
+        {
+          "order": 4,
+          "ts_utc": "2026-10-16T21:02:13Z",
+          "finding_id": "f007",
+          "technique_id": "T1041",
+          "description": "Large outbound data transfer from ssh-srv to external IP 198.51.100.200."
+        }
+      ],
+      "rationale": "Linked scan, brute force, successful login, root shell (sudo), and outbound transfer into ONE incident based on shared source IP 203.0.113.213, target host ssh-srv, and strict chronological plausibility.",
+      "status": "validated"
+    }
+  ]
+}

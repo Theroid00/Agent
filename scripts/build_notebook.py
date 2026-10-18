@@ -1,6 +1,7 @@
 """Assemble the module-based, self-contained Colab submission notebook."""
 
 import base64
+import ast
 import io
 import json
 from pathlib import Path
@@ -8,14 +9,16 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 stream = io.BytesIO()
-paths = [ROOT / name for name in ['requirements.txt', 'pyproject.toml', '.env.example', 'README.md', 'run-local.command']]
+paths = [ROOT / name for name in ['requirements.txt', 'pyproject.toml', '.env.example', 'README.md',
+                                'run-local.command', 'run-local.cmd', 'setup-windows.cmd', 'setup-windows.ps1',
+                                'run-notebook.cmd', 'requirements-notebook.txt']]
 for folder in ['src', 'tests', 'docs']:
     paths.extend(p for p in (ROOT / folder).rglob('*') if p.is_file() and p.suffix in {'.py', '.md', '.json'})
 if (ROOT / 'outputs').exists():
     paths.extend(p for p in (ROOT / 'outputs').rglob('*') if p.is_file() and p.suffix in {'.json', '.csv', '.png', '.log', '.md'})
 with zipfile.ZipFile(stream, 'w') as archive:
     for path in sorted(set(paths)):
-        info = zipfile.ZipInfo(str(path.relative_to(ROOT)), (1980, 1, 1, 0, 0, 0))
+        info = zipfile.ZipInfo(path.relative_to(ROOT).as_posix(), (1980, 1, 1, 0, 0, 0))
         info.compress_type = zipfile.ZIP_DEFLATED
         archive.writestr(info, path.read_bytes())
 payload = base64.b64encode(stream.getvalue()).decode()
@@ -47,7 +50,10 @@ Synthetic logs → parser → loose rules → Log Analyst → Threat Intel + RAG
 Run the cells from top to bottom on a Colab CPU runtime. Add `GEMINI_API_KEY` to Colab Secrets and allow notebook access. `GROQ_API_KEY` is an optional manually selected backup. The notebook embeds the project files so an unpublished GitHub repository is not required.
 ''')
 md('## 1. Setup, dependencies, secrets and configuration')
-code('''import base64, importlib.metadata as metadata, io, json, os, pathlib, subprocess, sys, zipfile
+code('''import asyncio, base64, importlib.metadata as metadata, io, json, os, pathlib, subprocess, sys, zipfile
+# Match the configured CPU embedding thread limit before importing native libraries.
+for name in ['OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS', 'NUMEXPR_NUM_THREADS']:
+    os.environ[name] = '1'
 try:
     from google.colab import userdata
     IN_COLAB = True
@@ -159,7 +165,7 @@ print('Each CrewAI task is validated before the next agent receives its output. 
 md('## 9. Full-system seed-42 run and walkthrough')
 code('''from cyberagents.pipeline import run_system
 s3_path = pathlib.Path('outputs/S3_seed42.json')
-s3 = run_system('S3', 42, live=RUN_LIVE) if RUN_LIVE or s3_path.exists() else None
+s3 = await asyncio.to_thread(run_system, 'S3', 42, live=RUN_LIVE) if RUN_LIVE or s3_path.exists() else None
 if s3 is None:
     print('S3 not run: provide a Gemini key. No mock result is substituted.')
 else:
@@ -167,10 +173,11 @@ else:
     print(json.dumps(s3['incidents'], indent=2))
 ''')
 md('## 10. S0 rules-only and S1 single-LLM baselines')
-code('''s0 = run_system('S0', 42)
+code('''# Refresh the deterministic development baseline for this checkout's fingerprint.
+s0 = run_system('S0', 42, force=True)
 print('S0 incidents:', len(s0['incidents']))
 s1_path = pathlib.Path('outputs/S1_seed42.json')
-s1 = run_system('S1', 42, live=RUN_LIVE) if RUN_LIVE or s1_path.exists() else None
+s1 = await asyncio.to_thread(run_system, 'S1', 42, live=RUN_LIVE) if RUN_LIVE or s1_path.exists() else None
 print('S1:', 'saved/live output available' if s1 else 'not run; API key required')
 ''')
 md('## 11. System freeze and held-out evaluation runs')
@@ -183,7 +190,7 @@ if freeze_path.exists():
         for system in ['S0', 'S1', 'S3']:
             path = pathlib.Path(f'outputs/{system}_seed{seed}.json')
             if RUN_LIVE or path.exists():
-                result = run_system(system, seed, live=RUN_LIVE)
+                result = await asyncio.to_thread(run_system, system, seed, live=RUN_LIVE)
                 print(system, seed, result['execution'])
 else:
     print('Held-out seeds remain untouched until a real current dev run and retrieval checks permit System freeze.')
@@ -230,7 +237,7 @@ notebook = {'cells': cells, 'metadata': {'kernelspec': {'display_name': 'Python 
             'nbformat': 4, 'nbformat_minor': 4}
 for cell in cells:
     if cell['cell_type'] == 'code':
-        compile(''.join(cell['source']), '<notebook cell>', 'exec')
+        compile(''.join(cell['source']), '<notebook cell>', 'exec', flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)
 path = ROOT / 'notebooks/Cyber_Threat_MultiAgent.ipynb'
 path.write_text(json.dumps(notebook, indent=1))
 print('Notebook assembled:', path)

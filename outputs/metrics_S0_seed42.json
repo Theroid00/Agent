@@ -22,7 +22,7 @@
   "unretrieved_technique_ids": null,
   "invalid_evidence_refs": 0,
   "invalid_evidence_rate": 0.0,
-  "runtime_s": 0.9093201659998158,
+  "runtime_s": 1.890999999945052,
   "llm_calls": 0,
   "tokens": 0,
   "errors": [

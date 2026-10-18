@@ -8,24 +8,36 @@ from pydantic import ValidationError
 from .config import CONFIG
 from .schemas import FindingList, MappedFindingList, IncidentList, ResponsePlanList
 from .validators import (validate_findings, validate_mappings, validate_incidents,
-                         validate_plans, validate_text_ids)
+                         validate_plans, validate_text_ids, validate_stage_coverage)
 
 PROMPTS = {
     'findings': ('Log Analyst', 'Judge every cluster malicious, suspicious or benign using the asset inventory. '
-        'Use separate findings for distinct attack stages, even when they share a cluster. '
+        'Account for EVERY supplied cluster, including benign clusters. Each finding must reference exactly ONE '
+        'cluster; use multiple findings for distinct stages within a cluster. In mixed authentication logs, '
+        'separate failed credential attempts from the subsequent successful session. Never merge clusters at this stage. '
         'Cite only shown event IDs, at most ten per finding. Explain benign dismissals: internal password '
         'mistypes followed by success, expected admin sudo in working hours, apostrophes in legitimate searches, '
         'known monitoring scans and known nightly backup transfers. A finding may reference several related clusters.'),
     'mappings': ('Threat Intel Analyst', 'Map each non-benign validated finding to one to three ATT&CK techniques. '
         'Choose only pre-retrieved candidates or results of search_attack for this finding. Use exact catalog names '
         'and a listed tactic, exactly one primary technique, evidence-based justification and confidence. '
+        'Return a mapping for EVERY supplied finding ID. Map the observed action, not an assumed consequence; '
+        'a web exploit attempt is not proof that database contents were collected. Prefer the most specific '
+        'supported behavior and distinguish accepted authentication from preceding failed attempts. '
+        'Do not infer a domain/local account subtype when logs do not establish it. Every selected ID must '
+        'appear in allowed_technique_ids for THAT finding, or in a search_attack result logged for it. '
         'get_technique may only inspect IDs already retrieved for the same finding.'),
     'incidents': ('Risk Assessor', 'Correlate related findings into incidents using shared source IP, user, host and '
-        'chronological plausibility. Link scan, brute force, successful login, root shell and outbound transfer '
+        'chronological plausibility. Include EVERY required mapped finding in exactly ONE incident and give each '
+        'finding a kill-chain step using its primary technique. Correlation groups findings; it never drops them. '
+        'Standalone attacks are valid single-finding incidents. Keep different external source actors and '
+        'disconnected time windows separate; sharing a target host alone does not establish a relationship. '
+        'Link scan, brute force, successful login, root shell and outbound transfer '
         'into ONE incident when indicators support it. List ordered kill-chain steps, severity and confidence. '
         'Every step must use a technique mapped to its own finding. Never include a benign or unvalidated finding.'),
     'plans': ('Response Planner', 'Recommend targeted containment, investigation and prevention per incident. '
-        'Use get_mitigations and copy only returned mitigation IDs/names linked to that incident technique. '
+        'Return a plan for EVERY supplied incident. Use get_mitigations and copy only returned mitigation IDs/names '
+        'linked to that incident technique. '
         'Commands are examples for human review; never execute anything. Include an executive summary.'),
 }
 SCHEMAS = {'findings': FindingList, 'mappings': MappedFindingList,
@@ -74,7 +86,27 @@ def _scrub_invalid_text(value, kb):
     return value
 
 
-def _strip_invalid(stage, data, state, clusters, kb, rag):
+def _finding_query(finding, clusters):
+    """Focus a successful-session finding on its observed event, not preceding failures."""
+    from .parser import parse_line
+    cited = set(finding['evidence_line_ids'])
+    kinds = set()
+    for cluster in clusters:
+        if cluster['cluster_id'] not in finding['cluster_ids']:
+            continue
+        for line in cluster['sample_lines']:
+            if line['event_id'] not in cited or not line['event_id'].startswith('auth:'):
+                continue
+            try:
+                kinds.add(parse_line('auth', line['raw'], line['event_id'])['event_type'])
+            except ValueError:
+                pass
+    if 'ssh_accepted' in kinds and 'ssh_failed' not in kinds:
+        return 'successful authenticated SSH remote session using valid account credentials'
+    return finding['summary'] + ' ' + finding['reasoning']
+
+
+def _strip_invalid(stage, data, state, clusters, kb, rag, *, inventory=None):
     result, seen = [], set()
     for original in data.get(stage, []):
         item = copy.deepcopy(original)
@@ -82,6 +114,31 @@ def _strip_invalid(stage, data, state, clusters, kb, rag):
         if not key or key in seen:
             continue
         seen.add(key)
+        # A batch error must not invalidate independently valid records.
+        try:
+            candidate = SCHEMAS[stage].model_validate({stage: [item]}).model_dump(mode='json')[stage][0]
+            if stage == 'findings':
+                item_errors = validate_findings([candidate], clusters)
+            elif stage == 'mappings':
+                item_errors = validate_mappings([candidate], state['findings'], kb, rag.retrieval_log)
+            elif stage == 'incidents':
+                item_errors = validate_incidents([candidate], state['findings'], state['mappings'])
+            else:
+                item_errors = validate_plans([candidate], state['incidents'], kb)
+            scoped_clusters = [c for c in clusters if c['cluster_id'] in candidate.get('cluster_ids', [])]
+            scoped_findings = [f for f in state['findings'] if f['finding_id'] in
+                               set(candidate.get('finding_ids', [])) | {candidate.get('finding_id')}]
+            scoped_incidents = [i for i in state['incidents'] if i['incident_id'] == candidate.get('incident_id')]
+            item_errors.extend(validate_stage_coverage(stage, [candidate],
+                clusters=scoped_clusters if stage == 'findings' else clusters,
+                findings=scoped_findings, mappings=state['mappings'], incidents=scoped_incidents, inventory=inventory))
+            item_errors.extend(validate_text_ids(candidate, kb))
+            if not item_errors:
+                candidate['status'] = 'validated'
+                result.append(candidate)
+                continue
+        except (ValidationError, ValueError, KeyError, TypeError):
+            pass
         item['status'] = 'unvalidated'
         if stage == 'findings':
             known = {c['cluster_id']: set(c['all_line_ids']) for c in clusters}
@@ -127,7 +184,7 @@ def _strip_invalid(stage, data, state, clusters, kb, rag):
 def run_agents(clusters, inventory, kb, rag, *, client, seed, task_runner=None, save_dir=None):
     initial = (client.calls, client.tokens, client.cache_hits) if client else (0, 0, 0)
     state = {'findings': [], 'mappings': [], 'incidents': [], 'plans': []}
-    logs, raw_logs = [], []
+    logs, raw_logs, unresolved, retrieval_queries = [], [], {}, {}
     # Retrieval state is scoped to this run, even if an index object is reused.
     rag.retrieval_log = {}
     trimmed = [{k: v for k, v in c.items() if k != 'all_line_ids'} for c in clusters]
@@ -138,12 +195,18 @@ def run_agents(clusters, inventory, kb, rag, *, client, seed, task_runner=None, 
         inputs, tools = {'asset_inventory': inventory}, {}
         if stage == 'findings':
             inputs['clusters'] = trimmed
+            inputs['required_cluster_ids'] = [c['cluster_id'] for c in trimmed]
         elif stage == 'mappings':
             if not valid_findings:
                 continue
             inputs['findings'] = valid_findings
+            inputs['required_finding_ids'] = [f['finding_id'] for f in valid_findings]
+            retrieval_queries = {f['finding_id']: _finding_query(f, clusters) for f in valid_findings}
+            inputs['retrieval_queries'] = retrieval_queries
             inputs['candidates'] = {f['finding_id']: rag.search(
-                f['summary'] + ' ' + f['reasoning'], k=CONFIG['rag']['k_pre'], finding_id=f['finding_id']) for f in valid_findings}
+                retrieval_queries[f['finding_id']], k=CONFIG['rag']['k_pre'], finding_id=f['finding_id']) for f in valid_findings}
+            inputs['allowed_technique_ids'] = {fid: [row['id'] for row in rows]
+                                                for fid, rows in inputs['candidates'].items()}
             allowed_findings = {f['finding_id'] for f in valid_findings}
 
             def search_attack(query: str, finding_id: str, k: int = 5) -> str:
@@ -162,10 +225,13 @@ def run_agents(clusters, inventory, kb, rag, *, client, seed, task_runner=None, 
             if not valid_mappings:
                 continue
             inputs.update(findings=valid_findings, mappings=valid_mappings, clusters=trimmed)
+            inputs['required_finding_ids'] = [m['finding_id'] for m in valid_mappings]
+            inputs['max_correlation_gap_min'] = CONFIG['correlation']['max_gap_min']
         else:
             if not state['incidents']:
                 continue
             inputs.update(incidents=state['incidents'], findings=valid_findings, mappings=state['mappings'])
+            inputs['required_incident_ids'] = [i['incident_id'] for i in state['incidents']]
             incident_techniques = {step['technique_id'] for incident in state['incidents'] for step in incident['kill_chain']}
 
             def get_mitigations(technique_id: str) -> str:
@@ -194,19 +260,25 @@ def run_agents(clusters, inventory, kb, rag, *, client, seed, task_runner=None, 
                     errors = validate_incidents(items, valid_findings, state['mappings'])
                 else:
                     errors = validate_plans(items, state['incidents'], kb)
+                errors.extend(validate_stage_coverage(stage, items, clusters=clusters,
+                    findings=valid_findings, mappings=state['mappings'], incidents=state['incidents'], inventory=inventory))
                 errors.extend(validate_text_ids(parsed, kb))
             except (ValidationError, ValueError, TypeError, KeyError) as error:
                 errors = [str(error)]
                 parsed = data if isinstance(data, dict) else {stage: []}
             if not errors:
+                for item in parsed[stage]:
+                    item['status'] = 'validated'
                 state[stage] = parsed[stage]
                 break
             raw_logs.append({'stage': stage, 'attempt': attempt + 1, 'errors': errors})
             logs.append({'stage': stage, 'attempt': attempt + 1, 'errors': _scrub_invalid_text(errors, kb)})
             if attempt == CONFIG['max_validation_retries']:
-                state[stage] = _strip_invalid(stage, parsed, state, clusters, kb, rag)
+                unresolved[stage] = _scrub_invalid_text(errors, kb)
+                state[stage] = _strip_invalid(stage, parsed, state, clusters, kb, rag, inventory=inventory)
                 if stage == 'mappings':
-                    invalid = {m['finding_id'] for m in state[stage] if m['status'] == 'unvalidated'}
+                    valid = {m['finding_id'] for m in state[stage] if m['status'] == 'validated'}
+                    invalid = {f['finding_id'] for f in valid_findings} - valid
                     for finding in state['findings']:
                         if finding['finding_id'] in invalid:
                             finding['status'] = 'unvalidated'
@@ -218,6 +290,8 @@ def run_agents(clusters, inventory, kb, rag, *, client, seed, task_runner=None, 
             (directory / f'{stage}.json').write_text(json.dumps({stage: state[stage]}, indent=2))
             (directory / 'validation_log.json').write_text(json.dumps(raw_logs, indent=2))
     return {**state, 'system': 'S3', 'seed': seed,
+            'coverage': {'complete': not unresolved, 'unresolved': unresolved},
+            'retrieval_queries': retrieval_queries,
             'retrieval_log': {fid: sorted(ids) for fid, ids in rag.retrieval_log.items()},
             'validation_log': logs, 'llm_calls': client.calls - initial[0] if client else 0,
             'tokens': (client.tokens - initial[1] if client.tokens is not None and initial[1] is not None else None) if client else 0,

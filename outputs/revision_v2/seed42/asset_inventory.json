@@ -1,0 +1,46 @@
+{
+  "internal_network": "10.0.0.0/24",
+  "hosts": {
+    "10.0.0.10": {
+      "name": "ssh-srv",
+      "role": "ssh server"
+    },
+    "10.0.0.20": {
+      "name": "web-srv",
+      "role": "web server"
+    },
+    "10.0.0.5": {
+      "name": "mon-01",
+      "role": "service health checks"
+    },
+    "192.0.2.10": {
+      "name": "backup.corp-example.net",
+      "role": "nightly backup target"
+    }
+  },
+  "users": [
+    "asharma",
+    "rkumar",
+    "deploy",
+    "pmehta",
+    "srao",
+    "mshah",
+    "npatel",
+    "akhan",
+    "vnair",
+    "rjain",
+    "pgupta",
+    "kdas",
+    "troy",
+    "singh",
+    "iyer",
+    "sysadmin"
+  ],
+  "admin_user": "sysadmin",
+  "admin_working_hours_ist": [
+    9,
+    19
+  ],
+  "monitoring_host": "10.0.0.5",
+  "backup_server": "192.0.2.10"
+}

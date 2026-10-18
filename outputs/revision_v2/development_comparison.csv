@@ -1,0 +1,3 @@
+version,detection_recall,false_positives,mapping_accuracy,a6_stages,invalid_evidence_refs,nonexistent_technique_ids,unretrieved_technique_ids,runtime_s,llm_calls
+D33 original,0.16666666666666666,0,0.8,5,0,0,0,113.71900000004098,4
+V2 development,1.0,0,0.9,5,0,0,0,115.71899999992456,3

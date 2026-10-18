@@ -407,3 +407,5 @@ CONFIG = {
 | D25 | 2026-10-18 | Add the planned BM25+dense rank fusion | BGE with detection text still passed only 4 of 6 fixed queries |
 | D26 | 2026-10-18 | Normalize broad port-scanning/exfiltration vocabulary before hybrid retrieval | Public retrieval checks remained below target; no ID lookup rules or changed acceptance sets |
 | D27 | 2026-10-18 | Pin Kubernetes 36.0.2 for CrewAI/Pydantic compatibility; local CrewAI storage, explicit import permission skip | Installed metadata exposed incompatible latest transitive dependency; external validation remains pending |
+| D34 | 2026-10-19 | Repair stage completeness in a development revision; one cluster per finding, incident-level correlation with actor/time guards | Live D33 output silently omitted mapped attacks; preserve original results, retry missing inputs, and evaluate seed 42 separately |
+| D35 | 2026-10-19 | Use cited successful-auth evidence for its retrieval query; salvage valid records independently | Narrative context obscured the observed login, and a batch error downgraded valid mappings; preserve candidate limits and grounding rules |

@@ -1,0 +1,144 @@
+{
+  "mappings": [
+    {
+      "finding_id": "F-c002",
+      "techniques": [
+        {
+          "technique_id": "T1110.001",
+          "name": "Password Guessing",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Repeated failed password attempts targeting the root account from an external IP address with no successful session following."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c003",
+      "techniques": [
+        {
+          "technique_id": "T1595.001",
+          "name": "Scanning IP Blocks",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "Sequential port connection attempts from an external address indicate unauthorized reconnaissance/port scanning."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c004-fail",
+      "techniques": [
+        {
+          "technique_id": "T1110.001",
+          "name": "Password Guessing",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "External brute-force password guessing against deploy account prior to success."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c004-success",
+      "techniques": [
+        {
+          "technique_id": "T1078",
+          "name": "Valid Accounts",
+          "tactic": "initial-access",
+          "is_primary": true,
+          "justification": "Successful authenticated SSH remote session established using valid account credentials following brute-force attempts."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c005",
+      "techniques": [
+        {
+          "technique_id": "T1548.003",
+          "name": "Sudo and Sudo Caching",
+          "tactic": "privilege-escalation",
+          "is_primary": true,
+          "justification": "User deploy invoked root shell via sudo for privilege escalation."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c007",
+      "techniques": [
+        {
+          "technique_id": "T1041",
+          "name": "Exfiltration Over C2 Channel",
+          "tactic": "exfiltration",
+          "is_primary": true,
+          "justification": "Large data volume (150MB) transferred to a non-standard external port (4444) commonly associated with C2 or data exfiltration."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c008",
+      "techniques": [
+        {
+          "technique_id": "T1110.003",
+          "name": "Password Spraying",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Sequential failed password attempts across multiple distinct user accounts from a single external IP address within a short timeframe."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c009",
+      "techniques": [
+        {
+          "technique_id": "T1595.001",
+          "name": "Scanning IP Blocks",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "Sequential port connection attempts from an external address indicate unauthorized reconnaissance."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c013",
+      "techniques": [
+        {
+          "technique_id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactic": "initial-access",
+          "is_primary": true,
+          "justification": "Requests containing SQL injection payloads and sqlmap user-agent signatures targeting web-srv."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "F-c016",
+      "techniques": [
+        {
+          "technique_id": "T1003.008",
+          "name": "/etc/passwd and /etc/shadow",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Repeated HTTP GET requests with path traversal sequences (../../etc/passwd) targeting web-srv to read sensitive files."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    }
+  ]
+}

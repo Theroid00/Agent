@@ -1,0 +1,46 @@
+{
+  "incidents": [
+    {
+      "incident_id": "INC-01",
+      "finding_ids": [
+        "f003",
+        "f004",
+        "f005"
+      ],
+      "title": "SSH Server Compromise and Data Exfiltration",
+      "severity": "critical",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.13"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T20:40:18Z",
+          "finding_id": "f003",
+          "technique_id": "T1595.001",
+          "description": "Port scanning activity targeting ssh-srv from external IP 203.0.113.13."
+        },
+        {
+          "order": 2,
+          "ts_utc": "2026-10-16T20:55:18Z",
+          "finding_id": "f004",
+          "technique_id": "T1110",
+          "description": "Credential brute-force attack followed by successful login for user deploy from external IP 203.0.113.13."
+        },
+        {
+          "order": 3,
+          "ts_utc": "2026-10-16T21:10:18Z",
+          "finding_id": "f005",
+          "technique_id": "T1041",
+          "description": "Large data exfiltration over suspicious port 4444 to external IP 198.51.100.200."
+        }
+      ],
+      "rationale": "Correlated events linked by shared source IP 203.0.113.13, target host ssh-srv, and chronological plausibility encompassing port scan, brute force, successful login, privilege escalation, and outbound data transfer.",
+      "status": "validated"
+    }
+  ]
+}

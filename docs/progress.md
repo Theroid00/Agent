@@ -8,21 +8,25 @@
 
 ## Current
 
-- **Scope:** Full implementation authorized under D14; owner subsequently chose offline results only. Follow goal, plan and decisions; no phase approval pauses in this build.
-- **Local startup:** .env created with blank key fields, Git ignore and owner-only permissions checked; run-local.command launches the existing S3 CLI from the prepared environment. Add the Gemini key privately, then run the launcher. Colab uses its own Secrets.
+- **Completed development repair (D34/D35):** Stage-completeness/coherence checks, required-ID hand-offs, bounded retries, focused login retrieval, independent-record salvage and explicit incomplete status are implemented. The full gate reports `82 passed, 1 deselected, 26 warnings in 52.49s`. All 7 revised notebook code cells completed. Development recall is 1.0, mapping accuracy 0.9, false positives 0, invalid evidence/nonexistent/unretrieved technique IDs 0, and A6 stages 5. D33 outputs/notebooks remain unchanged; revision output uses outputs/revision_v2. No revised held-out run or new freeze; Colab is outside current scope.
+
+- **Scope:** Full implementation authorized under D14; previous offline-only delivery is historical. In this Windows session, the owner saved a local API key and explicitly authorized running the notebook (D30).
+- **Local startup:** Windows checkout at D:\agent uses .venv, setup-windows.cmd/setup-windows.ps1, run-local.cmd and run-notebook.cmd. Setup completed: pinned application dependencies plus JupyterLab installed, pip check passed, project kernel registered and CLI help passed. The ignored .env is configured privately; never print its contents. The Mac launcher remains available. Colab uses its own Secrets.
 - **Delivered:** Python modules, tests, CLI, pinned KB/RAG, synthetic logs, rules, schemas/validators, golden evaluator, baselines, cached LLM wrapper, four sequential CrewAI stages, results/charts, README and self-contained notebook.
-- **Verification:** `pytest -m "not live"` reports 60 passed, 1 skipped, 1 deselected. Actual retrieval passes 6/6. Dependency metadata closure is consistent; GenAI/Groq imports work. Actual CrewAI execution is blocked by its per-user credential folder (P8), explicitly skipped rather than represented as passed.
-- **Notebook:** All 14 code cells executed locally offline; schema and all 60 embedded file matches checked. Fresh Colab is unverified.
-- **Measured dev S0:** 26852 parsed events, 20 clusters, recall 1.0, precision 0.45, 11 total FP (5 designed benign / 6 background), 2 A6 stages in one incident. Exact runtime appears on the numbers board. No S1/S3 performance is claimed.
-- **Benchmark / System:** Neither frozen; held-out data untouched. Live-model and fresh-Colab verification deferred by owner choice.
-- **Git:** External initial commit `a132914 Initial` exists. Agent staging still fails on `.git/index.lock`; no agent-created commits or tags.
+- **Windows verification:** Full non-live test and freeze gates passed; the freeze gate reports `61 passed, 1 deselected, 26 warnings in 56.03s`. Actual retrieval passes 6/6. pip check and CLI startup passed. The actual CrewAI framework and live Gemini notebook runs pass in this Windows environment; the Mac credential-directory restriction in P8 is historical.
+- **Notebook:** All 14 code cells completed on Windows with the owner's key; outputs saved in notebooks/Cyber_Threat_MultiAgent.executed.ipynb. Results tables, charts, error analysis and the real A6 report were generated. Fresh Colab is unverified.
+- **Measured results:** outputs/results_by_seed.csv contains 9 real S0/S1/S3 runs. S3 detection_recall is 0.16666666666666666 on each seed, with 0 false positives and 0 invalid evidence/nonexistent/unretrieved IDs. It correlates A6 but misses A1–A5 (P15). Dev runtime is 113.71900000004098 seconds with 4 LLM calls. These results miss detection targets.
+- **Benchmark / System:** System freeze D33 was recorded before held-out generation/execution. No source/configuration tuning followed. No benchmark/freeze Git tags were created. Fresh-Colab verification and the full submission checklist remain pending.
+- **Git:** Cloned the supplied GitHub repository on main at `8416049`. The owner now authorizes local commits of completed work and future milestones (D36), superseding the earlier no-commit instruction. This checkpoint records Windows setup, original execution and the V2 development repair. No remote push or new System freeze is authorized.
 
 ## What's next
 
-1. Add GEMINI_API_KEY privately to .env and launch run-local.command, or add the key to Colab Secrets and Run All. From an ordinary user terminal or Colab, run the real CrewAI framework contract test; the managed workspace cannot create CrewAI's credential directory.
-2. When live work is authorized, privately configure a key, verify the current account model/quota, run the dev S1/S3 systems, and record actual findings, mapping and A6 results. No mock benchmark substitution.
-3. Record Benchmark/System freezes and required Git tags only when their checks pass. Run held-out seeds without tuning only after System freeze. Complete the comparison, real A6 report and fresh-Colab Run All.
-4. Commit the reviewable changes from the ordinary terminal or grant this repository's .git subtree write access through the user's permission profile, subject to managed policy. Do not bypass the restriction.
+Review the completed V2 executed notebook and development comparison. The repair meets detection/mapping/grounding targets on development data, while original D33 results remain intact. Any generalization claim needs separately approved unseen evaluation data; the previously exposed seeds cannot supply fresh evidence. No further tuning or held-out rerun was performed. Colab remains excluded from current focus.
+
+1. Review the executed Windows notebook, results_by_seed.csv, error_analysis.csv and demo_incident.md. The real runs completed; detection targets were missed (P15).
+2. Preserve D33's frozen source/configuration. Any future tuning requires a separately documented benchmark revision; do not tune using held-out results.
+3. Fresh-Colab Run All and final submission review remain separate pending work.
+4. Commit future completed milestones under the project's Git rules (D36). Follow the newly supplied AGENTS.md test-review stops; benchmark changes need separate approval.
 
 ---
 
@@ -45,7 +49,7 @@
 
 | Phase | Name | Status | Tests green | Exit checks passed | Date done |
 |-------|------|--------|-------------|--------------------|-----------|
-| 0 | Planning, docs & repository setup | 🟡 Files complete; agent commits blocked | Structural validation | External initial commit only; P3 open | |
+| 0 | Planning, docs & repository setup | ✅ Files complete; Windows Git checkpoint authorized | Structural validation | P3 historical restriction resolved on Windows (D36) | 2026-10-19 |
 | 1 | Setup + ATT&CK RAG | 🟡 Implemented; live smoke pending | T-KB, T-RAG | 706 techniques; 13 catalog IDs verified; real retrieval 6/6; LLM call deferred | |
 | 2 | Log generator + parser | 🟡 Dev complete; held-out deferred | T-DATA, T-PARSE | All A/B cases, all dev lines parse; source samples inspected; other seeds wait for freeze | |
 | 3 | Test & benchmark harness (no agents) | 🟡 Implemented; freeze pending | T-RULES, T-SCHEMA, T-VALID, T-EVAL | Dev scenario/stage coverage and budget pass; S0 saved; all-seed checks deferred | |
@@ -63,7 +67,7 @@ Status keys: ⬜ Not started · 🟡 In progress · ✅ Done · 🔴 Blocked
 | Freeze | Date | decisions.md entry |
 |--------|------|--------------------|
 | Benchmark v1 | — | — |
-| System freeze | — | — |
+| System freeze | 2026-10-19 | D33 |
 
 ---
 
@@ -94,6 +98,36 @@ Status keys: ⬜ Not started · 🟡 In progress · ✅ Done · 🔴 Blocked
 ---
 
 ## Session log (newest first)
+
+### Session 8 — 2026-10-19 — Git checkpoint authorized
+- **Request:** Owner authorizes committing previous work and future milestones, replacing the no-commit preference.
+- **Done:** Prepared a single checkpoint of the completed Windows setup, notebook executions, coverage repair, regression tests and measured artifacts. Historical D33 results and preservation snapshot remain intact. D36 records the authorization and future review workflow; P3's original Git restriction is resolved for the Windows checkout.
+- **Verification:** Rechecked source fingerprint, executed notebook schemas/completion, API-key exclusion and preservation of 81 original results/notebooks, approved tests and evaluator files. Existing full offline gate: `82 passed, 1 deselected, 26 warnings in 52.49s`. No code changes or new live calls in this session.
+- **Git:** Local checkpoint; identify its hash with `git log -1`. No push or revised-system freeze tag.
+- **Next:** Separately approve fresh unseen evaluation data before making any new generalization claim; continue local Windows work and milestone commits.
+
+### Session 7 — 2026-10-19 — Authorized development repair
+- **Completed outcome:** All 7 revised notebook code cells completed. Full suite: `82 passed, 1 deselected, 26 warnings in 52.49s`. Same-input development comparison: recall 0.16666666666666666 → 1.0; mapping accuracy 0.8 → 0.9; false positives 0; invalid evidence/nonexistent/unretrieved technique IDs 0; A6 stages 5. Runtime_s 115.71899999992456; original run runtime_s 113.71900000004098. The notebook verified 69 original output/notebook files unchanged. D34/D35 implemented; incomplete first attempt retained. No revised held-out run, freeze, commit or tag.
+- **Request:** Owner said "go" to the diagnosed coverage/grouping repair; no Git commits.
+- **Implementation:** Separate stage-coverage validator, one cluster per finding, complete mapping/incident/plan hand-offs, primary-observed-behavior prompts, actor/time correlation guards, explicit incomplete status and frozen-directory write protection. Original approved tests and evaluator unchanged.
+- **Preservation:** Verified D33 source hash before changes; archived 108 original files with a SHA256 manifest. New development notebook and outputs use revision_v2 with byte-identical input logs.
+- **Verification so far:** 18 new coverage/integration regressions pass. Revised notebook full offline gate: `79 passed, 1 deselected, 26 warnings in 52.98s`. Real development S3 run is underway.
+- **Decision/problem:** D34; P16 documents the regression workflow. Original P15 measurements remain untouched.
+
+### Session 6 — 2026-10-19 — Read-only diagnosis
+- **Request:** Explain the detection failure and how to fix it; exclude Colab from current focus.
+- **Evidence:** Development seed 42 has 4 mapped malicious findings omitted from incidents. A combined scan finding cites 10 lines from one referenced cluster and 0 from the other. Empty finding/mapping/incident lists are all accepted by their current validators.
+- **Proposed work:** Test and repair completeness across stages, separation of unrelated activity, evidence coverage and evidence-based primary mapping. Keep evaluation targets and the original measured outputs intact. A future revised system must be developed separately from D33 and evaluated honestly after exposure to the original held-out results.
+- **Changes:** Documentation and an ignored read-only diagnostic script only; frozen source/configuration, tests, evaluator and results unchanged. No Git commit or API call.
+
+### Session 5 — 2026-10-19
+- **Completed outcome:** All 14 notebook code cells executed successfully with the owner's local key. Saved 9 real runs, comparison charts, error analysis and A6 report. System freeze D33 preceded held-out runs. The freeze gate reported `61 passed, 1 deselected, 26 warnings in 56.03s`; retrieval passed 6/6. P12–P14 are fixed; P15 records missed detection targets. No commits/tags created; HEAD remains 8416049. Historical phase tracker/numbers below refer to the original build; current measured values are authoritative in outputs/results_by_seed.csv.
+- **Goal:** Clone the supplied repository and configure it for Windows, with no Git commits.
+- **Done:** Cloned into D:\agent; created a project virtual environment using the installed Windows Python. Added setup/CLI/notebook launchers, explicit CPU PyTorch selection on Windows, UTF-8 startup, Windows ignore rules and portable notebook archive member names. Created .env from the blank example; the owner then saved their key and authorized notebook execution. Installed JupyterLab and registered the local kernel.
+- **Checks:** PowerShell setup syntax, Git ignore checks, pip check and CLI help passed. Notebook rebuild syntax-checked 14 code cells. Actual Windows retrieval passed 6/6; unchanged parser tests passed after the newline fix; full offline suite reported `61 passed, 1 deselected, 26 warnings in 53.61s`, including the real CrewAI fake-provider contract. Live notebook execution is in progress.
+- **Decisions:** D29–D33.
+- **Problems:** P11 documents managed-shell restrictions handled through explicit escalation. P12 duplicate-run memory use and P13 Windows CSV newlines are fixed. P14 records the notebook event-loop integration fix under verification. Actual live results remain pending.
+- **Git:** Base `8416049`; no commits or tags created.
 
 ### Session 4 — 2026-10-19
 - **Goal:** Prepare local startup so the user only enters a Gemini key, and confirm notebook independence.

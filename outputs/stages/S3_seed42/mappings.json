@@ -1,0 +1,151 @@
+{
+  "mappings": [
+    {
+      "finding_id": "f002",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Finding f002 involves repeated failed login attempts for the root user from an external IP address, representing a classic brute-force attack against authentication services."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f003",
+      "techniques": [
+        {
+          "technique_id": "T1595.001",
+          "name": "Scanning IP Blocks",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "Finding f003 exhibits sequential port probing patterns and scanning activity targeting the SSH server."
+        },
+        {
+          "technique_id": "T1046",
+          "name": "Network Service Discovery",
+          "tactic": "discovery",
+          "is_primary": false,
+          "justification": "Port probing and scanning activity against services fall under Network Service Discovery to identify open ports and running services."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f004",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Finding f004 shows multiple failed password attempts culminating in a successful login, indicating brute-force credential compromise."
+        },
+        {
+          "technique_id": "T1133",
+          "name": "External Remote Services",
+          "tactic": "initial-access",
+          "is_primary": false,
+          "justification": "The successful brute-force login via SSH from an external IP serves as initial access via external remote services."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f005",
+      "techniques": [
+        {
+          "technique_id": "T1548.003",
+          "name": "Sudo and Sudo Caching",
+          "tactic": "privilege-escalation",
+          "is_primary": true,
+          "justification": "Finding f005 captures the deploy user spawning a root shell via sudo following compromise, mapping directly to sudo abuse."
+        },
+        {
+          "technique_id": "T1068",
+          "name": "Exploitation for Privilege Escalation",
+          "tactic": "privilege-escalation",
+          "is_primary": false,
+          "justification": "Post-exploitation root escalation activity represents privilege escalation mechanisms."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f007",
+      "techniques": [
+        {
+          "technique_id": "T1041",
+          "name": "Exfiltration Over C2 Channel",
+          "tactic": "exfiltration",
+          "is_primary": true,
+          "justification": "Finding f007 details a massive outbound data transfer from the SSH server to an external IP on non-standard port 4444."
+        },
+        {
+          "technique_id": "T1048",
+          "name": "Exfiltration Over Alternative Protocol",
+          "tactic": "exfiltration",
+          "is_primary": false,
+          "justification": "Exfiltration occurring over non-standard egress ports and protocols maps to alternative protocol exfiltration."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f008",
+      "techniques": [
+        {
+          "technique_id": "T1110.003",
+          "name": "Password Spraying",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Finding f008 displays a credential spraying attack where an external IP attempts single password guesses across numerous user accounts rapidly."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f010",
+      "techniques": [
+        {
+          "technique_id": "T1213.006",
+          "name": "Databases",
+          "tactic": "collection",
+          "is_primary": true,
+          "justification": "Finding f010 demonstrates SQL injection payloads and UNION SELECT statements targeting web databases using automated tools."
+        },
+        {
+          "technique_id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactic": "initial-access",
+          "is_primary": false,
+          "justification": "Web application SQL injection attacks originate against internet-facing web server applications."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f012",
+      "techniques": [
+        {
+          "technique_id": "T1083",
+          "name": "File and Directory Discovery",
+          "tactic": "discovery",
+          "is_primary": true,
+          "justification": "Finding f012 shows repeated path traversal requests attempting to read sensitive files like /etc/passwd."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    }
+  ]
+}

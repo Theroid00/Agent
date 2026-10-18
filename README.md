@@ -2,9 +2,49 @@
 
 A college project that analyzes synthetic SSH, web and firewall logs using four CrewAI agents, MITRE ATT&CK retrieval and deterministic validators. It recommends response actions; it never executes them.
 
-The module implementation and a self-contained [Colab notebook](notebooks/Cyber_Threat_MultiAgent.ipynb) are included. Offline components are tested. Live S1/S3 results, held-out results, the real A6 report and fresh-Colab verification remain pending; mock responses are contract tests, not detection results. See [progress](docs/progress.md), [decisions](docs/decisions.md) and [problems](docs/problems.md).
+The module implementation, a self-contained [Colab notebook](notebooks/Cyber_Threat_MultiAgent.ipynb) and a [notebook executed on Windows](notebooks/Cyber_Threat_MultiAgent.executed.ipynb) are included. The Windows notebook completed all 14 code cells, including live S1/S3 runs, frozen held-out evaluation and a real A6 report. Detection targets were missed; see the measured results and error analysis. Fresh-Colab verification remains pending. See [progress](docs/progress.md), [decisions](docs/decisions.md) and [problems](docs/problems.md).
+
+The subsequent **coverage repair** is in the [executed V2 development notebook](notebooks/Cyber_Threat_MultiAgent.v2.executed.ipynb). All 7 cells completed, and the offline suite reports **82 passed, 1 deselected**. On the same development input bytes, S3 recall improved from 0.16666666666666666 to **1.0**, mapping accuracy from 0.8 to **0.9**, with **0 false positives**, **0 invalid evidence/nonexistent/unretrieved technique IDs**, and **5 A6 stages**. This is development evidence only; previously exposed held-out seeds were not rerun or used to claim new generalization. [Comparison](outputs/revision_v2/development_comparison.csv).
+
+The original D33 outputs and executed notebook remain unchanged, with a verified source/results archive at outputs/frozen_d33_snapshot.zip. Revised output goes to outputs/revision_v2. The application protects old frozen output directories from revision writes; use the V2 notebook for the repaired development run.
 
 ## Run locally
+
+### Windows
+
+Double-click `setup-windows.cmd` to create `.venv`, install the pinned dependencies and create `.env` if absent. A new environment uses the installed Python launcher (`py -3.12`); an existing supported environment is reused. The setup checks dependency consistency and CLI startup. It uses a process-scoped PowerShell execution-policy override; no activation or permanent policy change is required.
+
+From PowerShell in this folder:
+
+```powershell
+.\setup-windows.cmd --no-pause
+.\run-notebook.cmd
+.\run-local.cmd --help
+.\run-local.cmd test
+.\run-local.cmd prepare
+```
+
+`prepare` downloads the pinned knowledge base and embedding model, so the first run requires internet access. `test` runs the full non-live suite, including the retrieval check. The launcher sets the source path and Python UTF-8 mode, and changes to the repository directory. It works when launched from Explorer or another directory. CPU PyTorch wheels are selected explicitly on Windows.
+
+For the repaired S3 development run, enter your Gemini key privately in `.env` and use `run-notebook.cmd`. The direct CLI defaults to the original output directory; that directory is deliberately protected by its D33 freeze. Programmatic revision runs must pass a separate output_dir, as the V2 notebook does.
+
+To use the notebook locally, double-click `run-notebook.cmd`. It opens the executed V2 development notebook when available, using the project's `.venv` kernel. Select **Run → Run All Cells** to repeat development evaluation. It refreshes only the development result and reuses identical provider responses through the cache; the original frozen results are protected. The notebook reads the key from `.env`; never put it in a cell. It does not freeze or run held-out seeds. Setup installs JupyterLab through `requirements-notebook.txt`.
+
+For a deliberately refreshed development output in a separate revision directory, the notebook uses force=True on development seed 42 only. The launcher also accepts the CLI's `evaluate`, `results` and other commands. Live runs consume API quota. No key is needed for setup or offline verification.
+
+For direct Python commands in a PowerShell session, set the same environment first:
+
+```powershell
+$env:PYTHONUTF8 = '1'
+$env:PYTHONPATH = Join-Path $PWD 'src'
+$env:OMP_NUM_THREADS = '1'
+$env:OPENBLAS_NUM_THREADS = '1'
+$env:MKL_NUM_THREADS = '1'
+$env:NUMEXPR_NUM_THREADS = '1'
+.\.venv\Scripts\python.exe -m cyberagents --help
+```
+
+### macOS / Linux
 
 On the prepared Mac checkout, open `.env` beside this README and fill in `GEMINI_API_KEY=`. The file is ignored by Git. Then double-click `run-local.command` in Finder, or run `./run-local.command` from Terminal. It uses the existing project environment and runs S3 on development seed 42; a successful result is saved to `outputs/S3_seed42.json`. Groq is optional and can stay blank.
 
@@ -46,7 +86,7 @@ Regenerate the notebook after changing source, tests, documentation or saved out
 python scripts/build_notebook.py
 ```
 
-All 14 code cells executed successfully in local offline mode; notebook schema and embedded-file equality checks passed. This does not establish that a fresh Colab run works. That verification remains pending until actually performed with dependencies and a usable API key.
+All 14 code cells executed successfully on Windows with the owner's local key. The notebook runs the synchronous pipeline in a worker thread to support Jupyter's event loop. This does not establish that a fresh Colab run works; that verification remains pending. Saved fingerprints/freezes belong to the source/configuration used to produce them.
 
 ## Evaluation and freezes
 
@@ -75,21 +115,11 @@ The owner superseded the AGENTS.md approval workflow during this build; D14 reco
 
 These are synthetic logs from a controlled environment, not evidence of real-world performance. The normal background is not calibrated from production traffic. Temperature zero and fixed seeds do not guarantee identical future provider behavior; saved responses preserve repeatability. Account-specific free-tier model availability and quotas must be checked before live execution. A live API failure is reported rather than silently switching providers.
 
-The repository has the externally created initial commit `a132914 Initial`. This session could edit project files but cannot write `.git`; the agent created no commit or tag. A user-controlled permission profile can grant this repository's `.git` subtree write access, subject to managed policy. [Official permissions documentation](https://learn.chatgpt.com/docs/permissions).
+The Windows setup leaves all configuration changes uncommitted, as requested by the owner. Do not create phase-completion or freeze tags until the corresponding pending checks pass. Historical Git restrictions from the original Mac build are recorded in the project logs.
 
-To commit the current changes from your own macOS Terminal:
+## Measured Windows results
 
-```bash
-cd /Users/theroid0/PycharmProjects/Security-agent
-git add .
-git commit -m "phase7: implement offline pipeline, tests and notebook"
-```
-
-Do not create phase-completion or freeze tags until the corresponding pending checks pass. To allow this agent to commit in future, grant write access specifically to this repository's `.git` subtree in your user-controlled Codex permission profile and reopen the task; managed policy can override that setting.
-
-## Measured offline results
-
-The final offline suite reports **60 passed, 1 skipped, 1 deselected**. The skipped framework test encounters CrewAI's per-user credential directory outside this managed workspace; actual CrewAI execution still needs an ordinary terminal or Colab. The live smoke test explicitly skips without a key. Installed dependency metadata is consistent, and both provider SDKs import.
+The full offline suite and freeze gate report **61 passed, 1 deselected**. The actual CrewAI contract test passes in this Windows environment, and the live notebook successfully calls Gemini. Installed dependency metadata is consistent. The original Mac credential-directory restriction remains documented as historical context.
 
 Actual retrieval passes **6 of 6** fixed development queries with pinned BGE-small, FAISS, ATT&CK detection analytics, BM25 fusion and disclosed vocabulary normalization. This calibrated check does not establish general retrieval performance.
 
@@ -103,7 +133,9 @@ Actual retrieval passes **6 of 6** fixed development queries with pinned BGE-sma
 | Most A6 stages in one incident | 2 |
 | Mapping accuracy | Not applicable to S0 |
 | Invalid evidence references | 0 |
-| Runtime | 0.9093201659998158 seconds |
+| Runtime | 1.890999999945052 seconds |
 | LLM calls | 0 |
 
-See [verification](outputs/verification.json), [retrieval](outputs/retrieval_check.json), [per-seed results](outputs/results_by_seed.csv) and [error analysis](outputs/error_analysis.csv). The owner selected offline results only. S1/S3 and held-out results remain unmeasured, and neither freeze nor completion of the full submission checklist is claimed.
+The [per-seed results](outputs/results_by_seed.csv) contain 9 measured runs across S0/S1/S3. The [System freeze](outputs/system_freeze.json) was recorded under D33 before held-out execution. S3 reports detection recall 0.16666666666666666 on each seed, with 0 false positives and 0 invalid evidence or nonexistent/unretrieved technique IDs. Its mapping accuracy is 0.8 on development, 0.75 on one held-out seed and 0.8 on the other. The A6 chain is correlated, but other attack cases are missed; successful execution does not establish that the detection targets were met.
+
+See [retrieval](outputs/retrieval_check.json), [error analysis](outputs/error_analysis.csv), the [real A6 report](outputs/demo_incident.md) and the [executed notebook](notebooks/Cyber_Threat_MultiAgent.executed.ipynb). The older outputs/verification.json describes the original Mac offline run. Fresh-Colab verification and the full submission checklist remain pending. No Git commit or tag was created during Windows setup/execution.

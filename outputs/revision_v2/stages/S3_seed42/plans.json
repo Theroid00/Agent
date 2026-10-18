@@ -1,0 +1,335 @@
+{
+  "plans": [
+    {
+      "incident_id": "INC-01",
+      "executive_summary": "Standalone brute-force attack against the root user from external IP 203.0.113.58 with no subsequent successful session.",
+      "immediate_actions": [
+        {
+          "action": "Block IP address at firewall",
+          "target": "203.0.113.58",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.58 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1051",
+          "name": "Update Software",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110.001"
+        }
+      ],
+      "investigation_steps": [
+        "Review auth logs on ssh-srv for additional failed login attempts from 203.0.113.58.",
+        "Check if other hosts were targeted by the same source IP."
+      ],
+      "prevention": [
+        "Enforce robust password policies and disable direct root login via SSH.",
+        "Implement account lockout policies after a threshold of failed login attempts."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-02",
+      "executive_summary": "Linked chain of activity showing scanning, brute force, successful login, root shell, and outbound transfer originating from source IP 203.0.113.75 against ssh-srv.",
+      "immediate_actions": [
+        {
+          "action": "Isolate host from network",
+          "target": "ssh-srv",
+          "priority": "P1",
+          "example_command": "ip link set eth0 down"
+        },
+        {
+          "action": "Block attacker IP",
+          "target": "203.0.113.75",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.75 -j DROP"
+        },
+        {
+          "action": "Terminate active sessions for user deploy",
+          "target": "deploy",
+          "priority": "P1",
+          "example_command": "pkill -u deploy"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1056",
+          "name": "Pre-compromise",
+          "for_technique_id": "T1595.001"
+        },
+        {
+          "mitigation_id": "M1051",
+          "name": "Update Software",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1018",
+          "name": "User Account Management",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1026",
+          "name": "Privileged Account Management",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1013",
+          "name": "Application Developer Guidance",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1017",
+          "name": "User Training",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1015",
+          "name": "Active Directory Configuration",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1078"
+        },
+        {
+          "mitigation_id": "M1022",
+          "name": "Restrict File and Directory Permissions",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1028",
+          "name": "Operating System Configuration",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1026",
+          "name": "Privileged Account Management",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1031",
+          "name": "Network Intrusion Prevention",
+          "for_technique_id": "T1041"
+        },
+        {
+          "mitigation_id": "M1057",
+          "name": "Data Loss Prevention",
+          "for_technique_id": "T1041"
+        }
+      ],
+      "investigation_steps": [
+        "Perform forensic disk and memory acquisition on ssh-srv.",
+        "Examine commands executed during the deploy user session and sudo root shell.",
+        "Inspect the destination of the 150MB data transfer on port 4444."
+      ],
+      "prevention": [
+        "Implement strict network egress filtering to restrict non-standard outbound ports.",
+        "Require multi-factor authentication for all SSH access.",
+        "Audit sudoers configuration and restrict unnecessary privilege escalation."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-03",
+      "executive_summary": "Standalone password spraying attack from external IP 203.0.113.31 targeting multiple users.",
+      "immediate_actions": [
+        {
+          "action": "Block IP address at firewall",
+          "target": "203.0.113.31",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.31 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110.003"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110.003"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110.003"
+        }
+      ],
+      "investigation_steps": [
+        "Check authentication logs for any successful logins from 203.0.113.31 across all targeted accounts.",
+        "Review account activity for the targeted users (akhan, asharma, deploy, mshah, npatel, pmehta, rkumar, srao)."
+      ],
+      "prevention": [
+        "Deploy multi-factor authentication across all user accounts.",
+        "Enforce strong password complexity rules and monitor for common password lists."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-04",
+      "executive_summary": "Standalone reconnaissance finding involving port scanning from external IP 203.0.113.160.",
+      "immediate_actions": [
+        {
+          "action": "Block scanning IP at perimeter firewall",
+          "target": "203.0.113.160",
+          "priority": "P2",
+          "example_command": "iptables -A INPUT -s 203.0.113.160 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1056",
+          "name": "Pre-compromise",
+          "for_technique_id": "T1595.001"
+        }
+      ],
+      "investigation_steps": [
+        "Review firewall logs to determine the extent and duration of the port scan.",
+        "Check if other internal hosts were targeted by 203.0.113.160."
+      ],
+      "prevention": [
+        "Ensure unused ports are closed and firewalls are properly configured to drop unauthorized connection probes."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-05",
+      "executive_summary": "Standalone web exploit and scanning activity targeting web-srv.",
+      "immediate_actions": [
+        {
+          "action": "Block attacking IP address",
+          "target": "203.0.113.35",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.35 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1048",
+          "name": "Application Isolation and Sandboxing",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1037",
+          "name": "Filter Network Traffic",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1030",
+          "name": "Network Segmentation",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1016",
+          "name": "Vulnerability Scanning",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1026",
+          "name": "Privileged Account Management",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1050",
+          "name": "Exploit Protection",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1035",
+          "name": "Limit Access to Resource Over Network",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1051",
+          "name": "Update Software",
+          "for_technique_id": "T1190"
+        }
+      ],
+      "investigation_steps": [
+        "Inspect web server access and error logs for successful SQL injection execution.",
+        "Examine web application source code for unparameterized SQL queries."
+      ],
+      "prevention": [
+        "Implement Web Application Firewall (WAF) rules to detect and block SQL injection payloads and sqlmap signatures.",
+        "Use parameterized queries and prepared statements across all web applications."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-06",
+      "executive_summary": "Standalone directory traversal attack targeting web-srv from external IP 203.0.113.61.",
+      "immediate_actions": [
+        {
+          "action": "Block attacking IP address",
+          "target": "203.0.113.61",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.61 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1026",
+          "name": "Privileged Account Management",
+          "for_technique_id": "T1003.008"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1003.008"
+        }
+      ],
+      "investigation_steps": [
+        "Review web-srv access logs to check if path traversal attempts successfully retrieved /etc/passwd or other sensitive files.",
+        "Audit web application file access controls."
+      ],
+      "prevention": [
+        "Sanitize and validate all user-supplied input to prevent path traversal vulnerabilities.",
+        "Ensure web application processes run with minimal file system permissions."
+      ],
+      "status": "validated"
+    }
+  ]
+}

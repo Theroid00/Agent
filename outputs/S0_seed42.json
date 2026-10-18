@@ -889,10 +889,10 @@
   "validation_log": [],
   "llm_calls": 0,
   "tokens": 0,
-  "runtime_s": 0.9093201659998158,
+  "runtime_s": 1.890999999945052,
   "execution": "deterministic",
-  "fingerprint": "a644e1753fb1f895587b43ebcb8a302da4bd2c23461bc90be51affdcc315205f",
-  "source_hash": "7638888978a22bfb1b6a9c1d072331a1f9680710dec94159dc28e1622ed2a581",
+  "fingerprint": "03a65676d929de78c7b5351c43c4e445127f5ba8bdaa3680a76f68dd70c28b2c",
+  "source_hash": "62ba5e641bbdaf1a518bb18f6d2e80310ce44b303cce002a49718790be4b3109",
   "clusters": [
     {
       "rule_ids": [

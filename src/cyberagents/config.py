@@ -1,6 +1,8 @@
 """Central settings; benchmark thresholds change only with a decision entry."""
 
 CONFIG = {
+    "system_revision": "coverage-v2",
+    "correlation": {"max_gap_min": 60},
     "dev_seed": 42, "held_out_seeds": [7, 2026], "date": "2026-10-17",
     "llm": {"provider": "gemini", "model": "gemini-3.5-flash-lite", "temperature": 0,
             "fallback_model": "llama-3.3-70b-versatile", "min_interval_s": 15,

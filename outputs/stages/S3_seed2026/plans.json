@@ -1,0 +1,93 @@
+{
+  "plans": [
+    {
+      "incident_id": "inc-001",
+      "executive_summary": "Incident inc-001 details a critical compromise of ssh-srv involving external reconnaissance (port scanning), brute-force credential access, privilege escalation via sudo, and subsequent data exfiltration to an external IP address (198.51.100.200) originating from attacker IP 203.0.113.213.",
+      "immediate_actions": [
+        {
+          "action": "Block attacker IP address at the perimeter firewall",
+          "target": "203.0.113.213",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.213 -j DROP"
+        },
+        {
+          "action": "Isolate the compromised server from the network for forensic analysis",
+          "target": "ssh-srv (10.0.0.10)",
+          "priority": "P1",
+          "example_command": "ip link set eth0 down"
+        },
+        {
+          "action": "Revoke active sessions and reset credentials for the compromised deploy user",
+          "target": "deploy",
+          "priority": "P1",
+          "example_command": "passwd -l deploy"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1056",
+          "name": "Pre-compromise",
+          "for_technique_id": "T1595.001"
+        },
+        {
+          "mitigation_id": "M1018",
+          "name": "User Account Management",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1022",
+          "name": "Restrict File and Directory Permissions",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1028",
+          "name": "Operating System Configuration",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1026",
+          "name": "Privileged Account Management",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1031",
+          "name": "Network Intrusion Prevention",
+          "for_technique_id": "T1041"
+        },
+        {
+          "mitigation_id": "M1057",
+          "name": "Data Loss Prevention",
+          "for_technique_id": "T1041"
+        }
+      ],
+      "investigation_steps": [
+        "Review authentication logs on ssh-srv around 2026-10-16T20:47:13Z for further details on the brute-force attack and successful login.",
+        "Examine sudo logs to verify actions taken by the deploy user after escalating privileges.",
+        "Inspect network flow logs and outbound connections to determine the full scope of data exfiltrated to 198.51.100.200.",
+        "Perform a full forensic disk and memory analysis on ssh-srv to identify any backdoors, webshells, or persistence mechanisms."
+      ],
+      "prevention": [
+        "Implement multi-factor authentication (MFA) for all SSH and remote service logins.",
+        "Enforce strict password complexity and account lockout policies to mitigate brute-force and password spraying attacks.",
+        "Review and restrict sudo access rights, ensuring privileged escalation actions are strictly audited and limited to administrative hours.",
+        "Deploy network intrusion detection and data loss prevention (DLP) tools to monitor and block unauthorized outbound data transfers."
+      ],
+      "status": "validated"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+,detection_recall,detection_recall,incident_precision,incident_precision,false_positives,false_positives,mapping_accuracy,mapping_accuracy,a6_stages,a6_stages,hallucination_rate,hallucination_rate,invalid_evidence_rate,invalid_evidence_rate,runtime_s,runtime_s,llm_calls,llm_calls
+,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std
+system,,,,,,,,,,,,,,,,,,
+S3,1.0,,1.0,,0.0,,0.9,,5.0,,0.0,,0.0,,115.71899999992456,,3.0,

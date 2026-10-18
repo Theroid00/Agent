@@ -1,0 +1,59 @@
+{
+  "decision_id": "D33",
+  "source_hash": "62ba5e641bbdaf1a518bb18f6d2e80310ce44b303cce002a49718790be4b3109",
+  "dev_metrics": {
+    "system": "S3",
+    "seed": 42,
+    "detected_scenarios": [
+      "A6"
+    ],
+    "detection_recall": 0.16666666666666666,
+    "incident_precision": 1.0,
+    "false_positives": 0,
+    "benign_case_false_positives": 0,
+    "background_false_positives": 0,
+    "mapping_accuracy": 0.8,
+    "a6_stages": 5,
+    "a6_correlated": true,
+    "hallucination_rate": 0.0,
+    "nonexistent_technique_ids": 0,
+    "unretrieved_technique_ids": 0,
+    "invalid_evidence_refs": 0,
+    "invalid_evidence_rate": 0.0,
+    "runtime_s": 113.71900000004098,
+    "llm_calls": 4,
+    "tokens": 80421,
+    "errors": [
+      {
+        "kind": "miss",
+        "item": "A1",
+        "matched_scenario": "A1",
+        "cause": "Analyst dismissal/correlation"
+      },
+      {
+        "kind": "miss",
+        "item": "A2",
+        "matched_scenario": "A2",
+        "cause": "Analyst dismissal/correlation"
+      },
+      {
+        "kind": "miss",
+        "item": "A3",
+        "matched_scenario": "A3",
+        "cause": "Analyst dismissal/correlation"
+      },
+      {
+        "kind": "miss",
+        "item": "A4",
+        "matched_scenario": "A4",
+        "cause": "Analyst dismissal/correlation"
+      },
+      {
+        "kind": "miss",
+        "item": "A5",
+        "matched_scenario": "A5",
+        "cause": "Analyst dismissal/correlation"
+      }
+    ]
+  }
+}

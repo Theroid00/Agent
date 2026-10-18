@@ -1,0 +1,95 @@
+{
+  "mappings": [
+    {
+      "finding_id": "f002",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Multiple failed login attempts against the root user from an external IP indicate a brute-force attack."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f003",
+      "techniques": [
+        {
+          "technique_id": "T1595.001",
+          "name": "Scanning IP Blocks",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "Sequential port scanning activity from external IP addresses targeting the ssh server."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f004",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Multiple failed passwords followed by a successful login for user deploy from an external IP."
+        },
+        {
+          "technique_id": "T1078.001",
+          "name": "Default Accounts",
+          "tactic": "initial-access",
+          "is_primary": false,
+          "justification": "Immediate sudo to root after successful login shows abuse of administrative access."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f005",
+      "techniques": [
+        {
+          "technique_id": "T1041",
+          "name": "Exfiltration Over C2 Channel",
+          "tactic": "exfiltration",
+          "is_primary": true,
+          "justification": "Massive data transfer over a suspicious port to an external IP immediately following unauthorized access."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f007",
+      "techniques": [
+        {
+          "technique_id": "T1110.003",
+          "name": "Password Spraying",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "An external IP attempts single failed logins across numerous distinct user accounts in rapid succession."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f009",
+      "techniques": [
+        {
+          "technique_id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactic": "initial-access",
+          "is_primary": true,
+          "justification": "Web application attack attempts including SQL injection and path traversal signatures."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    }
+  ]
+}

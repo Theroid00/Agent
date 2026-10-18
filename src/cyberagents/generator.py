@@ -117,7 +117,8 @@ def generate_logs(seed, out_dir, *, background=None):
                 truth[scenario]['line_ids'].append(event_id)
                 if stage:
                     truth[scenario]['stages'][stage - 1]['line_ids'].append(event_id)
-        (out_dir / filename).write_text(output.getvalue())
+        # csv.writer already supplies CRLF; Windows text translation would double it.
+        (out_dir / filename).write_text(output.getvalue(), newline='')
     (out_dir / 'ground_truth.json').write_text(json.dumps({'seed': seed, 'scenarios': list(truth.values())}, indent=2))
     (out_dir / 'asset_inventory.json').write_text(json.dumps(inventory, indent=2))
     return {'directory': str(out_dir), 'seed': seed}

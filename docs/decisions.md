@@ -24,7 +24,7 @@
 | D11 | 2026-10-18 | Timeline 7 → 8 days | Active |
 | D12 | 2026-10-18 | Python modules in src/ with pytest; notebook assembled in Phase 7 | Active |
 | D13 | 2026-10-18 | Commits per green test group and phase/freeze tags | Active |
-| D14 | 2026-10-18 | Human authorizes full build using goal, plan and decisions; set aside AGENTS workflow | Active |
+| D14 | 2026-10-18 | Human authorizes full build using goal, plan and decisions; set aside AGENTS workflow | Historical; workflow superseded by D36 |
 | D15 | 2026-10-18 | Offline development and explicit pending live/Colab verification | Active |
 | D16 | 2026-10-18 | Pin MITRE CTI source and verify its content hash | Active |
 | D17 | 2026-10-18 | Direct dependency pins and current free-tier Gemini model | Active |
@@ -39,6 +39,15 @@
 | D26 | 2026-10-18 | Normalize security vocabulary in natural-language retrieval queries | Active |
 | D27 | 2026-10-18 | Resolve transitive dependency conflict; keep project storage local and report framework import restriction | Active |
 | D28 | 2026-10-19 | Local key file and Mac launcher; keep Colab secrets independent | Active |
+| D29 | 2026-10-19 | Configure the cloned checkout for Windows without Git commits | Windows setup active; commit restriction superseded by D36 |
+| D30 | 2026-10-19 | Owner supplies a local key and authorizes running the notebook | Active |
+| D31 | 2026-10-19 | Preserve CSV writer newlines on Windows | Active |
+| D32 | 2026-10-19 | Run synchronous pipeline calls outside Jupyter's event loop | Active |
+
+| D33 | 2026-10-19 | System freeze | Active |
+| D34 | 2026-10-19 | Development coverage repair; preserve D33 baseline | Active |
+| D35 | 2026-10-19 | Evidence-focused login retrieval and per-record retry salvage | Active |
+| D36 | 2026-10-19 | Owner authorizes committing completed work and future milestones | Active |
 
 ---
 
@@ -257,6 +266,62 @@
 - **Choice:** Create .env only if absent, preserve existing contents, restrict its permissions to owner read/write, and keep it ignored by Git. Supply empty GEMINI_API_KEY/GROQ_API_KEY fields; the user enters the key privately.
 - **Launcher:** run-local.command changes to the project folder, uses the existing .venv and source path, and delegates to the existing CLI for the development S3 run. No new pipeline or environment bootstrap is introduced. The launcher is included in the notebook's project snapshot, while the actual .env is excluded.
 - **Verification:** Shell syntax and CLI help smoke checks passed without API calls. Notebook payload/schema/file-equality checks are repeated after rebuilding. Colab reads its own Secrets, independently of the local .env. Prior live/Colab validation limitations remain.
+
+### D29 — Windows setup and launchers
+- **Date:** 2026-10-19
+- **Authorization:** Owner requested cloning the GitHub repository and configuring it for Windows, with no Git commits. This supersedes commit requirements for this session.
+- **Choice:** Reuse the installed Windows Python through a project-local virtual environment. Add setup-windows.cmd/setup-windows.ps1 and run-local.cmd; set Python UTF-8 mode and the src path without requiring environment activation. Preserve an existing .env and create only blank fields when absent. Use explicit CPU PyTorch pins on Windows as on Linux.
+- **Portability:** Build notebook archive member names with POSIX separators so Windows-built notebooks extract correctly on Colab. Include Windows launchers in the embedded snapshot. No benchmark, model, threshold or approved test change is intended.
+- **Verification:** Installation and Windows offline validation are in progress; actual results will be recorded in progress.md. No live API call, held-out run, freeze, commit or tag is authorized by this setup request.
+
+### D30 — Run the notebook with the owner's local key
+- **Date:** 2026-10-19
+- **Authorization:** The owner requested adding an API key and running the notebook, then confirmed the key was saved in .env. Live execution is now authorized for this notebook; keep keys out of chat, notebook sources, output and Git.
+- **Choice:** Install JupyterLab through a separate requirements-notebook.txt, register the project-local kernel, and supply run-notebook.cmd. Refresh the deterministic development S0 output for this checkout's source fingerprint. The notebook's existing freeze and held-out safeguards remain in effect.
+- **Runtime:** A headless execution completed the setup/KB cells and hit P12 while another notebook server/kernel was also building embeddings. Observed that existing session until its server and workers stopped without an index. Retried with a single kernel and OMP/OpenBLAS/MKL/NumExpr threads limited to one before native imports, matching the configured embedding limit. Apply the limits in the Windows launchers and the notebook's setup cell. Save completed cells to a separate executed notebook and redact local API keys from saved outputs.
+- **Git:** No commits or tags, per the owner's standing instruction.
+
+### D31 — Prevent doubled CSV newlines on Windows
+- **Date:** 2026-10-19
+- **Evidence:** Existing approved parser contract failed with `assert 5972 == 11829` on Windows, while the remaining suite passed. csv.writer emits CRLF into StringIO; Path.write_text's default Windows translation then changes LF to CRLF again, producing CR-CR-LF.
+- **Choice:** Write the generated log buffer with newline='' to preserve its existing line endings. Keep every scenario, seed, event ID, threshold and approved test unchanged. The existing test provides the failing-before regression check.
+- **Verification:** Run the unchanged parser test, then rerun the notebook's full offline suite and subsequent live cells. No System freeze or held-out run has occurred before this fix.
+
+### D32 — Notebook integration with CrewAI's running-event-loop restriction
+- **Date:** 2026-10-19
+- **Evidence:** Notebook test gate reported `61 passed, 1 deselected, 26 warnings in 53.61s`, but the live S3 cell failed with the running-event-loop RuntimeError logged in P14. Inspected installed crewai/agent/core.py: the synchronous entry point explicitly rejects an awaitable invoke result.
+- **Choice:** Keep the tested synchronous pipeline/CLI unchanged. Invoke development S1/S3 and held-out pipeline calls with await asyncio.to_thread in notebook cells. Compile cells with ast.PyCF_ALLOW_TOP_LEVEL_AWAIT during notebook assembly.
+- **Impact:** Framework execution runs outside Jupyter's active event loop. Providers, prompts, schemas, response cache, evaluation and freeze safeguards are unchanged. Rerun the notebook to verify the actual integration.
+
+### D33 — System freeze
+- **Date:** 2026-10-19
+- **Choice:** Freeze source/configuration SHA256 `62ba5e641bbdaf1a518bb18f6d2e80310ce44b303cce002a49718790be4b3109` after real dev execution, retrieval checks and fast pytest success.
+- **Impact:** Held-out seeds may now be generated and run without tuning. Git freeze tag must be created separately if metadata is read-only.
+
+### D34 — Development revision for complete and coherent stage hand-offs
+- **Date:** 2026-10-19
+- **Authorization:** Owner said "go" after the diagnosed repair plan. Implement and evaluate the repaired system on development seed 42, with no Git commits and no Colab work.
+- **Preservation:** Before source/test changes, verified the D33 source hash and saved outputs/frozen_d33_snapshot.zip with 108 source, test, documentation, notebook and result files plus a SHA256 manifest. Original result files and executed notebook remain in place; revised outputs use outputs/revision_v2.
+- **Design:** Add a separate stage-coverage validator so approved grounding tests remain unchanged. Require every cluster to receive a finding, every eligible finding a mapping and incident, and every incident a plan. Require one source cluster per finding; perform correlation only at the incident stage, preserving standalone attacks. Detect different external actors and disconnected time windows. Missing coverage triggers the existing bounded retry; exhausted retries remain explicitly incomplete, never fabricated.
+- **Correlation policy:** The current synthetic-log scope provides no campaign evidence joining distinct external actors, so keep such actors separate. Configure the maximum gap between incident activity intervals in CONFIG.correlation.max_gap_min (60); use transitive adjacent intervals rather than limiting total chain duration. This is a conservative scoped policy, not a claim that real multi-actor campaigns cannot exist.
+- **Artifact protection:** Reject development writes into an output directory carrying a different source freeze. New local development notebook and results use revision_v2; D33 source/tests/results are preserved in the snapshot, and original results stay in place.
+- **Evaluation:** Evaluator, accepted techniques, targets, synthetic data and original approved tests remain unchanged. Previously exposed seeds are not used to tune or claim fresh generalization. No new freeze or held-out run is planned for this revision.
+- **Regression workflow:** Added tests first. Initial invocation exposed a missing placeholder API (12 AttributeError failures); supplied the placeholder before running behavior assertions.
+
+### D35 — Preserve observed successful sessions in retrieval and valid records in salvage
+- **Date:** 2026-10-19
+- **Evidence:** The first revised live run split successful authentication correctly, but its narrative retrieval was dominated by preceding brute-force context. Candidates omitted the relevant account/session techniques; bounded retry retained an unretrieved ID. The notebook correctly stopped with incomplete coverage. Saved the attempt in outputs/revision_v2/diagnostics/attempt1.zip.
+- **Retrieval choice:** Parse only cited auth evidence using the existing parser. For accepted-session evidence without cited failed attempts, search the neutral text "successful authenticated SSH remote session using valid account credentials". Real index probing returned SSH and Valid Accounts. Do not hard-code technique IDs, add labels, expand candidate count or relax R1/R2. Save actual queries and expose each finding's allowed IDs explicitly to the mapper. Do not infer account namespaces absent from logs.
+- **Salvage choice:** Validate records individually after a failed batch retry; retain independently valid records and sanitize/mark only invalid ones. Pass inventory through salvage so internal egress is not misclassified as a second external actor. A remaining unresolved stage still marks the run incomplete. Validator-owned status is assigned after checks.
+- **Regression evidence:** New cases reproduced the invalid-record downgrade and missing focused-query helper. Focused expanded suite now reports `21 passed in 0.43s`. The revised notebook is rerunning full offline checks and the development live run; original frozen results and evaluator remain unchanged.
+- **Verified outcome:** Full offline gate: `82 passed, 1 deselected, 26 warnings in 52.49s`. All 7 revised notebook cells completed. Same-input development recall 1.0, mapping_accuracy 0.9, false_positives 0, a6_stages 5, invalid evidence/nonexistent/unretrieved IDs 0, coverage.complete true and empty final stage validation log. Runtime_s 115.71899999992456 with 3 live calls and 1 response-cache hit; timing is not an uncached speedup claim. The notebook verified 69 original output/notebook files unchanged. No revised held-out run or new freeze.
+
+### D36 — Resume Git checkpoints for completed and future work
+- **Date:** 2026-10-19
+- **Authorization:** Owner said "ok start git commiting previous an future". This supersedes the no-commit restriction in D29, D30 and D34, and authorizes local commits of the completed Windows setup, notebook execution and development repair, followed by future milestone commits.
+- **Checkpoint:** Save the existing completed work together, including source, regression tests, Windows launchers, executed notebooks, measured outputs and the D33 preservation snapshot. Do not reconstruct historical phase commits or mark the revised system frozen. Keep secrets, environments, downloaded models and caches excluded.
+- **Workflow:** The owner's newly supplied AGENTS.md governs future work, including test review before implementation; the earlier D14 workflow exception is historical. New evaluation seeds or benchmark changes still require separate approval. Colab remains outside the current focus. This instruction authorizes commits, not a remote push.
+- **Verification:** Preservation/source/notebook/API-key checks pass; original approved tests and evaluator remain unchanged. The existing complete notebook test gate is `82 passed, 1 deselected, 26 warnings in 52.49s`; no implementation changed for this checkpoint.
 
 ## Entry template
 

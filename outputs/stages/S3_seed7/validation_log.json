@@ -1,0 +1,9 @@
+[
+  {
+    "stage": "incidents",
+    "attempt": 1,
+    "errors": [
+      "4 validation errors for IncidentList\nincidents.0.kill_chain.0.status\n  Extra inputs are not permitted [type=extra_forbidden, input_value='validated', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/extra_forbidden\nincidents.0.kill_chain.1.status\n  Extra inputs are not permitted [type=extra_forbidden, input_value='validated', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/extra_forbidden\nincidents.0.kill_chain.2.status\n  Extra inputs are not permitted [type=extra_forbidden, input_value='validated', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/extra_forbidden\nincidents.0.kill_chain.3.status\n  Extra inputs are not permitted [type=extra_forbidden, input_value='validated', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/extra_forbidden"
+    ]
+  }
+]

@@ -1,0 +1,2 @@
+# Optional local notebook UI; application/runtime pins remain in requirements.txt.
+jupyterlab==4.6.4

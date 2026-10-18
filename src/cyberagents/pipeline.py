@@ -29,6 +29,9 @@ def source_hash():
 
 def _seed_allowed(seed, directory, *, force=False):
     if seed == CONFIG['dev_seed']:
+        freeze = directory / 'system_freeze.json'
+        if freeze.exists() and json.loads(freeze.read_text())['source_hash'] != source_hash():
+            raise RuntimeError('Frozen output directory belongs to an earlier revision; use a separate output_dir')
         return
     if seed not in CONFIG['held_out_seeds']:
         raise ValueError('Seed is outside the fixed benchmark catalog')
@@ -145,6 +148,8 @@ def record_system_freeze(output_dir=None):
     retrieval = json.loads((directory / 'retrieval_check.json').read_text())
     if dev.get('execution') != 'live' or dev.get('source_hash') != source_hash():
         raise RuntimeError('A real current seed-42 S3 run is required before System freeze')
+    if not dev.get('coverage', {}).get('complete', True):
+        raise RuntimeError('Agent coverage is incomplete; cannot freeze')
     if (dev['runtime_s'] > 15 * 60 or retrieval['passed'] < 5
             or retrieval['source_ref'] != CONFIG['attack']['commit']
             or retrieval.get('model') != CONFIG['embed_model']

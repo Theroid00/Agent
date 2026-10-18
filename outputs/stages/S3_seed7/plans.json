@@ -1,0 +1,84 @@
+{
+  "plans": [
+    {
+      "incident_id": "INC-01",
+      "executive_summary": "Incident INC-01 details a critical compromise of the SSH server (ssh-srv) originating from external IP 203.0.113.13. The attack sequence started with port scanning (T1595.001), followed by credential brute-force (T1110) which successfully compromised the 'deploy' user account, escalated privileges via sudo to root, and culminated in unauthorized large-scale data exfiltration over port 4444 to external IP 198.51.100.200 (T1041).",
+      "immediate_actions": [
+        {
+          "action": "Block attacker IP address at the firewall",
+          "target": "203.0.113.13",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.13 -j DROP"
+        },
+        {
+          "action": "Block exfiltration destination IP address at the firewall",
+          "target": "198.51.100.200",
+          "priority": "P1",
+          "example_command": "iptables -A OUTPUT -d 198.51.100.200 -j DROP"
+        },
+        {
+          "action": "Isolate the compromised SSH server from the internal network for forensics",
+          "target": "ssh-srv (10.0.0.10)",
+          "priority": "P1",
+          "example_command": "ip link set dev eth0 down"
+        },
+        {
+          "action": "Disable compromised user account and force credential resets",
+          "target": "deploy",
+          "priority": "P1",
+          "example_command": "passwd -l deploy"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1056",
+          "name": "Pre-compromise",
+          "for_technique_id": "T1595.001"
+        },
+        {
+          "mitigation_id": "M1018",
+          "name": "User Account Management",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1031",
+          "name": "Network Intrusion Prevention",
+          "for_technique_id": "T1041"
+        },
+        {
+          "mitigation_id": "M1057",
+          "name": "Data Loss Prevention",
+          "for_technique_id": "T1041"
+        }
+      ],
+      "investigation_steps": [
+        "Review authentication logs on ssh-srv around 2026-10-16T20:55:18Z to analyze the exact mechanism and scope of the credential brute-force and subsequent privilege escalation.",
+        "Examine network flow logs and full packet captures (PCAP) to determine the exact volume and nature of data transferred to 198.51.100.200 over port 4444.",
+        "Perform a comprehensive forensic disk and memory analysis on ssh-srv (10.0.0.10) to identify any backdoors, modified binaries, or unauthorized persistence mechanisms.",
+        "Audit sudoers configuration and authorization logs to verify all actions taken by the 'deploy' user after successful privilege escalation."
+      ],
+      "prevention": [
+        "Implement Multi-Factor Authentication (MFA) for all SSH access, eliminating reliance solely on passwords.",
+        "Enforce strict account lockout policies and rate-limiting for SSH login attempts to mitigate brute-force and password spraying attacks.",
+        "Deploy network intrusion detection and prevention systems (IDS/IPS) to monitor and block abnormal outbound data transfers over non-standard ports like port 4444.",
+        "Regularly audit user and service account privileges, ensuring the Principle of Least Privilege is strictly maintained for sudo access."
+      ],
+      "status": "validated"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "mappings": [
+    {
+      "finding_id": "f003",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "External brute-force authentication failures targeting the root user from external IP 203.0.113.220."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f004",
+      "techniques": [
+        {
+          "technique_id": "T1595.001",
+          "name": "Scanning IP Blocks",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "External port scanning against ssh-srv from external IP addresses."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f005",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Brute-force attack from external IP 203.0.113.213 resulting in successful unauthorized login for deploy user."
+        },
+        {
+          "technique_id": "T1133",
+          "name": "External Remote Services",
+          "tactic": "initial-access",
+          "is_primary": false,
+          "justification": "Brute-force attack against external SSH service leading to initial access."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f006",
+      "techniques": [
+        {
+          "technique_id": "T1548.003",
+          "name": "Sudo and Sudo Caching",
+          "tactic": "privilege-escalation",
+          "is_primary": true,
+          "justification": "User deploy executed sudo to root outside of admin working hours to escalate privileges."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f007",
+      "techniques": [
+        {
+          "technique_id": "T1041",
+          "name": "Exfiltration Over C2 Channel",
+          "tactic": "exfiltration",
+          "is_primary": true,
+          "justification": "Large outbound data transfer from ssh-srv to an external non-backup destination (198.51.100.200)."
+        }
+      ],
+      "mapping_confidence": 0.9,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f008",
+      "techniques": [
+        {
+          "technique_id": "T1110.003",
+          "name": "Password Spraying",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Password spraying attack across multiple distinct user accounts from external IP 203.0.113.236."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f010",
+      "techniques": [
+        {
+          "technique_id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactic": "initial-access",
+          "is_primary": true,
+          "justification": "SQL injection and directory traversal attempts via web application parameters using sqlmap/1.7."
+        }
+      ],
+      "mapping_confidence": 0.95,
+      "status": "validated"
+    }
+  ]
+}

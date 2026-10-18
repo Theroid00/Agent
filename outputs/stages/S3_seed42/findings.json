@@ -1,0 +1,357 @@
+{
+  "findings": [
+    {
+      "finding_id": "f001",
+      "cluster_ids": [
+        "c001"
+      ],
+      "verdict": "benign",
+      "summary": "Known monitoring service health checks",
+      "evidence_line_ids": [
+        "fw:000001",
+        "fw:000983",
+        "fw:001971",
+        "fw:002963",
+        "fw:005142",
+        "fw:007814",
+        "fw:010654",
+        "fw:013552",
+        "fw:014828",
+        "fw:015797"
+      ],
+      "src_ips": [
+        "10.0.0.5"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c001 represents known monitoring scans from the monitoring host (10.0.0.5) to the web server (10.0.0.20), which is explicitly recognized as benign in the instructions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f002",
+      "cluster_ids": [
+        "c002"
+      ],
+      "verdict": "malicious",
+      "summary": "External brute-force attack against root user on SSH server",
+      "evidence_line_ids": [
+        "auth:000033",
+        "auth:000034",
+        "auth:000035",
+        "auth:000037",
+        "auth:000038",
+        "auth:000039",
+        "auth:000040",
+        "auth:000042",
+        "auth:000043",
+        "auth:000044"
+      ],
+      "src_ips": [
+        "203.0.113.58"
+      ],
+      "users": [
+        "root"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c002 shows repeated failed login attempts for the root user from external IP 203.0.113.58, indicating a malicious brute-force attack.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f003",
+      "cluster_ids": [
+        "c003",
+        "c009"
+      ],
+      "verdict": "suspicious",
+      "summary": "External port scanning activity targeting SSH server",
+      "evidence_line_ids": [
+        "fw:000776",
+        "fw:000778",
+        "fw:000781",
+        "fw:000783",
+        "fw:000785",
+        "fw:000790",
+        "fw:000792",
+        "fw:000794",
+        "fw:000797",
+        "fw:000799"
+      ],
+      "src_ips": [
+        "203.0.113.75",
+        "203.0.113.160"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Clusters c003 and c009 exhibit sequential port probing patterns from external IP addresses toward the SSH server.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f004",
+      "cluster_ids": [
+        "c004"
+      ],
+      "verdict": "malicious",
+      "summary": "Compromise via brute-force followed by successful authentication",
+      "evidence_line_ids": [
+        "auth:000085",
+        "auth:000086",
+        "auth:000088",
+        "auth:000089",
+        "auth:000090",
+        "auth:000092",
+        "auth:000093",
+        "auth:000094",
+        "auth:000096",
+        "auth:000100"
+      ],
+      "src_ips": [
+        "203.0.113.75"
+      ],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c004 shows multiple failed password attempts from external IP 203.0.113.75 culminating in a successful login for the deploy user, representing unauthorized access.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f005",
+      "cluster_ids": [
+        "c005"
+      ],
+      "verdict": "malicious",
+      "summary": "Post-exploitation root escalation via sudo following external compromise",
+      "evidence_line_ids": [
+        "auth:000102"
+      ],
+      "src_ips": [],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c005 captures the deploy user spawning a root shell via sudo immediately after unauthorized external access, indicating malicious post-exploitation activity.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f006",
+      "cluster_ids": [
+        "c006",
+        "c010",
+        "c011",
+        "c015",
+        "c017",
+        "c018",
+        "c019"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistypes followed by successful authentication",
+      "evidence_line_ids": [
+        "auth:000107",
+        "auth:000109",
+        "auth:000113",
+        "auth:000116",
+        "auth:000549",
+        "auth:000667",
+        "auth:000600",
+        "auth:000601"
+      ],
+      "src_ips": [
+        "10.0.0.134",
+        "10.0.0.145",
+        "10.0.0.42",
+        "10.0.0.133",
+        "10.0.0.115",
+        "10.0.0.136",
+        "10.0.0.121"
+      ],
+      "users": [
+        "akhan",
+        "asharma",
+        "kdas",
+        "mshah",
+        "npatel",
+        "pgupta",
+        "pmehta",
+        "rjain",
+        "rkumar",
+        "singh",
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Clusters c006, c010, c011, c015, c017, c018, and c019 reflect internal password mistypes followed by success from internal IP addresses, which are dismissed as benign per instructions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f007",
+      "cluster_ids": [
+        "c007"
+      ],
+      "verdict": "malicious",
+      "summary": "Data exfiltration over suspicious egress port",
+      "evidence_line_ids": [
+        "fw:000979"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c007 shows a massive outbound data transfer (150MB) from the SSH server to an external IP on non-standard port 4444, indicating data exfiltration.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f008",
+      "cluster_ids": [
+        "c008"
+      ],
+      "verdict": "malicious",
+      "summary": "External credential spraying attack against multiple accounts",
+      "evidence_line_ids": [
+        "auth:000204",
+        "auth:000206",
+        "auth:000207",
+        "auth:000208",
+        "auth:000209",
+        "auth:000210",
+        "auth:000211",
+        "auth:000212"
+      ],
+      "src_ips": [
+        "203.0.113.31"
+      ],
+      "users": [
+        "akhan",
+        "asharma",
+        "deploy",
+        "mshah",
+        "npatel",
+        "pmehta",
+        "rkumar",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c008 displays a credential spraying attack where an external IP attempts single password guesses across numerous user accounts rapidly.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f009",
+      "cluster_ids": [
+        "c012"
+      ],
+      "verdict": "benign",
+      "summary": "Legitimate search query containing an apostrophe",
+      "evidence_line_ids": [
+        "web:002264"
+      ],
+      "src_ips": [
+        "10.0.0.43"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c012 represents a legitimate search query containing an apostrophe (O'Brien), which is explicitly dismissed as benign per instructions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f010",
+      "cluster_ids": [
+        "c013"
+      ],
+      "verdict": "malicious",
+      "summary": "SQL injection attack using automated scanner tool",
+      "evidence_line_ids": [
+        "web:002339",
+        "web:002341",
+        "web:002343"
+      ],
+      "src_ips": [
+        "203.0.113.35"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c013 demonstrates web application attacks including SQL injection payloads and UNION SELECT statements originating from an external IP running sqlmap.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f011",
+      "cluster_ids": [
+        "c014"
+      ],
+      "verdict": "benign",
+      "summary": "Expected administrator sudo activity during working hours",
+      "evidence_line_ids": [
+        "auth:001129"
+      ],
+      "src_ips": [],
+      "users": [
+        "sysadmin"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c014 shows expected admin sudo activity by the designated admin user (sysadmin) during normal working hours (12:00 local time / 6:30 UTC), which is dismissed as benign per instructions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f012",
+      "cluster_ids": [
+        "c016"
+      ],
+      "verdict": "malicious",
+      "summary": "Path traversal attack targeting sensitive system files",
+      "evidence_line_ids": [
+        "web:004315",
+        "web:004317",
+        "web:004319"
+      ],
+      "src_ips": [
+        "203.0.113.61"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c016 shows repeated path traversal attempts requesting '../../etc/passwd' from an external IP address.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f013",
+      "cluster_ids": [
+        "c020"
+      ],
+      "verdict": "benign",
+      "summary": "Known nightly backup transfer to backup server",
+      "evidence_line_ids": [
+        "fw:015455"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c020 represents a large outbound data transfer to the known backup server (192.0.2.10), which is explicitly recognized as benign nightly backup activity.",
+      "status": "validated"
+    }
+  ]
+}

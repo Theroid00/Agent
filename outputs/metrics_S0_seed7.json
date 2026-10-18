@@ -1,0 +1,138 @@
+{
+  "system": "S0",
+  "seed": 7,
+  "detected_scenarios": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6"
+  ],
+  "detection_recall": 1.0,
+  "incident_precision": 0.3333333333333333,
+  "false_positives": 18,
+  "benign_case_false_positives": 5,
+  "background_false_positives": 13,
+  "mapping_accuracy": null,
+  "a6_stages": 2,
+  "a6_correlated": false,
+  "hallucination_rate": 0,
+  "nonexistent_technique_ids": 0,
+  "unretrieved_technique_ids": null,
+  "invalid_evidence_refs": 0,
+  "invalid_evidence_rate": 0.0,
+  "runtime_s": 1.9849999999860302,
+  "llm_calls": 0,
+  "tokens": 0,
+  "errors": [
+    {
+      "kind": "false_positive",
+      "item": "s0-i1",
+      "matched_scenario": "B4",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i7",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i8",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i11",
+      "matched_scenario": "B1",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i12",
+      "matched_scenario": "B3",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i14",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i15",
+      "matched_scenario": "B2",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i16",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i17",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i18",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i19",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i20",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i22",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i23",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i24",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i25",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i26",
+      "matched_scenario": "__background__",
+      "cause": "Benign/background evidence retained as an incident"
+    },
+    {
+      "kind": "false_positive",
+      "item": "s0-i27",
+      "matched_scenario": "B5",
+      "cause": "Benign/background evidence retained as an incident"
+    }
+  ]
+}

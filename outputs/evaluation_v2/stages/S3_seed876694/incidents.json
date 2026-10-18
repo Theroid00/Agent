@@ -1,0 +1,202 @@
+{
+  "incidents": [
+    {
+      "incident_id": "inc-001",
+      "finding_ids": [
+        "f002"
+      ],
+      "title": "Brute-Force Attack against SSH Root User",
+      "severity": "high",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.35"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T19:33:18Z",
+          "finding_id": "f002",
+          "technique_id": "T1110",
+          "description": "Repeated failed login attempts targeting the root user from external IP 203.0.113.35."
+        }
+      ],
+      "rationale": "Standalone attack incident covering the brute-force attempt against root from 203.0.113.35.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-002",
+      "finding_ids": [
+        "f003"
+      ],
+      "title": "External Port Scanning from 203.0.113.188",
+      "severity": "medium",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.188"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T20:33:18Z",
+          "finding_id": "f003",
+          "technique_id": "T1595",
+          "description": "Active reconnaissance scanning activity directed at ssh-srv from 203.0.113.188."
+        }
+      ],
+      "rationale": "Standalone port scanning incident from external source IP 203.0.113.188 with disconnected time window from subsequent activity.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-003",
+      "finding_ids": [
+        "f004",
+        "f005",
+        "f007"
+      ],
+      "title": "Compromise of User Deploy, Privilege Escalation, and Data Exfiltration",
+      "severity": "critical",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.188"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T20:43:18Z",
+          "finding_id": "f004",
+          "technique_id": "T1110",
+          "description": "Brute-force attack followed by successful authentication for user deploy from 203.0.113.188."
+        },
+        {
+          "order": 2,
+          "ts_utc": "2026-10-16T20:50:18Z",
+          "finding_id": "f005",
+          "technique_id": "T1548.003",
+          "description": "Compromised user deploy executes sudo to escalate privileges to root."
+        },
+        {
+          "order": 3,
+          "ts_utc": "2026-10-16T21:03:18Z",
+          "finding_id": "f007",
+          "technique_id": "T1041",
+          "description": "Large outbound data transfer to an external suspicious IP on port 4444 indicating data exfiltration."
+        }
+      ],
+      "rationale": "Chronologically linked attack chain originating from 203.0.113.188 leading to successful credential access, privilege escalation, and outbound data exfiltration.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-004",
+      "finding_ids": [
+        "f008"
+      ],
+      "title": "Credential Spraying Attack from 203.0.113.117",
+      "severity": "high",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.117"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T23:33:18Z",
+          "finding_id": "f008",
+          "technique_id": "T1110.003",
+          "description": "Password spraying pattern targeting multiple internal users from external IP 203.0.113.117."
+        }
+      ],
+      "rationale": "Standalone credential spraying incident from external source IP 203.0.113.117.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-005",
+      "finding_ids": [
+        "f009"
+      ],
+      "title": "External Port Scanning from 203.0.113.92",
+      "severity": "medium",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.92"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T02:33:18Z",
+          "finding_id": "f009",
+          "technique_id": "T1595",
+          "description": "Active reconnaissance scanning activity directed at ssh-srv from 203.0.113.92."
+        }
+      ],
+      "rationale": "Standalone port scanning incident from external source IP 203.0.113.92.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-006",
+      "finding_ids": [
+        "f014"
+      ],
+      "title": "SQL Injection and Vulnerability Scanning against Web Server",
+      "severity": "high",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.112"
+      ],
+      "affected_assets": [
+        "web-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T05:33:18Z",
+          "finding_id": "f014",
+          "technique_id": "T1190",
+          "description": "SQL injection exploitation payloads and sqlmap tool signatures observed against web-srv."
+        }
+      ],
+      "rationale": "Standalone web application exploitation incident from external source IP 203.0.113.112.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-007",
+      "finding_ids": [
+        "f017"
+      ],
+      "title": "Directory Traversal Attack against Web Server",
+      "severity": "high",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.64"
+      ],
+      "affected_assets": [
+        "web-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T08:33:18Z",
+          "finding_id": "f017",
+          "technique_id": "T1083",
+          "description": "Directory traversal attack attempting to read sensitive system files such as /etc/passwd on web-srv."
+        }
+      ],
+      "rationale": "Standalone discovery and path traversal incident from external source IP 203.0.113.64.",
+      "status": "validated"
+    }
+  ]
+}

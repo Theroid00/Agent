@@ -1,0 +1,29 @@
+{
+  "system": "S3",
+  "seed": 812399,
+  "detected_scenarios": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6"
+  ],
+  "detection_recall": 1.0,
+  "incident_precision": 1.0,
+  "false_positives": 0,
+  "benign_case_false_positives": 0,
+  "background_false_positives": 0,
+  "mapping_accuracy": 0.9,
+  "a6_stages": 5,
+  "a6_correlated": true,
+  "hallucination_rate": 0.0,
+  "nonexistent_technique_ids": 0,
+  "unretrieved_technique_ids": 0,
+  "invalid_evidence_refs": 0,
+  "invalid_evidence_rate": 0.0,
+  "runtime_s": 129.4529999999795,
+  "llm_calls": 4,
+  "tokens": 111057,
+  "errors": []
+}

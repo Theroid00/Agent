@@ -1,0 +1,144 @@
+{
+  "mappings": [
+    {
+      "finding_id": "f-c002",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "External IP 203.0.113.212 repeatedly failed password authentication for the root user on the SSH server."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c003",
+      "techniques": [
+        {
+          "technique_id": "T1595.001",
+          "name": "Scanning IP Blocks",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "External source IP 203.0.113.130 performed sequential port scanning against the SSH server."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c004-fail",
+      "techniques": [
+        {
+          "technique_id": "T1110.001",
+          "name": "Password Guessing",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Initial failed password attempts from external IP 203.0.113.130 for user deploy."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c004-succ",
+      "techniques": [
+        {
+          "technique_id": "T1021.004",
+          "name": "SSH",
+          "tactic": "lateral-movement",
+          "is_primary": true,
+          "justification": "Successful SSH session established after credential failures from an external IP address."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c005",
+      "techniques": [
+        {
+          "technique_id": "T1548.003",
+          "name": "Sudo and Sudo Caching",
+          "tactic": "privilege-escalation",
+          "is_primary": true,
+          "justification": "User deploy spawned /bin/bash as root via sudo following an externally sourced login session."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c006",
+      "techniques": [
+        {
+          "technique_id": "T1041",
+          "name": "Exfiltration Over C2 Channel",
+          "tactic": "exfiltration",
+          "is_primary": true,
+          "justification": "Large outbound transfer of 150,000,000 bytes to external suspicious IP 198.51.100.200 on port 4444."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c007",
+      "techniques": [
+        {
+          "technique_id": "T1110.003",
+          "name": "Password Spraying",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "External IP 203.0.113.224 attempted authentication across multiple distinct usernames in a short timeframe."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c008",
+      "techniques": [
+        {
+          "technique_id": "T1595.002",
+          "name": "Vulnerability Scanning",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "External source IP 203.0.113.192 conducted sequential port scans against the SSH server."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c014",
+      "techniques": [
+        {
+          "technique_id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactic": "initial-access",
+          "is_primary": true,
+          "justification": "External IP 203.0.113.71 using sqlmap tool to perform SQL injection attacks against web endpoints."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c018",
+      "techniques": [
+        {
+          "technique_id": "T1083",
+          "name": "File and Directory Discovery",
+          "tactic": "discovery",
+          "is_primary": true,
+          "justification": "External IP 203.0.113.183 attempted path traversal to access /etc/passwd."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    }
+  ]
+}

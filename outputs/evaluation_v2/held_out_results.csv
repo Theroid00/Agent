@@ -1,0 +1,7 @@
+system,seed,detection_recall,incident_precision,false_positives,benign_case_false_positives,background_false_positives,mapping_accuracy,a6_stages,a6_correlated,hallucination_rate,nonexistent_technique_ids,unretrieved_technique_ids,invalid_evidence_refs,invalid_evidence_rate,runtime_s,llm_calls,tokens
+S0,812399,1.0,0.34615384615384615,17,5,12,,2,False,0.0,0,,0,0.0,1.875,0,0
+S0,876694,1.0,0.32142857142857145,19,5,14,,2,False,0.0,0,,0,0.0,1.875,0,0
+S1,812399,0.3333333333333333,1.0,0,0,0,0.6666666666666666,5,True,0.1111111111111111,1,,0,0.0,13.938000000081956,1,26418
+S1,876694,0.5,1.0,0,0,0,0.6666666666666666,4,True,0.125,1,,0,0.0,14.047000000020489,1,26876
+S3,812399,1.0,1.0,0,0,0,0.9,5,True,0.0,0,0.0,0,0.0,129.4529999999795,4,111057
+S3,876694,1.0,1.0,0,0,0,0.7,4,True,0.0,0,0.0,0,0.0,132.6720000000205,5,111514

@@ -8,22 +8,16 @@
 
 ## Current
 
-- **Fresh evaluation authorized (D37):** V2 evaluation uses development seed 42 and predeclared unused held-out seeds 812399 and 876694. Only seed metadata changed; original approved tests, evaluator, prompts, models and thresholds are unchanged. Development provenance is refreshed through cached responses in outputs/evaluation_v2. System freeze D38 passed the full gate (`82 passed, 1 deselected, 26 warnings in 55.63s`) before either new dataset was generated. Source/configuration SHA256 is d6ab1afbe2917d6f187c59be3551859dbf19cb022e955eeb64c3f4612facd1a0. Original artifacts remain preserved. Git commits are authorized (D36); no remote push or Colab work.
-
-- **Completed development repair (D34/D35):** Stage-completeness/coherence checks, required-ID hand-offs, bounded retries, focused login retrieval, independent-record salvage and explicit incomplete status are implemented. The full gate reports `82 passed, 1 deselected, 26 warnings in 52.49s`. All 7 revised notebook code cells completed. Development recall is 1.0, mapping accuracy 0.9, false positives 0, invalid evidence/nonexistent/unretrieved technique IDs 0, and A6 stages 5. D33 outputs/notebooks remain unchanged; revision output uses outputs/revision_v2. No revised held-out run or new freeze; Colab is outside current scope.
-
-- **Scope:** Full implementation authorized under D14; previous offline-only delivery is historical. In this Windows session, the owner saved a local API key and explicitly authorized running the notebook (D30).
-- **Local startup:** Windows checkout at D:\agent uses .venv, setup-windows.cmd/setup-windows.ps1, run-local.cmd and run-notebook.cmd. Setup completed: pinned application dependencies plus JupyterLab installed, pip check passed, project kernel registered and CLI help passed. The ignored .env is configured privately; never print its contents. The Mac launcher remains available. Colab uses its own Secrets.
-- **Delivered:** Python modules, tests, CLI, pinned KB/RAG, synthetic logs, rules, schemas/validators, golden evaluator, baselines, cached LLM wrapper, four sequential CrewAI stages, results/charts, README and self-contained notebook.
-- **Windows verification:** Full non-live test and freeze gates passed; the freeze gate reports `61 passed, 1 deselected, 26 warnings in 56.03s`. Actual retrieval passes 6/6. pip check and CLI startup passed. The actual CrewAI framework and live Gemini notebook runs pass in this Windows environment; the Mac credential-directory restriction in P8 is historical.
-- **Notebook:** All 14 code cells completed on Windows with the owner's key; outputs saved in notebooks/Cyber_Threat_MultiAgent.executed.ipynb. Results tables, charts, error analysis and the real A6 report were generated. Fresh Colab is unverified.
-- **Measured results:** outputs/results_by_seed.csv contains 9 real S0/S1/S3 runs. S3 detection_recall is 0.16666666666666666 on each seed, with 0 false positives and 0 invalid evidence/nonexistent/unretrieved IDs. It correlates A6 but misses A1–A5 (P15). Dev runtime is 113.71900000004098 seconds with 4 LLM calls. These results miss detection targets.
-- **Benchmark / System:** System freeze D33 was recorded before held-out generation/execution. No source/configuration tuning followed. No benchmark/freeze Git tags were created. Fresh-Colab verification and the full submission checklist remain pending.
-- **Git:** Cloned the supplied GitHub repository on main at `8416049`. The owner now authorizes local commits of completed work and future milestones (D36), superseding the earlier no-commit instruction. This checkpoint records Windows setup, original execution and the V2 development repair. No remote push or new System freeze is authorized.
+- **Fresh V2 evaluation complete:** Owner-approved D37 uses development 42 and fresh held-out 812399/876694. D38 froze source/configuration SHA256 d6ab1afbe2917d6f187c59be3551859dbf19cb022e955eeb64c3f4612facd1a0 at pre-evaluation commit a2e4246, tagged system-freeze-v2 and benchmark-v2, before either fresh dataset was generated. No tuning followed exposure.
+- **Measured S3:** Held-out recall 1.0 on both seeds, false positives 0, mapping_accuracy 0.9 / 0.7, A6 evidence stages 5 / 4, invalid evidence/nonexistent/unretrieved IDs 0. Coverage is complete on both. The second seed misses the per-seed mapping target; the 0.8 held-out mean does not establish every seed passed (P19/P20).
+- **Comparison:** Held-out S0 averages 18.0 false positives. S1 averages recall 0.41666666666666663 and mapping_accuracy 0.6666666666666666; S3 averages recall 1.0 and mapping_accuracy 0.8. S1 has one nonexistent ID on each fresh seed; S3 has zero. Results concern this synthetic generator only.
+- **Artifacts / verification:** All 8 evaluation notebook code cells completed; notebook gate reports `82 passed, 1 deselected, 26 warnings in 51.35s`. All 9 real S0/S1/S3 run files have matching frozen fingerprints and identical per-seed input bytes. Preservation checks pass for 108 original artifacts, approved tests and evaluator files. New results/report/notebook are under outputs/evaluation_v2 and notebooks/Cyber_Threat_MultiAgent.v2.evaluation.executed.ipynb. Original D33 and V2 development artifacts remain intact.
+- **System / environment:** Only seed metadata changed from the completed coverage repair. Prompts, models, thresholds, retrieval, generator distributions, validators, approved tests and evaluate.py are unchanged. Windows .venv and launchers are configured; run-notebook.cmd prefers the new executed evaluation notebook. API keys are private in ignored .env. P18 direct-invocation encoding issue is fixed using UTF-8 mode.
+- **Git / scope:** Local milestone commits are authorized (D36). Frozen evaluation completed under D37/D38; D39 records honest reporting of the target failure. No remote push, Colab work or real-world validation. Both fresh seeds are now exposed and cannot be reused as unseen evidence for future tuning.
 
 ## What's next
 
-Finish the existing freeze gates, record and commit/tag the exact V2 source/configuration before generating either new held-out dataset. Run S0/S1/S3 on identical saved inputs, without tuning or forced held-out reruns. Execute the separate Windows evaluation notebook and publish its measured tables, error analysis, A6 report and limitations locally; then commit results. Preserve all original D33 and V2 development artifacts. Colab remains excluded.
+Review the executed Windows evaluation notebook, target checks and mapping error analysis. This evaluation is complete and preserved, including the 0.7 mapping failure on seed 876694. Any further repair is a separate approved test-first development cycle on development data, followed by a new freeze and separately approved unseen evaluation data. Do not tune or force rerun these exposed held-out seeds. Colab remains outside the current focus; continue committing completed local milestones.
 
 ---
 
@@ -46,14 +40,14 @@ Finish the existing freeze gates, record and commit/tag the exact V2 source/conf
 
 | Phase | Name | Status | Tests green | Exit checks passed | Date done |
 |-------|------|--------|-------------|--------------------|-----------|
-| 0 | Planning, docs & repository setup | ✅ Files complete; Windows Git checkpoint authorized | Structural validation | P3 historical restriction resolved on Windows (D36) | 2026-10-19 |
-| 1 | Setup + ATT&CK RAG | 🟡 Implemented; live smoke pending | T-KB, T-RAG | 706 techniques; 13 catalog IDs verified; real retrieval 6/6; LLM call deferred | |
-| 2 | Log generator + parser | 🟡 Dev complete; held-out deferred | T-DATA, T-PARSE | All A/B cases, all dev lines parse; source samples inspected; other seeds wait for freeze | |
-| 3 | Test & benchmark harness (no agents) | 🟡 Implemented; freeze pending | T-RULES, T-SCHEMA, T-VALID, T-EVAL | Dev scenario/stage coverage and budget pass; S0 saved; all-seed checks deferred | |
-| 4 | Agents 1–2 | 🟡 Implemented; framework/live pending | T-AGENT contracts | Pydantic, tool isolation and invalid-ID retry pass with fakes; real framework skip (P8) | |
-| 5 | Agents 3–4 + full crew | 🟡 Implemented; real run pending | T-AGENT, T-E2E contracts | Offline hand-offs/provenance/mitigations checked; real runtime/A6 pending | |
-| 6 | Baselines + held-out evaluation | 🟡 S0 measured; S1/S3 pending | Golden evaluation and mock E2E | S0 CSVs/charts/error analysis generated; full comparison pending | |
-| 7 | Polish + submission | 🟡 Artifacts assembled; submission pending | Offline suite | README and notebook assembled; fresh-Colab/live verification pending | |
+| 0 | Planning, docs & repository setup | ✅ Windows Git checkpoint complete | Structural validation | P3 resolved; local commits enabled | 2026-10-19 |
+| 1 | Setup + ATT&CK RAG | ✅ Windows KB/RAG/live integration verified | T-KB, T-RAG | Calibrated real retrieval 6/6; actual Gemini calls saved | 2026-10-19 |
+| 2 | Log generator + parser | ✅ V2 datasets generated after freeze and parsed | T-DATA, T-PARSE | Development and both fresh seeds used identically by all systems | 2026-10-19 |
+| 3 | Test & benchmark harness | ✅ Existing contracts retained; V2 seeds approved | T-RULES, T-SCHEMA, T-VALID, T-EVAL | Evaluator and original approved tests unchanged | 2026-10-19 |
+| 4 | Agents 1–2 | ✅ Contracts and real Windows stages exercised | T-AGENT | Saved findings/mappings; semantic errors preserved in P19/P20 | 2026-10-19 |
+| 5 | Agents 3–4 + full crew | ✅ V2 frozen before unseen data | T-AGENT, T-E2E, coverage regressions | Full coverage and grounding gates; D38 | 2026-10-19 |
+| 6 | Baselines + held-out evaluation | ✅ Evaluation complete; mapping target missed on one seed | Full offline suite | All 9 runs, comparisons, error analysis and limitations saved | 2026-10-19 |
+| 7 | Polish + submission | 🟡 Windows notebook/report complete; full submission pending | 82 passed, 1 deselected | 8 code cells executed; fresh-Colab check excluded/unverified | |
 
 Status keys: ⬜ Not started · 🟡 In progress · ✅ Done · 🔴 Blocked
 
@@ -64,43 +58,43 @@ Status keys: ⬜ Not started · 🟡 In progress · ✅ Done · 🔴 Blocked
 | Freeze | Date | decisions.md entry |
 |--------|------|--------------------|
 | Benchmark v1 | — | — |
-| System freeze | 2026-10-19 | D33 |
+| Original System freeze | 2026-10-19 | D33 |
+| V2 protocol / benchmark | 2026-10-19 | D37; benchmark-v2 |
+| V2 System freeze | 2026-10-19 | D38; system-freeze-v2 |
 
 ---
 
 ## Numbers board (copied from cell output)
 
-### Dev — seed 42
-| Metric | S0 rules-only | S1 single LLM | S3 full system | Target |
-|--------|---------------|---------------|----------------|--------|
-| Detection recall (A1–A6) | 1.0 (A1–A6) | pending | pending | ≥ 5/6 |
-| False positives (B1–B5) | 5 | pending | pending | ≤ 1 |
-| Mapping accuracy | n/a | pending | pending | ≥ 80% |
-| A6 chain correlated (stages) | 2; false | pending | pending | ≥ 4/5 |
-| Hallucinated technique IDs | n/a (no claims) | pending | pending | 0 (final) |
-| Invalid evidence refs | 0 | pending | pending | 0 (final) |
-| Runtime (seconds) | 0.9093201659998158 | pending | pending | ≤ 15 min |
-| LLM calls | 0 | pending | pending | — |
+V2: seed 42 is development; 812399/876694 are fresh held-out. A6 stages measure evidence coverage, not the number of correctly mapped timeline steps. The mapping target is at least 0.8 per seed; 876694 fails it.
 
-### Held-out — seeds 7 and 2026 (run once, after System freeze)
-| Metric | S0 | S1 | S3 | Target |
-|--------|----|----|----|--------|
-| Detection recall (A1–A6) | | | | ≥ 5/6 per seed |
-| False positives (B1–B5) | | | | ≤ 1 per seed |
-| Mapping accuracy | | | | ≥ 80% |
-| A6 chain correlated | | | | ≥ 2 of 3 seeds overall |
-| Hallucinated technique IDs | | | | 0 (final) |
-| Invalid evidence refs | | | | 0 (final) |
+| Seed | System | Recall | Total FP | Mapping accuracy | A6 stages | Runtime seconds | New LLM calls |
+|---|---|---|---|---|---|---|---|
+| 42 | S0 | 1.0 | 11 | n/a | 2 | 1.702999999979511 | 0 |
+| 42 | S1 | 0.3333333333333333 | 0 | 0.6 | 4 | 1.7040000000270084 | 0 |
+| 42 | S3 | 1.0 | 0 | 0.9 | 5 | 78.375 | 0 |
+| 812399 | S0 | 1.0 | 17 | n/a | 2 | 1.875 | 0 |
+| 812399 | S1 | 0.3333333333333333 | 0 | 0.6666666666666666 | 5 | 13.938000000081956 | 1 |
+| 812399 | S3 | 1.0 | 0 | 0.9 | 5 | 129.4529999999795 | 4 |
+| 876694 | S0 | 1.0 | 19 | n/a | 2 | 1.875 | 0 |
+| 876694 | S1 | 0.5 | 0 | 0.6666666666666666 | 4 | 14.047000000020489 | 1 |
+| 876694 | S3 | 1.0 | 0 | 0.7 | 4 | 132.6720000000205 | 5 |
+
+Original measurements remain in outputs/ and the D33 snapshot; the earlier coverage development comparison remains in outputs/revision_v2/.
 
 ---
 
 ## Session log (newest first)
 
 ### Session 9 — 2026-10-19 — Approved fresh V2 evaluation
-- **Request:** Owner explicitly approves the fresh evaluation set, freeze before generation, S0/S1/S3 comparison and measured Windows notebook/report update.
-- **Protocol:** D37 predeclares development 42 and fresh held-out 812399/876694. Only seed metadata changes; approved tests, evaluator and system behavior stay fixed. New data/results are isolated under outputs/evaluation_v2. No fresh data is generated until the source/configuration freeze is recorded and committed.
-- **Development / freeze:** Refreshed S0/S1/S3 provenance on byte-identical development inputs; S1 uses 1 cached response and S3 uses 4, with 0 new live calls and complete S3 coverage. D38 recorded after `82 passed, 1 deselected, 26 warnings in 55.63s`; retrieval/grounding gates pass. Neither fresh dataset exists at freeze. Preservation check passes for 108 original artifacts/tests/evaluator files. P18 direct-invocation encoding issue is fixed using UTF-8 mode.
-- **Artifacts:** Separate evaluation notebook assembled with 8 code cells. Final measured results and completed execution remain pending.
+- **Request:** Owner approved fresh data, a freeze before generation, S0/S1/S3 comparison and measured Windows notebook/report update.
+- **Done:** D37 predeclared unused seeds; D38 freeze commit a2e4246 and versioned tags preceded generation. All 9 real runs and 8 notebook cells completed. Identical input fingerprints, complete S3 coverage, frozen source and 108 protected original artifacts verified.
+- **Tests:** Freeze gate `82 passed, 1 deselected, 26 warnings in 55.63s`; final notebook gate `82 passed, 1 deselected, 26 warnings in 51.35s`. Original approved tests/evaluator unchanged. No model rerun or tuning after exposure.
+- **Numbers:** S3 held-out recall 1.0 / 1.0, mapping_accuracy 0.9 / 0.7, FP 0 / 0, A6 stages 5 / 4, invalid evidence/nonexistent/unretrieved IDs 0. Runtime_s 129.4529999999795 / 132.6720000000205, new LLM calls 4 / 5. Held-out means: S0 FP 18.0; S1 recall 0.41666666666666663 and mapping 0.6666666666666666; S3 recall 1.0 and mapping 0.8.
+- **Exit checks:** Completed evaluation/artifacts ✅; freeze-before-generation ✅; original preservation ✅; recall/FP/grounding/runtime ✅; per-seed mapping ❌ on 876694 (P20). Fresh-Colab remains unverified/excluded, not claimed complete.
+- **Decisions/problems:** D37–D39; P18 fixed by UTF-8 invocation; P19/P20 preserved semantic mapping failures. Initial informal A6 count for the second seed was corrected to the measured four.
+- **Git:** Pre-evaluation commit a2e4246, system-freeze-v2 / benchmark-v2. Final measured results/report saved in the following local milestone commit, tagged phase6-done to record evaluation completion (not all targets passing); no push.
+- **Needs input / next:** Nothing to finish this evaluation. Further repair needs a separately approved development and unseen-evaluation cycle; both fresh seeds are now exposed.
 
 ### Session 8 — 2026-10-19 — Git checkpoint authorized
 - **Request:** Owner authorizes committing previous work and future milestones, replacing the no-commit preference.

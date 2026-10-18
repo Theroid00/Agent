@@ -1,0 +1,770 @@
+{
+  "findings": [
+    {
+      "finding_id": "f001",
+      "cluster_ids": [
+        "c001"
+      ],
+      "verdict": "benign",
+      "summary": "Known monitoring service health checks from mon-01 to web-srv.",
+      "evidence_line_ids": [
+        "fw:000001",
+        "fw:001025",
+        "fw:002007",
+        "fw:002949",
+        "fw:005078",
+        "fw:007867",
+        "fw:010705",
+        "fw:013579",
+        "fw:014835",
+        "fw:015797"
+      ],
+      "src_ips": [
+        "10.0.0.5"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c001 represents known monitoring scans from the monitoring host (10.0.0.5) to web-srv.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f002",
+      "cluster_ids": [
+        "c002"
+      ],
+      "verdict": "malicious",
+      "summary": "Brute-force attack against root user via SSH from external IP 203.0.113.35.",
+      "evidence_line_ids": [
+        "auth:000042",
+        "auth:000043",
+        "auth:000044",
+        "auth:000046",
+        "auth:000047",
+        "auth:000048",
+        "auth:000049",
+        "auth:000051",
+        "auth:000052",
+        "auth:000053"
+      ],
+      "src_ips": [
+        "203.0.113.35"
+      ],
+      "users": [
+        "root"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c002 shows repeated failed login attempts for root from an external IP address, indicating an unauthorized brute-force attack.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f003",
+      "cluster_ids": [
+        "c003"
+      ],
+      "verdict": "malicious",
+      "summary": "External port scanning activity from 203.0.113.188 against ssh-srv.",
+      "evidence_line_ids": [
+        "fw:000788",
+        "fw:000790",
+        "fw:000793",
+        "fw:000795",
+        "fw:000797",
+        "fw:000800",
+        "fw:000802",
+        "fw:000804",
+        "fw:000807",
+        "fw:000809"
+      ],
+      "src_ips": [
+        "203.0.113.188"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c003 represents unauthorized external port scanning from 203.0.113.188.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f004",
+      "cluster_ids": [
+        "c004"
+      ],
+      "verdict": "malicious",
+      "summary": "External brute-force attack followed by successful login for user deploy from 203.0.113.188.",
+      "evidence_line_ids": [
+        "auth:000090",
+        "auth:000091",
+        "auth:000093",
+        "auth:000094",
+        "auth:000095",
+        "auth:000098",
+        "auth:000100",
+        "auth:000101",
+        "auth:000103",
+        "auth:000107"
+      ],
+      "src_ips": [
+        "203.0.113.188"
+      ],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c004 shows multiple failed password attempts followed by a successful login from an external IP address (compromised account/session).",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f005",
+      "cluster_ids": [
+        "c005"
+      ],
+      "verdict": "suspicious",
+      "summary": "User deploy executes sudo to root outside standard sysadmin administrative workflows.",
+      "evidence_line_ids": [
+        "auth:000109"
+      ],
+      "src_ips": [],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c005 indicates that user deploy escalated privileges via sudo to root after an external compromise.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f006",
+      "cluster_ids": [
+        "c006"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success for internal user workflow.",
+      "evidence_line_ids": [
+        "auth:000111",
+        "auth:000128"
+      ],
+      "src_ips": [
+        "10.0.0.128"
+      ],
+      "users": [
+        "deploy",
+        "npatel"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c006 represents an internal password mistype from an internal network IP followed by a successful session.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f007",
+      "cluster_ids": [
+        "c007"
+      ],
+      "verdict": "malicious",
+      "summary": "Suspicious large outbound data transfer to an external IP on non-standard port 4444.",
+      "evidence_line_ids": [
+        "fw:000986"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c007 exhibits unauthorized egress traffic with large data volume to an external suspicious IP and port (potential data exfiltration).",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f008",
+      "cluster_ids": [
+        "c008"
+      ],
+      "verdict": "malicious",
+      "summary": "Credential spraying attack from external IP 203.0.113.117 against multiple internal users.",
+      "evidence_line_ids": [
+        "auth:000200",
+        "auth:000201",
+        "auth:000202",
+        "auth:000203",
+        "auth:000204",
+        "auth:000205",
+        "auth:000207",
+        "auth:000208"
+      ],
+      "src_ips": [
+        "203.0.113.117"
+      ],
+      "users": [
+        "akhan",
+        "asharma",
+        "deploy",
+        "mshah",
+        "npatel",
+        "pmehta",
+        "rkumar",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c008 shows a credential spraying pattern targeting multiple users from an external IP.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f009",
+      "cluster_ids": [
+        "c009"
+      ],
+      "verdict": "malicious",
+      "summary": "External port scanning activity from 203.0.113.92 against ssh-srv.",
+      "evidence_line_ids": [
+        "fw:002976",
+        "fw:002978",
+        "fw:002981",
+        "fw:002983",
+        "fw:002985",
+        "fw:002988",
+        "fw:002990",
+        "fw:002992",
+        "fw:002995",
+        "fw:002997"
+      ],
+      "src_ips": [
+        "203.0.113.92"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c009 represents unauthorized external port scanning.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f010",
+      "cluster_ids": [
+        "c010"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial internal mistypes followed by successful logins.",
+      "evidence_line_ids": [
+        "auth:000445",
+        "auth:000461",
+        "auth:000476",
+        "auth:000479",
+        "auth:000523",
+        "auth:000615",
+        "auth:000667",
+        "auth:000700",
+        "auth:000701"
+      ],
+      "src_ips": [
+        "10.0.0.119"
+      ],
+      "users": [
+        "akhan",
+        "mshah",
+        "npatel",
+        "pmehta",
+        "rjain",
+        "rkumar",
+        "singh"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c010 shows internal password mistypes followed by successful user sessions from an internal IP.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f011",
+      "cluster_ids": [
+        "c011"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success for user asharma.",
+      "evidence_line_ids": [
+        "auth:000627",
+        "auth:000629",
+        "auth:000631",
+        "auth:000634"
+      ],
+      "src_ips": [
+        "10.0.0.42"
+      ],
+      "users": [
+        "asharma"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c011 reflects internal password mistypes followed by a successful login from an internal IP address.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f012",
+      "cluster_ids": [
+        "c012"
+      ],
+      "verdict": "benign",
+      "summary": "Internal user authentication with initial failure followed by successful session.",
+      "evidence_line_ids": [
+        "auth:000849",
+        "auth:000858"
+      ],
+      "src_ips": [
+        "10.0.0.119"
+      ],
+      "users": [
+        "asharma",
+        "rjain"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c012 contains internal password mistypes followed by success.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f013",
+      "cluster_ids": [
+        "c013"
+      ],
+      "verdict": "benign",
+      "summary": "Legitimate search query containing an apostrophe.",
+      "evidence_line_ids": [
+        "web:002212"
+      ],
+      "src_ips": [
+        "10.0.0.43"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c013 is dismissed as benign due to apostrophes in legitimate searches.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f014",
+      "cluster_ids": [
+        "c014"
+      ],
+      "verdict": "malicious",
+      "summary": "SQL injection attack and vulnerability scanning via sqlmap against web-srv.",
+      "evidence_line_ids": [
+        "web:002255",
+        "web:002256",
+        "web:002258"
+      ],
+      "src_ips": [
+        "203.0.113.112"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c014 exhibits active SQL injection exploitation payloads and sqlmap user-agent signatures from an external IP.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f015",
+      "cluster_ids": [
+        "c015"
+      ],
+      "verdict": "benign",
+      "summary": "Expected admin sudo activity by sysadmin during working hours.",
+      "evidence_line_ids": [
+        "auth:001103"
+      ],
+      "src_ips": [],
+      "users": [
+        "sysadmin"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c015 represents the expected admin user (sysadmin) performing sudo operations during working hours.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f016",
+      "cluster_ids": [
+        "c016"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:001365",
+        "auth:001489",
+        "auth:001603"
+      ],
+      "src_ips": [
+        "10.0.0.135"
+      ],
+      "users": [
+        "asharma",
+        "pmehta",
+        "rjain"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c016 shows internal password mistypes followed by successful sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f017",
+      "cluster_ids": [
+        "c017"
+      ],
+      "verdict": "malicious",
+      "summary": "Directory traversal attack attempting to read /etc/passwd on web-srv.",
+      "evidence_line_ids": [
+        "web:004183",
+        "web:004184",
+        "web:004185"
+      ],
+      "src_ips": [
+        "203.0.113.64"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Cluster c017 shows repeated directory traversal exploitation attempts (../../etc/passwd) from an external IP.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f018",
+      "cluster_ids": [
+        "c018"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:001636",
+        "auth:001640",
+        "auth:001655",
+        "auth:001742",
+        "auth:001817"
+      ],
+      "src_ips": [
+        "10.0.0.138"
+      ],
+      "users": [
+        "akhan",
+        "singh",
+        "troy",
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c018 indicates internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f019",
+      "cluster_ids": [
+        "c019"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:001712",
+        "auth:001786",
+        "auth:001787",
+        "auth:001807",
+        "auth:001866",
+        "auth:001881",
+        "auth:001926"
+      ],
+      "src_ips": [
+        "10.0.0.105"
+      ],
+      "users": [
+        "asharma",
+        "pgupta",
+        "rjain",
+        "rkumar",
+        "srao",
+        "troy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c019 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f020",
+      "cluster_ids": [
+        "c020"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:001884",
+        "auth:002026",
+        "auth:002030",
+        "auth:002044",
+        "auth:002072",
+        "auth:002114"
+      ],
+      "src_ips": [
+        "10.0.0.147"
+      ],
+      "users": [
+        "akhan",
+        "kdas",
+        "pgupta",
+        "rjain",
+        "rkumar",
+        "troy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c020 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f021",
+      "cluster_ids": [
+        "c021"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:001978",
+        "auth:002034",
+        "auth:002074",
+        "auth:002078",
+        "auth:002153",
+        "auth:002199"
+      ],
+      "src_ips": [
+        "10.0.0.145"
+      ],
+      "users": [
+        "akhan",
+        "deploy",
+        "iyer",
+        "mshah",
+        "pgupta"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c021 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f022",
+      "cluster_ids": [
+        "c022"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:002103",
+        "auth:002110",
+        "auth:002177",
+        "auth:002206",
+        "auth:002251",
+        "auth:002308"
+      ],
+      "src_ips": [
+        "10.0.0.143"
+      ],
+      "users": [
+        "mshah",
+        "pgupta",
+        "rkumar",
+        "singh",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c022 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f023",
+      "cluster_ids": [
+        "c023"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:002136",
+        "auth:002172",
+        "auth:002192",
+        "auth:002226",
+        "auth:002231",
+        "auth:002235",
+        "auth:002338"
+      ],
+      "src_ips": [
+        "10.0.0.104"
+      ],
+      "users": [
+        "akhan",
+        "deploy",
+        "mshah",
+        "pmehta",
+        "rjain",
+        "singh",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c023 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f024",
+      "cluster_ids": [
+        "c024"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:002140",
+        "auth:002180",
+        "auth:002209",
+        "auth:002301",
+        "auth:002315",
+        "auth:002362"
+      ],
+      "src_ips": [
+        "10.0.0.102"
+      ],
+      "users": [
+        "asharma",
+        "iyer",
+        "npatel",
+        "singh",
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c024 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f025",
+      "cluster_ids": [
+        "c025"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:002528",
+        "auth:002632",
+        "auth:002689",
+        "auth:002704",
+        "auth:002722"
+      ],
+      "src_ips": [
+        "10.0.0.143"
+      ],
+      "users": [
+        "kdas",
+        "mshah",
+        "srao",
+        "troy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c025 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f026",
+      "cluster_ids": [
+        "c026"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:002721",
+        "auth:002846",
+        "auth:002850"
+      ],
+      "src_ips": [
+        "10.0.0.117"
+      ],
+      "users": [
+        "akhan",
+        "asharma",
+        "rkumar"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c026 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f027",
+      "cluster_ids": [
+        "c027"
+      ],
+      "verdict": "benign",
+      "summary": "Internal authentication session with initial password mistype followed by success.",
+      "evidence_line_ids": [
+        "auth:002764",
+        "auth:002834",
+        "auth:002878"
+      ],
+      "src_ips": [
+        "10.0.0.126"
+      ],
+      "users": [
+        "mshah",
+        "troy",
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c027 shows internal password mistypes followed by successful login sessions.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f028",
+      "cluster_ids": [
+        "c028"
+      ],
+      "verdict": "benign",
+      "summary": "Known nightly backup transfer to backup server.",
+      "evidence_line_ids": [
+        "fw:015444"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Cluster c028 represents known nightly backup transfers to the designated backup server (192.0.2.10).",
+      "status": "validated"
+    }
+  ]
+}

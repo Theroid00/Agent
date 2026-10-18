@@ -1,0 +1,192 @@
+{
+  "incidents": [
+    {
+      "incident_id": "inc-001",
+      "finding_ids": [
+        "f-c002"
+      ],
+      "title": "External Brute-Force Attack Against SSH Server Root User",
+      "severity": "high",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.212"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T19:43:06Z",
+          "finding_id": "f-c002",
+          "technique_id": "T1110",
+          "description": "External IP 203.0.113.212 repeatedly failed password authentication for the root user on the SSH server."
+        }
+      ],
+      "rationale": "Standalone brute-force attack from external IP 203.0.113.212 targeting the root user.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-002",
+      "finding_ids": [
+        "f-c003",
+        "f-c004-fail",
+        "f-c004-succ",
+        "f-c005",
+        "f-c006"
+      ],
+      "title": "Compromise of SSH Server via Port Scan, Credential Access, Privilege Escalation, and Data Exfiltration",
+      "severity": "critical",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.130"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T20:43:06Z",
+          "finding_id": "f-c003",
+          "technique_id": "T1595.001",
+          "description": "External source IP 203.0.113.130 performed sequential port scanning against the SSH server."
+        },
+        {
+          "order": 2,
+          "ts_utc": "2026-10-16T20:53:06Z",
+          "finding_id": "f-c004-fail",
+          "technique_id": "T1110.001",
+          "description": "Initial failed password attempts from external IP 203.0.113.130 for user deploy."
+        },
+        {
+          "order": 3,
+          "ts_utc": "2026-10-16T20:58:06Z",
+          "finding_id": "f-c004-succ",
+          "technique_id": "T1021.004",
+          "description": "Successful SSH session established after credential failures from an external IP address."
+        },
+        {
+          "order": 4,
+          "ts_utc": "2026-10-16T21:00:06Z",
+          "finding_id": "f-c005",
+          "technique_id": "T1548.003",
+          "description": "User deploy spawned /bin/bash as root via sudo following an externally sourced login session."
+        },
+        {
+          "order": 5,
+          "ts_utc": "2026-10-16T21:13:06Z",
+          "finding_id": "f-c006",
+          "technique_id": "T1041",
+          "description": "Large outbound transfer of 150,000,000 bytes to external suspicious IP 198.51.100.200 on port 4444."
+        }
+      ],
+      "rationale": "Linked incident involving port scan, brute force, successful login, root shell (sudo), and outbound transfer originating from the same external source IP and chronological sequence.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-003",
+      "finding_ids": [
+        "f-c007"
+      ],
+      "title": "Credential Spraying Attack from External IP",
+      "severity": "high",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.224"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T23:43:06Z",
+          "finding_id": "f-c007",
+          "technique_id": "T1110.003",
+          "description": "External IP 203.0.113.224 attempted authentication across multiple distinct usernames in a short timeframe."
+        }
+      ],
+      "rationale": "Standalone credential spraying attack from external source IP 203.0.113.224.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-004",
+      "finding_ids": [
+        "f-c008"
+      ],
+      "title": "External Port Scan Against SSH Server",
+      "severity": "medium",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.192"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T02:43:06Z",
+          "finding_id": "f-c008",
+          "technique_id": "T1595.002",
+          "description": "External source IP 203.0.113.192 conducted sequential port scans against the SSH server."
+        }
+      ],
+      "rationale": "Standalone reconnaissance scan from external source IP 203.0.113.192.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-005",
+      "finding_ids": [
+        "f-c014"
+      ],
+      "title": "SQL Injection and Scanning Activity via sqlmap on Web Server",
+      "severity": "high",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.71"
+      ],
+      "affected_assets": [
+        "web-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T05:43:06Z",
+          "finding_id": "f-c014",
+          "technique_id": "T1190",
+          "description": "External IP 203.0.113.71 using sqlmap tool to perform SQL injection attacks against web endpoints."
+        }
+      ],
+      "rationale": "Standalone web exploitation activity from external IP 203.0.113.71.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-006",
+      "finding_ids": [
+        "f-c018"
+      ],
+      "title": "Directory Traversal / LFI Attack Against Web Server",
+      "severity": "medium",
+      "confidence": 1.0,
+      "attacker_ips": [
+        "203.0.113.183"
+      ],
+      "affected_assets": [
+        "web-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T08:43:06Z",
+          "finding_id": "f-c018",
+          "technique_id": "T1083",
+          "description": "External IP 203.0.113.183 attempted path traversal to access /etc/passwd."
+        }
+      ],
+      "rationale": "Standalone directory traversal attack from external IP 203.0.113.183.",
+      "status": "validated"
+    }
+  ]
+}

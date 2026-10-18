@@ -1,0 +1,137 @@
+{
+  "mappings": [
+    {
+      "finding_id": "f002",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Logs show repeated failed login attempts for the root user from an external IP address, indicating an unauthorized brute-force attack."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f003",
+      "techniques": [
+        {
+          "technique_id": "T1595",
+          "name": "Active Scanning",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "Cluster represents unauthorized external port scanning against the ssh-srv host."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f004",
+      "techniques": [
+        {
+          "technique_id": "T1110",
+          "name": "Brute Force",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Multiple failed password attempts followed by a successful login for the deploy user from an external IP address."
+        },
+        {
+          "technique_id": "T1133",
+          "name": "External Remote Services",
+          "tactic": "initial-access",
+          "is_primary": false,
+          "justification": "External remote service access via SSH following brute-force compromise."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f005",
+      "techniques": [
+        {
+          "technique_id": "T1548.003",
+          "name": "Sudo and Sudo Caching",
+          "tactic": "privilege-escalation",
+          "is_primary": true,
+          "justification": "User deploy executed sudo to escalate privileges to root outside standard sysadmin administrative workflows."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f007",
+      "techniques": [
+        {
+          "technique_id": "T1041",
+          "name": "Exfiltration Over C2 Channel",
+          "tactic": "exfiltration",
+          "is_primary": true,
+          "justification": "Unauthorized egress traffic with large data volume to an external suspicious IP and port."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f008",
+      "techniques": [
+        {
+          "technique_id": "T1110.003",
+          "name": "Password Spraying",
+          "tactic": "credential-access",
+          "is_primary": true,
+          "justification": "Credential spraying pattern targeting multiple internal users from an external IP."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f009",
+      "techniques": [
+        {
+          "technique_id": "T1595",
+          "name": "Active Scanning",
+          "tactic": "reconnaissance",
+          "is_primary": true,
+          "justification": "External port scanning activity from an external IP against ssh-srv."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f014",
+      "techniques": [
+        {
+          "technique_id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactic": "initial-access",
+          "is_primary": true,
+          "justification": "SQL injection exploitation payloads and sqlmap user-agent signatures observed against web-srv."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    },
+    {
+      "finding_id": "f017",
+      "techniques": [
+        {
+          "technique_id": "T1083",
+          "name": "File and Directory Discovery",
+          "tactic": "discovery",
+          "is_primary": true,
+          "justification": "Directory traversal attack attempting to read sensitive system files such as /etc/passwd on web-srv."
+        }
+      ],
+      "mapping_confidence": 1.0,
+      "status": "validated"
+    }
+  ]
+}

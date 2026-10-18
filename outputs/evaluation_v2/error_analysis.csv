@@ -1,0 +1,59 @@
+system,seed,kind,item,matched_scenario,cause
+S0,42,false_positive,s0-i1,B4,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i6,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i10,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i11,B1,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i12,B3,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i14,B2,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i15,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i17,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i18,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i19,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i20,B5,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i1,B4,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i9,B1,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i10,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i11,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i12,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i13,B3,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i15,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i16,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i17,B2,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i19,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i20,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i21,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i22,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i23,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i24,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i25,__background__,Benign/background evidence retained as an incident
+S0,812399,false_positive,s0-i26,B5,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i1,B4,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i6,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i10,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i11,B1,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i12,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i13,B3,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i15,B2,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i16,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i18,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i19,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i20,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i21,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i22,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i23,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i24,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i25,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i26,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i27,__background__,Benign/background evidence retained as an incident
+S0,876694,false_positive,s0-i28,B5,Benign/background evidence retained as an incident
+S1,42,miss,A1,A1,Analyst dismissal/correlation
+S1,42,miss,A2,A2,Analyst dismissal/correlation
+S1,42,miss,A3,A3,Analyst dismissal/correlation
+S1,42,miss,A5,A5,Analyst dismissal/correlation
+S1,812399,miss,A1,A1,Analyst dismissal/correlation
+S1,812399,miss,A2,A2,Analyst dismissal/correlation
+S1,812399,miss,A3,A3,Analyst dismissal/correlation
+S1,812399,miss,A5,A5,Analyst dismissal/correlation
+S1,876694,miss,A1,A1,Analyst dismissal/correlation
+S1,876694,miss,A3,A3,Analyst dismissal/correlation
+S1,876694,miss,A5,A5,Analyst dismissal/correlation

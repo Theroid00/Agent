@@ -170,6 +170,7 @@ print('Original artifacts, tests and evaluator preserved:', len(manifest))
 print('Saved report:', str(RUN / 'report.md'))
 print('Completed run files:', len(list(RUN.glob('S*_seed*.json'))))
 ''')
+md((ROOT / 'outputs/evaluation_v2/mapping_error_analysis.md').read_text(encoding='utf-8'))
 notebook = nbf.v4.new_notebook(cells=cells, metadata={'kernelspec': {
     'display_name': 'Python (.venv)', 'language': 'python', 'name': 'python3'}})
 nbf.validate(notebook)

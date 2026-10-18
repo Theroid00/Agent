@@ -1,0 +1,45 @@
+{
+  "system": "S1",
+  "seed": 876694,
+  "detected_scenarios": [
+    "A2",
+    "A4",
+    "A6"
+  ],
+  "detection_recall": 0.5,
+  "incident_precision": 1.0,
+  "false_positives": 0,
+  "benign_case_false_positives": 0,
+  "background_false_positives": 0,
+  "mapping_accuracy": 0.6666666666666666,
+  "a6_stages": 4,
+  "a6_correlated": true,
+  "hallucination_rate": 0.125,
+  "nonexistent_technique_ids": 1,
+  "unretrieved_technique_ids": null,
+  "invalid_evidence_refs": 0,
+  "invalid_evidence_rate": 0.0,
+  "runtime_s": 14.047000000020489,
+  "llm_calls": 1,
+  "tokens": 26876,
+  "errors": [
+    {
+      "kind": "miss",
+      "item": "A1",
+      "matched_scenario": "A1",
+      "cause": "Analyst dismissal/correlation"
+    },
+    {
+      "kind": "miss",
+      "item": "A3",
+      "matched_scenario": "A3",
+      "cause": "Analyst dismissal/correlation"
+    },
+    {
+      "kind": "miss",
+      "item": "A5",
+      "matched_scenario": "A5",
+      "cause": "Analyst dismissal/correlation"
+    }
+  ]
+}

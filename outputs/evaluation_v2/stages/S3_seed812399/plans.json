@@ -1,0 +1,295 @@
+{
+  "plans": [
+    {
+      "incident_id": "inc-001",
+      "executive_summary": "An external brute-force attack was detected from IP 203.0.113.212 targeting the root user account on the SSH server (ssh-srv).",
+      "immediate_actions": [
+        {
+          "action": "Block malicious IP address",
+          "target": "203.0.113.212",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.212 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1018",
+          "name": "User Account Management",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110"
+        }
+      ],
+      "investigation_steps": [
+        "Review authentication logs on ssh-srv for successful or additional failed logins from 203.0.113.212.",
+        "Check if other user accounts were targeted by this IP."
+      ],
+      "prevention": [
+        "Enforce robust password policies and disable direct root login via SSH.",
+        "Implement multi-factor authentication for remote access."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-002",
+      "executive_summary": "Critical multi-stage compromise of the SSH server originating from external IP 203.0.113.130, involving port scanning, credential guessing, successful SSH access using the 'deploy' account, privilege escalation to root via sudo, and data exfiltration to an external IP.",
+      "immediate_actions": [
+        {
+          "action": "Isolate SSH server and block attacker IP",
+          "target": "203.0.113.130",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.130 -j DROP"
+        },
+        {
+          "action": "Block outbound exfiltration destination",
+          "target": "198.51.100.200",
+          "priority": "P1",
+          "example_command": "iptables -A OUTPUT -d 198.51.100.200 -j DROP"
+        },
+        {
+          "action": "Terminate active compromised sessions",
+          "target": "ssh-srv",
+          "priority": "P1",
+          "example_command": "pkill -u deploy"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1056",
+          "name": "Pre-compromise",
+          "for_technique_id": "T1595.001"
+        },
+        {
+          "mitigation_id": "M1051",
+          "name": "Update Software",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110.001"
+        },
+        {
+          "mitigation_id": "M1042",
+          "name": "Disable or Remove Feature or Program",
+          "for_technique_id": "T1021.004"
+        },
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1021.004"
+        },
+        {
+          "mitigation_id": "M1018",
+          "name": "User Account Management",
+          "for_technique_id": "T1021.004"
+        },
+        {
+          "mitigation_id": "M1022",
+          "name": "Restrict File and Directory Permissions",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1028",
+          "name": "Operating System Configuration",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1026",
+          "name": "Privileged Account Management",
+          "for_technique_id": "T1548.003"
+        },
+        {
+          "mitigation_id": "M1031",
+          "name": "Network Intrusion Prevention",
+          "for_technique_id": "T1041"
+        },
+        {
+          "mitigation_id": "M1057",
+          "name": "Data Loss Prevention",
+          "for_technique_id": "T1041"
+        }
+      ],
+      "investigation_steps": [
+        "Audit sudoers configuration and command history on ssh-srv.",
+        "Examine file integrity and inspect files modified around the time of the incident.",
+        "Analyze network connection logs and identify the nature of the data transferred to 198.51.100.200."
+      ],
+      "prevention": [
+        "Strengthen sudo privilege controls and restrict unauthorized escalation.",
+        "Implement egress filtering to block unauthorized outbound connections.",
+        "Deploy multi-factor authentication for all remote administrative access."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-003",
+      "executive_summary": "A credential spraying attack was observed from external IP 203.0.113.224 targeting multiple user accounts on the SSH server in a short timeframe.",
+      "immediate_actions": [
+        {
+          "action": "Block attacker IP address",
+          "target": "203.0.113.224",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.224 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1032",
+          "name": "Multi-factor Authentication",
+          "for_technique_id": "T1110.003"
+        },
+        {
+          "mitigation_id": "M1027",
+          "name": "Password Policies",
+          "for_technique_id": "T1110.003"
+        },
+        {
+          "mitigation_id": "M1036",
+          "name": "Account Use Policies",
+          "for_technique_id": "T1110.003"
+        }
+      ],
+      "investigation_steps": [
+        "Verify if any of the targeted accounts (akhan, asharma, deploy, mshah, npatel, pmehta, rkumar, srao) experienced successful logins during the attack window."
+      ],
+      "prevention": [
+        "Implement account lockout policies and multi-factor authentication.",
+        "Monitor for patterns of low-and-slow authentication attempts across multiple usernames."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-004",
+      "executive_summary": "Reconnaissance activity involving sequential port scanning against the SSH server from external source IP 203.0.113.192.",
+      "immediate_actions": [
+        {
+          "action": "Block scanning IP address",
+          "target": "203.0.113.192",
+          "priority": "P2",
+          "example_command": "iptables -A INPUT -s 203.0.113.192 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1056",
+          "name": "Pre-compromise",
+          "for_technique_id": "T1595.002"
+        }
+      ],
+      "investigation_steps": [
+        "Check firewall and IDS logs for further scanning or subsequent exploitation attempts from this IP."
+      ],
+      "prevention": [
+        "Review perimeter firewall rules to restrict unnecessary exposure of services to the internet."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-005",
+      "executive_summary": "External IP 203.0.113.71 performed SQL injection attacks and scanning activity against web endpoints on the web server using sqlmap.",
+      "immediate_actions": [
+        {
+          "action": "Block attacker IP address",
+          "target": "203.0.113.71",
+          "priority": "P1",
+          "example_command": "iptables -A INPUT -s 203.0.113.71 -j DROP"
+        }
+      ],
+      "mitigations": [
+        {
+          "mitigation_id": "M1048",
+          "name": "Application Isolation and Sandboxing",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1037",
+          "name": "Filter Network Traffic",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1030",
+          "name": "Network Segmentation",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1016",
+          "name": "Vulnerability Scanning",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1026",
+          "name": "Privileged Account Management",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1050",
+          "name": "Exploit Protection",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1035",
+          "name": "Limit Access to Resource Over Network",
+          "for_technique_id": "T1190"
+        },
+        {
+          "mitigation_id": "M1051",
+          "name": "Update Software",
+          "for_technique_id": "T1190"
+        }
+      ],
+      "investigation_steps": [
+        "Review web server access and error logs for signs of successful database data extraction or unauthorized modifications.",
+        "Inspect web application code for vulnerabilities."
+      ],
+      "prevention": [
+        "Implement a Web Application Firewall (WAF) to detect and block SQL injection attempts.",
+        "Sanitize all user-supplied inputs and use parameterized queries in web applications."
+      ],
+      "status": "validated"
+    },
+    {
+      "incident_id": "inc-006",
+      "executive_summary": "External IP 203.0.113.183 attempted path traversal to access sensitive system files such as /etc/passwd on the web server.",
+      "immediate_actions": [
+        {
+          "action": "Block attacker IP address",
+          "target": "203.0.113.183",
+          "priority": "P2",
+          "example_command": "iptables -A INPUT -s 203.0.113.183 -j DROP"
+        }
+      ],
+      "mitigations": [],
+      "investigation_steps": [
+        "Inspect web server logs to determine if any path traversal attempts resulted in unauthorized file access."
+      ],
+      "prevention": [
+        "Validate and normalize file paths in web applications to prevent directory traversal vulnerabilities."
+      ],
+      "status": "validated"
+    }
+  ]
+}

@@ -2,6 +2,10 @@
 
 A college project that analyzes synthetic SSH, web and firewall logs using four CrewAI agents, MITRE ATT&CK retrieval and deterministic validators. It recommends response actions; it never executes them.
 
+The owner-approved fresh V2 evaluation uses development seed 42 and held-out seeds 812399 and 876694. [System freeze D38](outputs/evaluation_v2/system_freeze.json) was committed at `a2e4246` and tagged `system-freeze-v2` / `benchmark-v2` before generating either fresh dataset. The separate [Windows evaluation notebook](notebooks/Cyber_Threat_MultiAgent.v2.evaluation.ipynb) reuses saved runs when available. Results are stored in outputs/evaluation_v2; original D33 and V2 development artifacts are preserved.
+
+**Fresh evaluation is complete:** all 8 code cells in the [executed evaluation notebook](notebooks/Cyber_Threat_MultiAgent.v2.evaluation.executed.ipynb) completed; the full offline gate reports **82 passed, 1 deselected**. S3 recall is **1.0** and false positives **0** on both fresh seeds. Mapping accuracy is **0.9** on 812399 and **0.7** on 876694, so the second seed **misses the 0.8 mapping target**. A6 evidence coverage is **5** and **4** stages respectively; nonexistent/unretrieved IDs and invalid evidence references are **0**. Held-out means: S0 false positives **18.0**, S1 recall **0.41666666666666663** / mapping **0.6666666666666666**, S3 recall **1.0** / mapping **0.8**. The mean does not establish every seed passed. See the [measured report](outputs/evaluation_v2/report.md), [fresh-only table](outputs/evaluation_v2/held_out_results.csv), [target checks](outputs/evaluation_v2/target_checks.csv) and [mapping error analysis](outputs/evaluation_v2/mapping_error_analysis.md). This evaluates the same synthetic generator, not real-world logs.
+
 The module implementation, a self-contained [Colab notebook](notebooks/Cyber_Threat_MultiAgent.ipynb) and a [notebook executed on Windows](notebooks/Cyber_Threat_MultiAgent.executed.ipynb) are included. The Windows notebook completed all 14 code cells, including live S1/S3 runs, frozen held-out evaluation and a real A6 report. Detection targets were missed; see the measured results and error analysis. Fresh-Colab verification remains pending. See [progress](docs/progress.md), [decisions](docs/decisions.md) and [problems](docs/problems.md).
 
 The subsequent **coverage repair** is in the [executed V2 development notebook](notebooks/Cyber_Threat_MultiAgent.v2.executed.ipynb). All 7 cells completed, and the offline suite reports **82 passed, 1 deselected**. On the same development input bytes, S3 recall improved from 0.16666666666666666 to **1.0**, mapping accuracy from 0.8 to **0.9**, with **0 false positives**, **0 invalid evidence/nonexistent/unretrieved technique IDs**, and **5 A6 stages**. This is development evidence only; previously exposed held-out seeds were not rerun or used to claim new generalization. [Comparison](outputs/revision_v2/development_comparison.csv).
@@ -26,9 +30,9 @@ From PowerShell in this folder:
 
 `prepare` downloads the pinned knowledge base and embedding model, so the first run requires internet access. `test` runs the full non-live suite, including the retrieval check. The launcher sets the source path and Python UTF-8 mode, and changes to the repository directory. It works when launched from Explorer or another directory. CPU PyTorch wheels are selected explicitly on Windows.
 
-For the repaired S3 development run, enter your Gemini key privately in `.env` and use `run-notebook.cmd`. The direct CLI defaults to the original output directory; that directory is deliberately protected by its D33 freeze. Programmatic revision runs must pass a separate output_dir, as the V2 notebook does.
+Enter your Gemini key privately in `.env` and use `run-notebook.cmd` for the current frozen evaluation. The direct CLI defaults to the original output directory; that directory is deliberately protected by its D33 freeze. Programmatic revision runs must pass a separate output_dir. Preserve both earlier result directories.
 
-To use the notebook locally, double-click `run-notebook.cmd`. It opens the executed V2 development notebook when available, using the project's `.venv` kernel. Select **Run → Run All Cells** to repeat development evaluation. It refreshes only the development result and reuses identical provider responses through the cache; the original frozen results are protected. The notebook reads the key from `.env`; never put it in a cell. It does not freeze or run held-out seeds. Setup installs JupyterLab through `requirements-notebook.txt`.
+To use the notebook locally, double-click `run-notebook.cmd`. It opens the executed V2 evaluation notebook when available, using the project's `.venv` kernel. Select **Run → Run All Cells** to verify the frozen source, run offline tests, reuse completed runs and regenerate tables/report. Missing held-out runs require the private API key and consume quota. The notebook never forces held-out reruns or retunes the system. It reads the key from `.env`; never put it in a cell. Setup installs JupyterLab through `requirements-notebook.txt`.
 
 For a deliberately refreshed development output in a separate revision directory, the notebook uses force=True on development seed 42 only. The launcher also accepts the CLI's `evaluate`, `results` and other commands. Live runs consume API quota. No key is needed for setup or offline verification.
 
@@ -109,13 +113,13 @@ Charts and tables are generated from saved evaluated files. A rules-only table i
 - `outputs/`: generated logs, evaluation-only labels, measured runs/tables/charts and stage validation logs.
 - `docs/`: goal, plan, state, decisions and failures.
 
-The owner superseded the AGENTS.md approval workflow during this build; D14 records that instruction. Test-first development and the goal/plan/decision log remain in use.
+The earlier build workflow exception is historical (D14). The newly supplied AGENTS.md test-review workflow governs future implementation (D36). The owner explicitly approved this fresh evaluation protocol (D37).
 
 ## Limitations and current verification
 
 These are synthetic logs from a controlled environment, not evidence of real-world performance. The normal background is not calibrated from production traffic. Temperature zero and fixed seeds do not guarantee identical future provider behavior; saved responses preserve repeatability. Account-specific free-tier model availability and quotas must be checked before live execution. A live API failure is reported rather than silently switching providers.
 
-The Windows setup leaves all configuration changes uncommitted, as requested by the owner. Do not create phase-completion or freeze tags until the corresponding pending checks pass. Historical Git restrictions from the original Mac build are recorded in the project logs.
+The owner now authorizes local Git commits for completed and future milestones (D36). The Windows setup and development repair are saved in `203ba0c`; the pre-evaluation V2 freeze is `a2e4246`. Historical Git restrictions from the original Mac build are recorded in the project logs. Nothing is pushed without authorization.
 
 ## Measured Windows results
 

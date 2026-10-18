@@ -10,6 +10,8 @@
 
 | # | Date | Phase | Title | Severity | Status |
 |---|------|-------|-------|----------|--------|
+| P20 | 2026-10-19 | Fresh V2 evaluation | Second unseen seed misses per-seed mapping target | 🟠 Major | Mapping accuracy 0.7; preserve result without tuning |
+| P19 | 2026-10-19 | Fresh V2 evaluation | Grounded but incorrect port-scan mapping | 🟡 Minor | Recorded frozen-system limitation; no tuning after exposure |
 | P15 | 2026-10-19 | Live evaluation | Original D33 detection recall misses target | 🟠 Major | Original preserved; V2 development repair succeeds |
 | P8 | 2026-10-18 | Integration | CrewAI credential directory restriction on original Mac | 🟡 Minor | Historical; Windows framework/live runs pass |
 | P9 | 2026-10-18 | Live validation | Fresh-Colab execution unverified | 🔴 Blocker | Windows live execution complete; Colab pending |
@@ -21,6 +23,7 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 
 | # | Date opened | Date closed | Title | Fix summary |
 |---|-------------|-------------|-------|-------------|
+| P21 | 2026-10-19 | 2026-10-19 | Documentation patch listed the same file twice | Reissued as one file update with multiple hunks; rejected patch made no changes |
 | P18 | 2026-10-19 | 2026-10-19 | Direct Python used the Windows legacy text encoding | UTF-8 invocation passes the freeze gate and records D38 before held-out generation |
 | P3 | 2026-10-18 | 2026-10-19 | Original Git metadata restriction | Windows checkout permits explicitly authorized Git writes; owner resumes commits in D36 |
 | P17 | 2026-10-19 | 2026-10-19 | Successful-login retrieval and batch salvage | Evidence-focused query and per-record validation; revised live run completes with recall 1.0 |
@@ -50,6 +53,24 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 ---
 
 ## Entries (newest first)
+
+### P21 — Documentation patch format rejected
+- **Date:** 2026-10-19
+- **Error:** `apply_patch verification failed: invalid patch: multiple operations target D:\agent\docs\decisions.md`.
+- **Fix/status:** Reissued one update for that file with multiple hunks. The rejected patch changed no files; no system source, tests, results or evaluation run was affected.
+
+### P20 — Fresh seed 876694 misses the mapping target
+- **Date:** 2026-10-19
+- **Evidence:** Frozen S3 output on seed 876694 reports detection_recall 1.0, false_positives 0, mapping_accuracy 0.7 and a6_stages 4. Runtime_s is 132.6720000000205. The unchanged per-seed mapping target is at least 0.8; this seed fails it. Invalid evidence, nonexistent IDs and unretrieved IDs are zero. An initial session note mistakenly said five A6 stages; direct inspection and deterministic evaluator recheck confirmed four, and the note is corrected.
+- **Impact:** Full detection and grounding do not establish mapping correctness. Do not present a passing mean as satisfying every seed's target.
+- **Action/status:** Preserve the measured failure, inspect saved primary choices for the report, and finish the other required artifacts. No prompt, retrieval, model, accepted-set or evaluator changes and no forced rerun after exposure. A future repair requires a separate approved development/freeze/evaluation cycle.
+- **Saved-output explanation:** Port-scan findings f003/f009 use the broader T1595 rather than the accepted T1046/T1595.001. Finding f004 combines failed/successful authentication under primary T1110 with secondary T1133; the successful-session accepted set is T1078/T1021.004. The initial scan stays separate from the four-stage compromise incident. Details are in outputs/evaluation_v2/mapping_error_analysis.md; no frozen file was changed.
+
+### P19 — Valid retrieved ID is not necessarily the correct observed technique
+- **Date:** 2026-10-19
+- **Evidence:** Fresh seed 812399 completes with recall 1.0, mapping_accuracy 0.9, no false positives and no grounding violations. Saved finding f-c008 describes an external port scan, but its primary mapping is T1595.002 (Vulnerability Scanning). The unchanged goal.md scenario A3 accepts T1046 or T1595.001. This is an incorrect behavior mapping despite a valid retrieved technique ID.
+- **Impact:** Mapping is imperfect even though the aggregate target passes. Grounding checks establish provenance and valid IDs, not semantic correctness.
+- **Action/status:** Preserve and explain this measured error. Do not change prompts, retrieval, accepted IDs, evaluator or thresholds after held-out exposure. Any future repair would need a new development/freeze/evaluation cycle.
 
 ### P18 — Direct Python invocation needs UTF-8 mode on Windows
 - **Date:** 2026-10-19

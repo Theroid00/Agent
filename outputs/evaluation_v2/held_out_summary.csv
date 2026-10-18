@@ -1,0 +1,4 @@
+system,detection_recall,false_positives,mapping_accuracy,hallucination_rate,runtime_s
+S0,1.0,18.0,,0.0,1.875
+S1,0.41666666666666663,0.0,0.6666666666666666,0.11805555555555555,13.992500000051223
+S3,1.0,0.0,0.8,0.0,131.0625

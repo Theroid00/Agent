@@ -1,0 +1,1018 @@
+{
+  "findings": [
+    {
+      "finding_id": "f-c001",
+      "cluster_ids": [
+        "c001"
+      ],
+      "verdict": "benign",
+      "summary": "Known monitoring scans from service health checks host",
+      "evidence_line_ids": [
+        "fw:000001",
+        "fw:000982",
+        "fw:001964",
+        "fw:002942",
+        "fw:005088",
+        "fw:007908",
+        "fw:010687",
+        "fw:013616",
+        "fw:014863",
+        "fw:015795"
+      ],
+      "src_ips": [
+        "10.0.0.5"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Traffic originates from the monitoring host (10.0.0.5, role: service health checks), representing known monitoring scans.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c002",
+      "cluster_ids": [
+        "c002"
+      ],
+      "verdict": "malicious",
+      "summary": "External brute-force attack against root user on SSH server",
+      "evidence_line_ids": [
+        "auth:000035",
+        "auth:000036",
+        "auth:000037",
+        "auth:000039",
+        "auth:000040",
+        "auth:000041",
+        "auth:000042",
+        "auth:000044",
+        "auth:000045",
+        "auth:000046"
+      ],
+      "src_ips": [
+        "203.0.113.212"
+      ],
+      "users": [
+        "root"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "External IP 203.0.113.212 repeatedly failed password authentication for the root user.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c003",
+      "cluster_ids": [
+        "c003"
+      ],
+      "verdict": "malicious",
+      "summary": "External port scan against SSH server",
+      "evidence_line_ids": [
+        "fw:000816",
+        "fw:000818",
+        "fw:000821",
+        "fw:000823",
+        "fw:000825",
+        "fw:000829",
+        "fw:000831",
+        "fw:000833",
+        "fw:000837",
+        "fw:000839"
+      ],
+      "src_ips": [
+        "203.0.113.130"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "External source IP 203.0.113.130 performed sequential port scanning against the SSH server.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c004-fail",
+      "cluster_ids": [
+        "c004"
+      ],
+      "verdict": "suspicious",
+      "summary": "Failed authentication attempts preceding a successful session",
+      "evidence_line_ids": [
+        "auth:000098",
+        "auth:000099",
+        "auth:000101",
+        "auth:000102",
+        "auth:000103",
+        "auth:000105",
+        "auth:000106",
+        "auth:000107",
+        "auth:000109"
+      ],
+      "src_ips": [
+        "203.0.113.130"
+      ],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Initial failed password attempts from external IP 203.0.113.130 for user deploy before eventual success.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c004-succ",
+      "cluster_ids": [
+        "c004"
+      ],
+      "verdict": "suspicious",
+      "summary": "Successful authentication after failed attempts from external IP",
+      "evidence_line_ids": [
+        "auth:000112"
+      ],
+      "src_ips": [
+        "203.0.113.130"
+      ],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful session established after credential failures from an external IP address.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c005",
+      "cluster_ids": [
+        "c005"
+      ],
+      "verdict": "malicious",
+      "summary": "Privilege escalation via sudo by external-sourced session",
+      "evidence_line_ids": [
+        "auth:000116"
+      ],
+      "src_ips": [],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "User deploy spawned /bin/bash as root via sudo following an externally sourced login session.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c006",
+      "cluster_ids": [
+        "c006"
+      ],
+      "verdict": "malicious",
+      "summary": "Suspicious large outbound data transfer to external IP",
+      "evidence_line_ids": [
+        "fw:001007"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Large outbound transfer of 150,000,000 bytes to external suspicious IP 198.51.100.200 on port 4444.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c007",
+      "cluster_ids": [
+        "c007"
+      ],
+      "verdict": "malicious",
+      "summary": "Credential spraying attack from external IP",
+      "evidence_line_ids": [
+        "auth:000218",
+        "auth:000219",
+        "auth:000220",
+        "auth:000221",
+        "auth:000222",
+        "auth:000223",
+        "auth:000224",
+        "auth:000225"
+      ],
+      "src_ips": [
+        "203.0.113.224"
+      ],
+      "users": [
+        "akhan",
+        "asharma",
+        "deploy",
+        "mshah",
+        "npatel",
+        "pmehta",
+        "rkumar",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "External IP 203.0.113.224 attempted authentication across multiple distinct usernames in a short timeframe.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c008",
+      "cluster_ids": [
+        "c008"
+      ],
+      "verdict": "malicious",
+      "summary": "External port scan against SSH server",
+      "evidence_line_ids": [
+        "fw:003035",
+        "fw:003037",
+        "fw:003040",
+        "fw:003043",
+        "fw:003045",
+        "fw:003049",
+        "fw:003051",
+        "fw:003053",
+        "fw:003057",
+        "fw:003059"
+      ],
+      "src_ips": [
+        "203.0.113.192"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "External source IP 203.0.113.192 conducted sequential port scans against the SSH server.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c009-fail",
+      "cluster_ids": [
+        "c009"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:000613",
+        "auth:000617",
+        "auth:000620"
+      ],
+      "src_ips": [
+        "10.0.0.42"
+      ],
+      "users": [
+        "asharma"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.42 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c009-succ",
+      "cluster_ids": [
+        "c009"
+      ],
+      "verdict": "benign",
+      "summary": "Successful session after internal password mistype",
+      "evidence_line_ids": [
+        "auth:000623"
+      ],
+      "src_ips": [
+        "10.0.0.42"
+      ],
+      "users": [
+        "asharma"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication for user asharma from internal IP after initial typing errors.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c010-fail",
+      "cluster_ids": [
+        "c010"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:000632"
+      ],
+      "src_ips": [
+        "10.0.0.109"
+      ],
+      "users": [
+        "rkumar"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.109 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c010-succ",
+      "cluster_ids": [
+        "c010"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:000756",
+        "auth:000786",
+        "auth:000854"
+      ],
+      "src_ips": [
+        "10.0.0.109"
+      ],
+      "users": [
+        "mshah",
+        "rkumar",
+        "troy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c011-fail",
+      "cluster_ids": [
+        "c011"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:000749"
+      ],
+      "src_ips": [
+        "10.0.0.116"
+      ],
+      "users": [
+        "deploy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.116 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c011-succ",
+      "cluster_ids": [
+        "c011"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:000772",
+        "auth:000847",
+        "auth:000873",
+        "auth:000969"
+      ],
+      "src_ips": [
+        "10.0.0.116"
+      ],
+      "users": [
+        "iyer",
+        "mshah",
+        "npatel",
+        "pmehta"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c012-fail",
+      "cluster_ids": [
+        "c012"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:000878"
+      ],
+      "src_ips": [
+        "10.0.0.121"
+      ],
+      "users": [
+        "rkumar"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.121 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c012-succ",
+      "cluster_ids": [
+        "c012"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:001057",
+        "auth:001067"
+      ],
+      "src_ips": [
+        "10.0.0.121"
+      ],
+      "users": [
+        "asharma",
+        "pmehta"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c013",
+      "cluster_ids": [
+        "c013"
+      ],
+      "verdict": "benign",
+      "summary": "Apostrophes in legitimate searches",
+      "evidence_line_ids": [
+        "web:002169"
+      ],
+      "src_ips": [
+        "10.0.0.43"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "Legitimate search query containing an apostrophe ('O'Brien'), explicitly noted as benign.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c014",
+      "cluster_ids": [
+        "c014"
+      ],
+      "verdict": "malicious",
+      "summary": "SQL injection and scanning activity via sqlmap",
+      "evidence_line_ids": [
+        "web:002311",
+        "web:002313",
+        "web:002314"
+      ],
+      "src_ips": [
+        "203.0.113.71"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "External IP 203.0.113.71 using sqlmap tool to perform SQL injection attacks against web endpoints.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c015-fail",
+      "cluster_ids": [
+        "c015"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:001020"
+      ],
+      "src_ips": [
+        "10.0.0.107"
+      ],
+      "users": [
+        "pgupta"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.107 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c015-succ",
+      "cluster_ids": [
+        "c015"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:001055",
+        "auth:001084",
+        "auth:001150",
+        "auth:001182",
+        "auth:001202",
+        "auth:001209",
+        "auth:001219",
+        "auth:001265",
+        "auth:001268"
+      ],
+      "src_ips": [
+        "10.0.0.107"
+      ],
+      "users": [
+        "asharma",
+        "pgupta",
+        "pmehta",
+        "singh",
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c016-fail",
+      "cluster_ids": [
+        "c016"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:001109"
+      ],
+      "src_ips": [
+        "10.0.0.106"
+      ],
+      "users": [
+        "pgupta"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.106 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c016-succ",
+      "cluster_ids": [
+        "c016"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:001111",
+        "auth:001138",
+        "auth:001167",
+        "auth:001179",
+        "auth:001198",
+        "auth:001241",
+        "auth:001290",
+        "auth:001337"
+      ],
+      "src_ips": [
+        "10.0.0.106"
+      ],
+      "users": [
+        "deploy",
+        "iyer",
+        "mshah",
+        "npatel",
+        "pgupta",
+        "singh",
+        "srao",
+        "troy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c017",
+      "cluster_ids": [
+        "c017"
+      ],
+      "verdict": "benign",
+      "summary": "Expected admin sudo during working hours",
+      "evidence_line_ids": [
+        "auth:001141"
+      ],
+      "src_ips": [],
+      "users": [
+        "sysadmin"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Admin user sysadmin executed sudo during working hours (IST 9-19, timestamp corresponds to 12:00:00 IST).",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c018",
+      "cluster_ids": [
+        "c018"
+      ],
+      "verdict": "malicious",
+      "summary": "Directory traversal / LFI attack against web server",
+      "evidence_line_ids": [
+        "web:004373",
+        "web:004374",
+        "web:004375"
+      ],
+      "src_ips": [
+        "203.0.113.183"
+      ],
+      "users": [],
+      "hosts": [
+        "web-srv"
+      ],
+      "reasoning": "External IP 203.0.113.183 attempted path traversal to access /etc/passwd.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c019-fail",
+      "cluster_ids": [
+        "c019"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:001807"
+      ],
+      "src_ips": [
+        "10.0.0.112"
+      ],
+      "users": [
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.112 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c019-succ",
+      "cluster_ids": [
+        "c019"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:001881",
+        "auth:001936"
+      ],
+      "src_ips": [
+        "10.0.0.112"
+      ],
+      "users": [
+        "akhan",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c020-fail",
+      "cluster_ids": [
+        "c020"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:002076"
+      ],
+      "src_ips": [
+        "10.0.0.109"
+      ],
+      "users": [
+        "akhan"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.109 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c020-succ",
+      "cluster_ids": [
+        "c020"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:002099",
+        "auth:002103",
+        "auth:002115",
+        "auth:002157",
+        "auth:002192",
+        "auth:002229",
+        "auth:002266"
+      ],
+      "src_ips": [
+        "10.0.0.109"
+      ],
+      "users": [
+        "akhan",
+        "deploy",
+        "iyer",
+        "npatel",
+        "pmehta",
+        "rjain"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c021-fail",
+      "cluster_ids": [
+        "c021"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:002224"
+      ],
+      "src_ips": [
+        "10.0.0.137"
+      ],
+      "users": [
+        "rjain"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.137 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c021-succ",
+      "cluster_ids": [
+        "c021"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:002232",
+        "auth:002257",
+        "auth:002272"
+      ],
+      "src_ips": [
+        "10.0.0.137"
+      ],
+      "users": [
+        "akhan",
+        "iyer",
+        "troy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c022-fail",
+      "cluster_ids": [
+        "c022"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:002533"
+      ],
+      "src_ips": [
+        "10.0.0.101"
+      ],
+      "users": [
+        "asharma"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.101 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c022-succ",
+      "cluster_ids": [
+        "c022"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:002539",
+        "auth:002569",
+        "auth:002581",
+        "auth:002609",
+        "auth:002655",
+        "auth:002703",
+        "auth:002757"
+      ],
+      "src_ips": [
+        "10.0.0.101"
+      ],
+      "users": [
+        "akhan",
+        "asharma",
+        "kdas",
+        "npatel",
+        "pmehta",
+        "rjain",
+        "singh",
+        "troy"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c023-fail",
+      "cluster_ids": [
+        "c023"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:002549"
+      ],
+      "src_ips": [
+        "10.0.0.104"
+      ],
+      "users": [
+        "singh"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.104 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c023-succ",
+      "cluster_ids": [
+        "c023"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:002566",
+        "auth:002593",
+        "auth:002660",
+        "auth:002665",
+        "auth:002668",
+        "auth:002678",
+        "auth:002729",
+        "auth:002737",
+        "auth:002775"
+      ],
+      "src_ips": [
+        "10.0.0.104"
+      ],
+      "users": [
+        "akhan",
+        "deploy",
+        "mshah",
+        "pgupta",
+        "pmehta",
+        "rkumar",
+        "singh",
+        "troy",
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c024-fail",
+      "cluster_ids": [
+        "c024"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:002727"
+      ],
+      "src_ips": [
+        "10.0.0.138"
+      ],
+      "users": [
+        "kdas"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.138 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c024-succ",
+      "cluster_ids": [
+        "c024"
+      ],
+      "verdict": "benign",
+      "summary": "Successful sessions after internal password mistype",
+      "evidence_line_ids": [
+        "auth:002748",
+        "auth:002832",
+        "auth:002848"
+      ],
+      "src_ips": [
+        "10.0.0.138"
+      ],
+      "users": [
+        "kdas",
+        "npatel",
+        "pmehta",
+        "srao"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication sessions from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c025-fail",
+      "cluster_ids": [
+        "c025"
+      ],
+      "verdict": "benign",
+      "summary": "Internal password mistype followed by success",
+      "evidence_line_ids": [
+        "auth:002907"
+      ],
+      "src_ips": [
+        "10.0.0.109"
+      ],
+      "users": [
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Internal password mistypes from local network IP 10.0.0.109 followed by successful authentication.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c025-succ",
+      "cluster_ids": [
+        "c025"
+      ],
+      "verdict": "benign",
+      "summary": "Successful session after internal password mistype",
+      "evidence_line_ids": [
+        "auth:002925"
+      ],
+      "src_ips": [
+        "10.0.0.109"
+      ],
+      "users": [
+        "pgupta",
+        "vnair"
+      ],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Successful authentication session from internal IP following initial password failure.",
+      "status": "validated"
+    },
+    {
+      "finding_id": "f-c026",
+      "cluster_ids": [
+        "c026"
+      ],
+      "verdict": "benign",
+      "summary": "Known nightly backup transfer",
+      "evidence_line_ids": [
+        "fw:015450"
+      ],
+      "src_ips": [
+        "10.0.0.10"
+      ],
+      "users": [],
+      "hosts": [
+        "ssh-srv"
+      ],
+      "reasoning": "Traffic destination is 192.0.2.10 (backup.corp-example.net, known nightly backup target), representing known nightly backup transfers.",
+      "status": "validated"
+    }
+  ]
+}

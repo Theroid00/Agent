@@ -49,6 +49,7 @@
 | D35 | 2026-10-19 | Evidence-focused login retrieval and per-record retry salvage | Active |
 | D36 | 2026-10-19 | Owner authorizes committing completed work and future milestones | Active |
 | D37 | 2026-10-19 | Fresh V2 evaluation protocol approved before data generation | Active |
+| D39 | 2026-10-19 | Preserve unseen results, including the per-seed mapping failure | Active |
 
 | D38 | 2026-10-19 | System freeze | Active |
 
@@ -339,6 +340,13 @@
 - **Date:** 2026-10-19
 - **Choice:** Freeze source/configuration SHA256 `d6ab1afbe2917d6f187c59be3551859dbf19cb022e955eeb64c3f4612facd1a0` after real dev execution, retrieval checks and fast pytest success.
 - **Impact:** Held-out seeds may now be generated and run without tuning. Git freeze tag must be created separately if metadata is read-only.
+
+### D39 — Preserve the completed unseen results and report the mapping failure
+- **Date:** 2026-10-19
+- **Choice:** Report all measured outcomes without post-exposure tuning. V2 held-out S3 recall is 1.0 on both seeds, false positives 0, mapping_accuracy 0.9 / 0.7 and A6 evidence stages 5 / 4. The second seed misses the per-seed mapping target despite the 0.8 mean. Preserve P19/P20 semantic errors and explain valid retrieved IDs versus correct behavior mapping.
+- **Verification:** All 9 run files and all 8 notebook code cells completed. Final notebook gate: `82 passed, 1 deselected, 26 warnings in 51.35s`. Frozen source/configuration, original approved tests/evaluator, identical per-system inputs and 108 original artifacts verified. Held-out S1 contains one nonexistent ID per seed; S3 invalid evidence/nonexistent/unretrieved IDs are zero.
+- **Interpretation:** Initial scan correlation is incomplete on 876694; its best incident covers four stage-evidence groups, not the full five-stage chain. Failed and successful login evidence share a primary brute-force mapping. Keep the unchanged evaluator's results and distinguish evidence coverage from correct explicit technique steps. The informal initial five-stage statement for this seed was corrected after inspecting the measured field.
+- **Delivery:** Save the executed Windows notebook, per-seed/fresh-only comparisons, target checks, charts, A6 demo, measured report and mapping analysis under evaluation_v2. Keep development separate from held-out means. Commit results locally; do not push. Future tuning requires another approved development/freeze/unseen-evaluation cycle; these seeds are now exposed.
 
 ## Entry template
 

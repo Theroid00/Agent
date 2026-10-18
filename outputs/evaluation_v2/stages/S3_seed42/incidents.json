@@ -1,0 +1,192 @@
+{
+  "incidents": [
+    {
+      "incident_id": "INC-01",
+      "finding_ids": [
+        "F-c002"
+      ],
+      "title": "Brute-Force Attack Against Root Account",
+      "severity": "high",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.58"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T19:37:10Z",
+          "finding_id": "F-c002",
+          "technique_id": "T1110.001",
+          "description": "Repeated failed password attempts targeting the root account from external IP 203.0.113.58."
+        }
+      ],
+      "rationale": "Standalone brute-force attack against the root user from external IP 203.0.113.58 with no subsequent successful session.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-02",
+      "finding_ids": [
+        "F-c003",
+        "F-c004-fail",
+        "F-c004-success",
+        "F-c005",
+        "F-c007"
+      ],
+      "title": "External Reconnaissance, Compromise, Privilege Escalation, and Data Exfiltration",
+      "severity": "critical",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.75"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T20:37:10Z",
+          "finding_id": "F-c003",
+          "technique_id": "T1595.001",
+          "description": "Sequential port connection attempts from external IP 203.0.113.75 against ssh-srv."
+        },
+        {
+          "order": 2,
+          "ts_utc": "2026-10-16T20:47:10Z",
+          "finding_id": "F-c004-fail",
+          "technique_id": "T1110.001",
+          "description": "Password guessing attempts against the deploy account from external IP 203.0.113.75."
+        },
+        {
+          "order": 3,
+          "ts_utc": "2026-10-16T20:52:10Z",
+          "finding_id": "F-c004-success",
+          "technique_id": "T1078",
+          "description": "Successful SSH authentication for user deploy from external IP 203.0.113.75."
+        },
+        {
+          "order": 4,
+          "ts_utc": "2026-10-16T20:54:10Z",
+          "finding_id": "F-c005",
+          "technique_id": "T1548.003",
+          "description": "User deploy invoked root shell via sudo for privilege escalation."
+        },
+        {
+          "order": 5,
+          "ts_utc": "2026-10-16T21:07:10Z",
+          "finding_id": "F-c007",
+          "technique_id": "T1041",
+          "description": "Large data transfer from ssh-srv to external IP on non-standard port 4444."
+        }
+      ],
+      "rationale": "Linked chain of activity showing scanning, brute force, successful login, root shell, and outbound transfer originating from source IP 203.0.113.75 against ssh-srv.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-03",
+      "finding_ids": [
+        "F-c008"
+      ],
+      "title": "Password Spraying Attack",
+      "severity": "high",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.31"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-16T23:37:10Z",
+          "finding_id": "F-c008",
+          "technique_id": "T1110.003",
+          "description": "Password spraying attack across multiple internal user accounts from external IP 203.0.113.31."
+        }
+      ],
+      "rationale": "Standalone password spraying attack from external IP 203.0.113.31 targeting multiple users.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-04",
+      "finding_ids": [
+        "F-c009"
+      ],
+      "title": "Port Scanning Activity",
+      "severity": "medium",
+      "confidence": 0.9,
+      "attacker_ips": [
+        "203.0.113.160"
+      ],
+      "affected_assets": [
+        "ssh-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T02:37:10Z",
+          "finding_id": "F-c009",
+          "technique_id": "T1595.001",
+          "description": "Sequential port connection attempts from external IP 203.0.113.160 against ssh-srv."
+        }
+      ],
+      "rationale": "Standalone reconnaissance finding involving port scanning from external IP 203.0.113.160.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-05",
+      "finding_ids": [
+        "F-c013"
+      ],
+      "title": "SQL Injection and Web Vulnerability Scanning",
+      "severity": "high",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.35"
+      ],
+      "affected_assets": [
+        "web-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T05:37:10Z",
+          "finding_id": "F-c013",
+          "technique_id": "T1190",
+          "description": "SQL injection payloads and sqlmap user-agent signatures targeting web-srv from external IP 203.0.113.35."
+        }
+      ],
+      "rationale": "Standalone web exploit and scanning activity targeting web-srv.",
+      "status": "validated"
+    },
+    {
+      "incident_id": "INC-06",
+      "finding_ids": [
+        "F-c016"
+      ],
+      "title": "Directory Traversal Attack",
+      "severity": "high",
+      "confidence": 0.95,
+      "attacker_ips": [
+        "203.0.113.61"
+      ],
+      "affected_assets": [
+        "web-srv"
+      ],
+      "kill_chain": [
+        {
+          "order": 1,
+          "ts_utc": "2026-10-17T08:37:10Z",
+          "finding_id": "F-c016",
+          "technique_id": "T1003.008",
+          "description": "Path traversal requests attempting to read sensitive files (/etc/passwd) on web-srv from external IP 203.0.113.61."
+        }
+      ],
+      "rationale": "Standalone directory traversal attack targeting web-srv from external IP 203.0.113.61.",
+      "status": "validated"
+    }
+  ]
+}

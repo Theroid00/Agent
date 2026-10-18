@@ -8,6 +8,8 @@
 
 ## Current
 
+- **Fresh evaluation authorized (D37):** V2 evaluation uses development seed 42 and predeclared unused held-out seeds 812399 and 876694. Only seed metadata changed; original approved tests, evaluator, prompts, models and thresholds are unchanged. Development provenance is refreshed through cached responses in outputs/evaluation_v2. System freeze D38 passed the full gate (`82 passed, 1 deselected, 26 warnings in 55.63s`) before either new dataset was generated. Source/configuration SHA256 is d6ab1afbe2917d6f187c59be3551859dbf19cb022e955eeb64c3f4612facd1a0. Original artifacts remain preserved. Git commits are authorized (D36); no remote push or Colab work.
+
 - **Completed development repair (D34/D35):** Stage-completeness/coherence checks, required-ID hand-offs, bounded retries, focused login retrieval, independent-record salvage and explicit incomplete status are implemented. The full gate reports `82 passed, 1 deselected, 26 warnings in 52.49s`. All 7 revised notebook code cells completed. Development recall is 1.0, mapping accuracy 0.9, false positives 0, invalid evidence/nonexistent/unretrieved technique IDs 0, and A6 stages 5. D33 outputs/notebooks remain unchanged; revision output uses outputs/revision_v2. No revised held-out run or new freeze; Colab is outside current scope.
 
 - **Scope:** Full implementation authorized under D14; previous offline-only delivery is historical. In this Windows session, the owner saved a local API key and explicitly authorized running the notebook (D30).
@@ -21,12 +23,7 @@
 
 ## What's next
 
-Review the completed V2 executed notebook and development comparison. The repair meets detection/mapping/grounding targets on development data, while original D33 results remain intact. Any generalization claim needs separately approved unseen evaluation data; the previously exposed seeds cannot supply fresh evidence. No further tuning or held-out rerun was performed. Colab remains excluded from current focus.
-
-1. Review the executed Windows notebook, results_by_seed.csv, error_analysis.csv and demo_incident.md. The real runs completed; detection targets were missed (P15).
-2. Preserve D33's frozen source/configuration. Any future tuning requires a separately documented benchmark revision; do not tune using held-out results.
-3. Fresh-Colab Run All and final submission review remain separate pending work.
-4. Commit future completed milestones under the project's Git rules (D36). Follow the newly supplied AGENTS.md test-review stops; benchmark changes need separate approval.
+Finish the existing freeze gates, record and commit/tag the exact V2 source/configuration before generating either new held-out dataset. Run S0/S1/S3 on identical saved inputs, without tuning or forced held-out reruns. Execute the separate Windows evaluation notebook and publish its measured tables, error analysis, A6 report and limitations locally; then commit results. Preserve all original D33 and V2 development artifacts. Colab remains excluded.
 
 ---
 
@@ -98,6 +95,12 @@ Status keys: ⬜ Not started · 🟡 In progress · ✅ Done · 🔴 Blocked
 ---
 
 ## Session log (newest first)
+
+### Session 9 — 2026-10-19 — Approved fresh V2 evaluation
+- **Request:** Owner explicitly approves the fresh evaluation set, freeze before generation, S0/S1/S3 comparison and measured Windows notebook/report update.
+- **Protocol:** D37 predeclares development 42 and fresh held-out 812399/876694. Only seed metadata changes; approved tests, evaluator and system behavior stay fixed. New data/results are isolated under outputs/evaluation_v2. No fresh data is generated until the source/configuration freeze is recorded and committed.
+- **Development / freeze:** Refreshed S0/S1/S3 provenance on byte-identical development inputs; S1 uses 1 cached response and S3 uses 4, with 0 new live calls and complete S3 coverage. D38 recorded after `82 passed, 1 deselected, 26 warnings in 55.63s`; retrieval/grounding gates pass. Neither fresh dataset exists at freeze. Preservation check passes for 108 original artifacts/tests/evaluator files. P18 direct-invocation encoding issue is fixed using UTF-8 mode.
+- **Artifacts:** Separate evaluation notebook assembled with 8 code cells. Final measured results and completed execution remain pending.
 
 ### Session 8 — 2026-10-19 — Git checkpoint authorized
 - **Request:** Owner authorizes committing previous work and future milestones, replacing the no-commit preference.

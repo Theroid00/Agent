@@ -21,6 +21,7 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 
 | # | Date opened | Date closed | Title | Fix summary |
 |---|-------------|-------------|-------|-------------|
+| P18 | 2026-10-19 | 2026-10-19 | Direct Python used the Windows legacy text encoding | UTF-8 invocation passes the freeze gate and records D38 before held-out generation |
 | P3 | 2026-10-18 | 2026-10-19 | Original Git metadata restriction | Windows checkout permits explicitly authorized Git writes; owner resumes commits in D36 |
 | P17 | 2026-10-19 | 2026-10-19 | Successful-login retrieval and batch salvage | Evidence-focused query and per-record validation; revised live run completes with recall 1.0 |
 | P16 | 2026-10-19 | 2026-10-19 | Missing stage-coverage checks | New regression suite and complete hand-off validation; full suite 82 passed |
@@ -49,6 +50,13 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 ---
 
 ## Entries (newest first)
+
+### P18 — Direct Python invocation needs UTF-8 mode on Windows
+- **Date:** 2026-10-19
+- **Symptom:** Development runs and the full freeze suite passed (`82 passed, 1 deselected, 26 warnings in 52.30s`), then reading the Unicode decision log failed before recording the freeze: `UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 11483: character maps to <undefined>`.
+- **Cause:** Setting PYTHONUTF8 inside an already-started interpreter does not change its default text encoding. The Windows launchers set it before startup; the direct maintenance invocation omitted that step.
+- **Fix:** Invoke the existing orchestration with `python -X utf8`. Reuse saved development outputs and rerun the freeze gate. No production source, approved test, evaluator or model change is needed; neither fresh dataset exists.
+- **Status:** Resolved. UTF-8 retry passed `82 passed, 1 deselected, 26 warnings in 55.63s` and recorded System freeze D38. Neither fresh dataset existed at the freeze; original preservation checks pass.
 
 ### P17 — Development repair exposes an unretrieved successful-login mapping
 - **Resolution:** All 7 revised notebook code cells completed after D35. Coverage is complete, the final stage validation log is empty, detection recall is 1.0 and mapping accuracy is 0.9. No grounding rule or evaluator was weakened. The original incomplete attempt is retained for inspection.

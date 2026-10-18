@@ -48,6 +48,9 @@
 | D34 | 2026-10-19 | Development coverage repair; preserve D33 baseline | Active |
 | D35 | 2026-10-19 | Evidence-focused login retrieval and per-record retry salvage | Active |
 | D36 | 2026-10-19 | Owner authorizes committing completed work and future milestones | Active |
+| D37 | 2026-10-19 | Fresh V2 evaluation protocol approved before data generation | Active |
+
+| D38 | 2026-10-19 | System freeze | Active |
 
 ---
 
@@ -322,6 +325,20 @@
 - **Checkpoint:** Save the existing completed work together, including source, regression tests, Windows launchers, executed notebooks, measured outputs and the D33 preservation snapshot. Do not reconstruct historical phase commits or mark the revised system frozen. Keep secrets, environments, downloaded models and caches excluded.
 - **Workflow:** The owner's newly supplied AGENTS.md governs future work, including test review before implementation; the earlier D14 workflow exception is historical. New evaluation seeds or benchmark changes still require separate approval. Colab remains outside the current focus. This instruction authorizes commits, not a remote push.
 - **Verification:** Preservation/source/notebook/API-key checks pass; original approved tests and evaluator remain unchanged. The existing complete notebook test gate is `82 passed, 1 deselected, 26 warnings in 52.49s`; no implementation changed for this checkpoint.
+
+### D37 — Predeclare fresh evaluation and preserve the repaired system
+- **Date:** 2026-10-19
+- **Authorization:** Owner explicitly instructed: approve a fresh evaluation set, freeze V2 before generating/inspecting it, run S0/S1/S3 on identical inputs, and update the Windows notebook/report with measured results. This authorizes the seed amendment in goal.md and supersedes D34/D36's deferral of a new freeze/evaluation.
+- **Seeds:** Randomly selected unused held-out identifiers 812399 and 876694 without generating data or inspecting results. Development remains 42. V2 evaluation is [42, 812399, 876694]. Legacy held-out IDs 7/2026 remain recognized for compatibility with approved tests and archived runs, but will not be generated or rerun in this evaluation.
+- **System:** Only CONFIG seed metadata changes. Keep prompts, models, retrieval, generator distributions, thresholds, validators, approved tests and evaluate.py unchanged. Refresh development provenance through the existing response cache; pass the existing full offline/retrieval/grounding freeze gates before held-out generation. No new component is introduced.
+- **Protocol:** Save outputs under outputs/evaluation_v2. Record and commit the exact source/configuration freeze before generating either fresh seed; tag it system-freeze-v2 and benchmark-v2. Run each system once per fresh seed on identical saved inputs; reuse completed run files on resume and never force held-out runs. Preserve all errors/incomplete outcomes. No tuning, provider switch or seed replacement based on results.
+- **Artifacts:** Keep D33 outputs and V2 development artifacts intact. Update a separate Windows evaluation notebook, saved comparisons, error analysis and report; commit the final measured results. API keys remain private. No remote push or Colab work.
+- **Interpretation:** Unseen draws from the same synthetic generator test variation within this benchmark, not new attack families or real-world generalization. Report development and held-out results separately and disclose response-cache use.
+
+### D38 — System freeze
+- **Date:** 2026-10-19
+- **Choice:** Freeze source/configuration SHA256 `d6ab1afbe2917d6f187c59be3551859dbf19cb022e955eeb64c3f4612facd1a0` after real dev execution, retrieval checks and fast pytest success.
+- **Impact:** Held-out seeds may now be generated and run without tuning. Git freeze tag must be created separately if metadata is read-only.
 
 ## Entry template
 

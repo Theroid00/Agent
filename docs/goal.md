@@ -92,6 +92,8 @@ The agents are given an **asset inventory** (known hosts, roles, users, backup a
 
 ## 6. Success criteria (targets, measured on 3 seeds)
 
+V2 uses development seed 42 and fresh held-out seeds 812399 and 876694 (owner-approved D37). The original evaluation on 42, 7 and 2026 remains archived. Previously exposed seeds are not fresh validation evidence.
+
 | Metric | Target |
 |--------|--------|
 | Scenario detection recall (A1–A6) | ≥ 5 of 6 per seed |
@@ -116,7 +118,7 @@ The agents are given an **asset inventory** (known hosts, roles, users, backup a
 - **R4** — All agent outputs are Pydantic-validated structured objects. Free text is allowed only in designated text fields.
 - **R5** — The Response agent recommends; nothing in the notebook executes a response action.
 - **R6** — Ground-truth labels are never visible to any agent or baseline. They are used only in the evaluation section.
-- **R7** — Reproducibility: temperature 0, fixed seeds (42, 7, 2026), pinned library and ATT&CK versions, all outputs saved to disk.
+- **R7** — Reproducibility: temperature 0, predeclared fixed seeds (V1: 42, 7, 2026; V2: development 42, held-out 812399 and 876694), pinned library and ATT&CK versions, all outputs saved to disk. Freeze V2 before generating or inspecting its held-out data; do not tune after exposure.
 - **R8** — On validation failure: retry once with the validator's error message; if still invalid, strip the invalid item, mark the finding `unvalidated`, and log it. Never silently "fix" an ID.
 
 ### 7.2 For whoever builds it (me, teammates, or any AI assistant)
@@ -178,3 +180,4 @@ The agents are given an **asset inventory** (known hosts, roles, users, backup a
 | Date | Change | Reason |
 |------|--------|--------|
 | 2026-10-18 | Initial version | — |
+| 2026-10-19 | Approve V2 evaluation on development 42 and fresh held-out 812399, 876694; retain the original evaluator, scenarios and targets | Owner explicitly requested fresh evaluation, freeze before generation, all-system comparison and updated Windows report (D37) |

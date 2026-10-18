@@ -15,6 +15,8 @@ set "PYTHONPATH=%CD%\src;%PYTHONPATH%"
 set "notebook=notebooks\Cyber_Threat_MultiAgent.ipynb"
 if exist "notebooks\Cyber_Threat_MultiAgent.v2.ipynb" set "notebook=notebooks\Cyber_Threat_MultiAgent.v2.ipynb"
 if exist "notebooks\Cyber_Threat_MultiAgent.v2.executed.ipynb" set "notebook=notebooks\Cyber_Threat_MultiAgent.v2.executed.ipynb"
+if exist "notebooks\Cyber_Threat_MultiAgent.v2.evaluation.ipynb" set "notebook=notebooks\Cyber_Threat_MultiAgent.v2.evaluation.ipynb"
+if exist "notebooks\Cyber_Threat_MultiAgent.v2.evaluation.executed.ipynb" set "notebook=notebooks\Cyber_Threat_MultiAgent.v2.evaluation.executed.ipynb"
 ".venv\Scripts\python.exe" -m jupyterlab --ServerApp.root_dir="%CD%" "%notebook%" %*
 set "result=%errorlevel%"
 popd

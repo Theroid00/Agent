@@ -1,0 +1,12 @@
+system,seed,kind,item,matched_scenario,cause
+S0,42,false_positive,s0-i1,B4,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i6,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i10,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i11,B1,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i12,B3,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i14,B2,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i15,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i17,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i18,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i19,__background__,Benign/background evidence retained as an incident
+S0,42,false_positive,s0-i20,B5,Benign/background evidence retained as an incident

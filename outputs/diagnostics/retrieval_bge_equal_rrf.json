@@ -1,0 +1,109 @@
+{
+  "passed": 4,
+  "total": 6,
+  "queries": [
+    {
+      "query": "many failed SSH password attempts from one IP",
+      "accepted": [
+        "T1110",
+        "T1110.001"
+      ],
+      "returned": [
+        "T1110.001",
+        "T1110.003",
+        "T1110.004",
+        "T1110",
+        "T1563.001"
+      ],
+      "passed": true
+    },
+    {
+      "query": "one IP trying many different usernames",
+      "accepted": [
+        "T1110",
+        "T1110.003"
+      ],
+      "returned": [
+        "T1110.003",
+        "T1110.004",
+        "T1110.001",
+        "T1583.001",
+        "T1584.001"
+      ],
+      "passed": true
+    },
+    {
+      "query": "connection attempts to many ports on a host",
+      "accepted": [
+        "T1046",
+        "T1595.001"
+      ],
+      "returned": [
+        "T1205.001",
+        "T1571",
+        "T1090",
+        "T1568.003",
+        "T1090.001"
+      ],
+      "passed": false
+    },
+    {
+      "query": "SQL injection payload in web request",
+      "accepted": [
+        "T1190"
+      ],
+      "returned": [
+        "T1659",
+        "T1190",
+        "T1505.001",
+        "T1213.006",
+        "T1071.001"
+      ],
+      "passed": true
+    },
+    {
+      "query": "sudo to root shell after login",
+      "accepted": [
+        "T1548",
+        "T1548.003"
+      ],
+      "returned": [
+        "T1548.003",
+        "T1546.004",
+        "T1552.003",
+        "T1003.008",
+        "T1037.002"
+      ],
+      "passed": true
+    },
+    {
+      "query": "large outbound data transfer to external server",
+      "accepted": [
+        "T1041",
+        "T1048"
+      ],
+      "returned": [
+        "T1030",
+        "T1537",
+        "T1132",
+        "T1071.002",
+        "T1133"
+      ],
+      "passed": false
+    }
+  ],
+  "source_ref": "50be388e93819a5d20e71cbaaeccfda157abc846",
+  "model": "BAAI/bge-small-en-v1.5",
+  "model_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+  "document_settings": {
+    "k_tool": 5,
+    "k_pre": 8,
+    "description_chars": 1200,
+    "detection_chars": 1200,
+    "document_format": "clean-description-detection-v2",
+    "query_prefix": "Represent this sentence for searching relevant passages: ",
+    "hybrid": true,
+    "rrf_k": 60
+  },
+  "execution": "sentence-transformers"
+}

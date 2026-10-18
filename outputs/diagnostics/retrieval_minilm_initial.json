@@ -1,0 +1,98 @@
+{
+  "passed": 3,
+  "total": 6,
+  "queries": [
+    {
+      "query": "many failed SSH password attempts from one IP",
+      "accepted": [
+        "T1110",
+        "T1110.001"
+      ],
+      "returned": [
+        "T1110.003",
+        "T1563.001",
+        "T1110.001",
+        "T1110",
+        "T1563"
+      ],
+      "passed": true
+    },
+    {
+      "query": "one IP trying many different usernames",
+      "accepted": [
+        "T1110",
+        "T1110.003"
+      ],
+      "returned": [
+        "T1036.010",
+        "T1590.005",
+        "T1033",
+        "T1110.003",
+        "T1586.001"
+      ],
+      "passed": true
+    },
+    {
+      "query": "connection attempts to many ports on a host",
+      "accepted": [
+        "T1046",
+        "T1595.001"
+      ],
+      "returned": [
+        "T1205",
+        "T1205.001",
+        "T1571",
+        "T1016.001",
+        "T1686.003"
+      ],
+      "passed": false
+    },
+    {
+      "query": "SQL injection payload in web request",
+      "accepted": [
+        "T1190"
+      ],
+      "returned": [
+        "T1700",
+        "T1659",
+        "T1027.006",
+        "T1555.003",
+        "T1696.002"
+      ],
+      "passed": false
+    },
+    {
+      "query": "sudo to root shell after login",
+      "accepted": [
+        "T1548",
+        "T1548.003"
+      ],
+      "returned": [
+        "T1548.003",
+        "T1546.004",
+        "T1037.002",
+        "T1563.001",
+        "T1548.004"
+      ],
+      "passed": true
+    },
+    {
+      "query": "large outbound data transfer to external server",
+      "accepted": [
+        "T1041",
+        "T1048"
+      ],
+      "returned": [
+        "T1030",
+        "T1567.002",
+        "T1029",
+        "T1537",
+        "T1052"
+      ],
+      "passed": false
+    }
+  ],
+  "source_ref": "50be388e93819a5d20e71cbaaeccfda157abc846",
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "execution": "sentence-transformers"
+}

@@ -1,0 +1,2 @@
+system,seed,detection_recall,incident_precision,false_positives,benign_case_false_positives,background_false_positives,mapping_accuracy,a6_stages,a6_correlated,hallucination_rate,nonexistent_technique_ids,unretrieved_technique_ids,invalid_evidence_refs,invalid_evidence_rate,runtime_s,llm_calls,tokens
+S0,42,1.0,0.45,11,5,6,,2,False,0,0,,0,0.0,0.9093201659998158,0,0

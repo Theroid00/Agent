@@ -393,3 +393,17 @@ CONFIG = {
 | D4 | 2026-10-18 | Response = recommendations only | Safety; out of scope to act on systems |
 | D5 | 2026-10-18 | Gemini free tier primary, Groq fallback | ₹0 budget, no GPU needed |
 | D6 | 2026-10-18 | Documentation IP ranges (RFC 5737) for all external IPs | No real IPs in data |
+| D14 | 2026-10-18 | Human replaces AGENTS workflow with goal/plan/decisions; tests still precede implementation | Explicit instruction during full-build session |
+| D15 | 2026-10-18 | Develop offline components while external exit checks remain explicitly pending; held-out runs wait for freeze | Missing API keys, package network and Git permissions; no invented verification |
+| D16 | 2026-10-18 | Pin MITRE CTI commit and SHA256 in configuration | Reproducible knowledge-base source; see decisions.md |
+| D17 | 2026-10-18 | Pin direct dependencies, compatible Pydantic and Gemini 3.5 Flash-Lite | Current official registry/provider evidence; account verification pending |
+| D18 | 2026-10-18 | Isolated sequential CrewAI tasks with validation; S1 hallucinations mean nonexistent IDs | Enforce stage hand-offs and make no-RAG measurement meaningful |
+| D19 | 2026-10-18 | Range sampling and configured normal-background failure probability | Dev tests exposed hidden success evidence and excessive full-volume clusters |
+| D20 | 2026-10-18 | Assemble self-contained module-importing notebook | Fresh Colab startup without an unspecified GitHub URL |
+| D21 | 2026-10-18 | Isolate CPU embedding in a worker process | Actual duplicate-OpenMP failure with the installed native wheels |
+| D22 | 2026-10-18 | Clean retrieval documents and invalidate stale index formats | Real MiniLM check passed only 3 of 6 fixed queries |
+| D23 | 2026-10-18 | Use pinned BGE-small with the documented query instruction | Cleaned MiniLM passed only 4 of 6 fixed queries |
+| D24 | 2026-10-18 | Extract detection text through modern STIX strategies/analytics | The pinned release no longer places it in the legacy technique field |
+| D25 | 2026-10-18 | Add the planned BM25+dense rank fusion | BGE with detection text still passed only 4 of 6 fixed queries |
+| D26 | 2026-10-18 | Normalize broad port-scanning/exfiltration vocabulary before hybrid retrieval | Public retrieval checks remained below target; no ID lookup rules or changed acceptance sets |
+| D27 | 2026-10-18 | Pin Kubernetes 36.0.2 for CrewAI/Pydantic compatibility; local CrewAI storage, explicit import permission skip | Installed metadata exposed incompatible latest transitive dependency; external validation remains pending |

@@ -124,4 +124,3 @@ The unchanged evaluator's A6 metric measures stage evidence overlap within an in
 Held-out S0 averages 18 false positives versus S3's 0. Held-out S1 averages detection_recall 0.41666666666666663 and mapping_accuracy 0.6666666666666666 versus S3's 1.0 and 0.8. S1 has one nonexistent technique ID on each fresh seed; S3 has zero nonexistent/unretrieved IDs and zero invalid evidence references. These results concern draws from the same synthetic generator, not real-world validation.
 
 The comparison charts average all three declared seeds, including development; use held_out_summary.csv for fresh-data-only means. P19/P20 record the unresolved semantic errors. No tuning or held-out rerun followed exposure.
-

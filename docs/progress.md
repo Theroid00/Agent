@@ -94,6 +94,7 @@ Original measurements remain in outputs/ and the D33 snapshot; the earlier cover
 - **Exit checks:** Completed evaluation/artifacts ✅; freeze-before-generation ✅; original preservation ✅; recall/FP/grounding/runtime ✅; per-seed mapping ❌ on 876694 (P20). Fresh-Colab remains unverified/excluded, not claimed complete.
 - **Decisions/problems:** D37–D39; P18 fixed by UTF-8 invocation; P19/P20 preserved semantic mapping failures. Initial informal A6 count for the second seed was corrected to the measured four.
 - **Git:** Pre-evaluation commit a2e4246, system-freeze-v2 / benchmark-v2. Final measured results/report saved in the following local milestone commit, tagged phase6-done to record evaluation completion (not all targets passing); no push.
+- **Final formatting:** Removed an extra report blank line flagged by Git; checked the correction independently. This changes no measured value, model output, source, test or freeze.
 - **Needs input / next:** Nothing to finish this evaluation. Further repair needs a separately approved development and unseen-evaluation cycle; both fresh seeds are now exposed.
 
 ### Session 8 — 2026-10-19 — Git checkpoint authorized

@@ -23,7 +23,7 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 
 | # | Date opened | Date closed | Title | Fix summary |
 |---|-------------|-------------|-------|-------------|
-| P21 | 2026-10-19 | 2026-10-19 | Documentation patch listed the same file twice | Reissued as one file update with multiple hunks; rejected patch made no changes |
+| P21 | 2026-10-19 | 2026-10-19 | Documentation editing and formatting checks | Corrected duplicate patch target and report trailing blank line; no model/result change |
 | P18 | 2026-10-19 | 2026-10-19 | Direct Python used the Windows legacy text encoding | UTF-8 invocation passes the freeze gate and records D38 before held-out generation |
 | P3 | 2026-10-18 | 2026-10-19 | Original Git metadata restriction | Windows checkout permits explicitly authorized Git writes; owner resumes commits in D36 |
 | P17 | 2026-10-19 | 2026-10-19 | Successful-login retrieval and batch salvage | Evidence-focused query and per-record validation; revised live run completes with recall 1.0 |
@@ -58,6 +58,7 @@ Severity: 🔴 Blocker · 🟠 Major (wrong results) · 🟡 Minor (workaround e
 - **Date:** 2026-10-19
 - **Error:** `apply_patch verification failed: invalid patch: multiple operations target D:\agent\docs\decisions.md`.
 - **Fix/status:** Reissued one update for that file with multiple hunks. The rejected patch changed no files; no system source, tests, results or evaluation run was affected.
+- **Final formatting check:** `outputs/evaluation_v2/report.md:127: new blank line at EOF.` The check was followed by another successful shell command, so its failure did not stop the result commit. Normalized the report to one final newline; independent working-tree and complete checkpoint diff checks now pass. No numbers, model outputs or frozen files change.
 
 ### P20 — Fresh seed 876694 misses the mapping target
 - **Date:** 2026-10-19

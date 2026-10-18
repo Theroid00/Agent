@@ -13,7 +13,7 @@
 - **Comparison:** Held-out S0 averages 18.0 false positives. S1 averages recall 0.41666666666666663 and mapping_accuracy 0.6666666666666666; S3 averages recall 1.0 and mapping_accuracy 0.8. S1 has one nonexistent ID on each fresh seed; S3 has zero. Results concern this synthetic generator only.
 - **Artifacts / verification:** All 8 evaluation notebook code cells completed; notebook gate reports `82 passed, 1 deselected, 26 warnings in 51.35s`. All 9 real S0/S1/S3 run files have matching frozen fingerprints and identical per-seed input bytes. Preservation checks pass for 108 original artifacts, approved tests and evaluator files. New results/report/notebook are under outputs/evaluation_v2 and notebooks/Cyber_Threat_MultiAgent.v2.evaluation.executed.ipynb. Original D33 and V2 development artifacts remain intact.
 - **System / environment:** Only seed metadata changed from the completed coverage repair. Prompts, models, thresholds, retrieval, generator distributions, validators, approved tests and evaluate.py are unchanged. Windows .venv and launchers are configured; run-notebook.cmd prefers the new executed evaluation notebook. API keys are private in ignored .env. P18 direct-invocation encoding issue is fixed using UTF-8 mode.
-- **Git / scope:** Local milestone commits are authorized (D36). Frozen evaluation completed under D37/D38; D39 records honest reporting of the target failure. No remote push, Colab work or real-world validation. Both fresh seeds are now exposed and cannot be reused as unseen evidence for future tuning.
+- **Git / scope:** Local milestone commits are authorized (D36). The owner now explicitly authorizes pushing completed main commits and the three evaluation tags to origin (D40). Frozen evaluation completed under D37/D38; D39 records honest reporting of the target failure. Colab work and real-world validation remain outside current scope. Both fresh seeds are now exposed and cannot be reused as unseen evidence for future tuning.
 
 ## What's next
 
@@ -85,6 +85,13 @@ Original measurements remain in outputs/ and the D33 snapshot; the earlier cover
 ---
 
 ## Session log (newest first)
+
+### Session 10 — 2026-10-19 — Owner-authorized remote sync
+- **Request:** Commit and push the completed work to the remote.
+- **State:** Main is four completed-work commits ahead of origin/main at the initial check; working tree is clean. Configured remote is https://github.com/Theroid00/Agent.git. Fetch succeeded. D40 records authorization to push this documentation checkpoint, completed work and the three existing evaluation tags.
+- **Checks:** Secret/archive scan passes; .env, .venv and .cache remain excluded. No production source, tests, benchmark data or measured result changed, so no model/test rerun is needed. Verify the pushed branch and tag hashes against the remote before reporting success.
+- **Git:** Preserve existing history and versioned freeze tags. Push main plus benchmark-v2, system-freeze-v2 and phase6-done. This session's checkpoint records the authorized sync; Git remote refs provide its verified delivery state.
+- **Next:** Review the preserved mapping errors before a separately approved development cycle. Evaluation numbers and targets remain unchanged.
 
 ### Session 9 — 2026-10-19 — Approved fresh V2 evaluation
 - **Request:** Owner approved fresh data, a freeze before generation, S0/S1/S3 comparison and measured Windows notebook/report update.

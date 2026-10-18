@@ -52,6 +52,7 @@
 | D39 | 2026-10-19 | Preserve unseen results, including the per-seed mapping failure | Active |
 
 | D38 | 2026-10-19 | System freeze | Active |
+| D40 | 2026-10-19 | Owner authorizes pushing completed commits and evaluation tags | Active |
 
 ---
 
@@ -347,6 +348,12 @@
 - **Verification:** All 9 run files and all 8 notebook code cells completed. Final notebook gate: `82 passed, 1 deselected, 26 warnings in 51.35s`. Frozen source/configuration, original approved tests/evaluator, identical per-system inputs and 108 original artifacts verified. Held-out S1 contains one nonexistent ID per seed; S3 invalid evidence/nonexistent/unretrieved IDs are zero.
 - **Interpretation:** Initial scan correlation is incomplete on 876694; its best incident covers four stage-evidence groups, not the full five-stage chain. Failed and successful login evidence share a primary brute-force mapping. Keep the unchanged evaluator's results and distinguish evidence coverage from correct explicit technique steps. The informal initial five-stage statement for this seed was corrected after inspecting the measured field.
 - **Delivery:** Save the executed Windows notebook, per-seed/fresh-only comparisons, target checks, charts, A6 demo, measured report and mapping analysis under evaluation_v2. Keep development separate from held-out means. Commit results locally; do not push. Future tuning requires another approved development/freeze/unseen-evaluation cycle; these seeds are now exposed.
+
+### D40 — Push completed work to the configured GitHub remote
+- **Date:** 2026-10-19
+- **Authorization:** Owner explicitly requested "commit and and push to remote". This supersedes the local-only delivery restriction in D36/D39 for the completed work.
+- **Scope:** Push current main commits plus the existing benchmark-v2, system-freeze-v2 and phase6-done tags to origin (https://github.com/Theroid00/Agent.git), using a normal fast-forward without overwriting remote history.
+- **Checks:** Working tree is clean before this documentation update; fetched origin successfully. Secret scan passes across tracked files and nested notebook/ZIP archives; .env, virtual environment and caches remain ignored. Existing model/test results are unchanged. Verify remote branch and tag hashes after the push.
 
 ## Entry template
 
